@@ -1,4 +1,5 @@
 import React from "react";
+import { createStackNavigator } from "@react-navigation/stack";
 import { AnimatedTabBarNavigator } from "react-native-animated-nav-tab-bar";
 import IconHome from "../../Assets/icons/IconHome";
 import IconAssignments from "../../Assets/icons/IconAssignments";
@@ -7,6 +8,33 @@ import HomePage from "../../Containers/HomePage/HomePage";
 import CalendarPage from "../../Containers/CalendarPage/CalendarPage";
 
 const Tabs = AnimatedTabBarNavigator();
+const Stack = createStackNavigator();
+
+const HomeRoute = () => {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        header: () => null
+      }}
+      initialRouteName="Home"
+    >
+      <Stack.Screen
+        options={{
+          headerTitle: "Home"
+        }}
+        name="Home"
+        component={HomePage}
+      />
+      <Stack.Screen
+        options={{
+          headerTitle: "Assignments"
+        }}
+        name="Assignments"
+        component={AssignmentPage}
+      />
+    </Stack.Navigator>
+  )
+}
 
 const PrivateRouter = () => {
 
@@ -25,7 +53,7 @@ const PrivateRouter = () => {
     >
       <Tabs.Screen
         name="Home"
-        component={HomePage}
+        component={HomeRoute}
         options={{ tabBarIcon: ({ focused }) => (
           <IconHome color='#FFFFFF' focused={focused}/>
         )}}

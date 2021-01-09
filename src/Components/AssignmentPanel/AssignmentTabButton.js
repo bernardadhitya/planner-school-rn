@@ -11,19 +11,16 @@ const AssignmentTabButton = (props) => {
 
   const buttonStyles = {
     active: {
-      color: '#63C7FD',
-      hasBackgroundColor: true
+      color: '#222B45',
     },
     inactive: {
-      color: '#7F7F7F',
-      hasBackgroundColor: false
+      color: '#C4C4C4',
     }
   }
 
   return fontsLoaded ? (
     <View
       style={{
-        backgroundColor: buttonStyles[active].hasBackgroundColor ? '#FFFFFF' : null,
         paddingTop: 8,
         paddingHorizontal: 8,
         margin: 8,

@@ -22,7 +22,7 @@ const AssignmentsPanelContent = () => {
 
   const renderAssignmentsPanelCard = (backgroundColor, title, className, teacherName, avatar) => {
     return (
-      <View style={styles.column, {marginRight: 10, padding: 10}}>
+      <View style={styles.column, {marginRight: 4, padding: 10}}>
         <View style={{
           backgroundColor: '#FFFFFF',
           borderRadius: 10,

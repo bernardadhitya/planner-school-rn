@@ -4,6 +4,7 @@ import IconHome from "../../Assets/icons/IconHome";
 import IconAssignments from "../../Assets/icons/IconAssignments";
 import AssignmentPage from "../../Containers/AssignmentPage/AssignmentPage";
 import HomePage from "../../Containers/HomePage/HomePage";
+import CalendarPage from "../../Containers/CalendarPage/CalendarPage";
 
 const Tabs = AnimatedTabBarNavigator();
 
@@ -30,8 +31,8 @@ const PrivateRouter = () => {
         )}}
       />
       <Tabs.Screen
-        name="Assignments"
-        component={AssignmentPage}
+        name="Calendar"
+        component={CalendarPage}
         options={{ tabBarIcon: ({ focused }) => (
           <IconAssignments color='#56BBB4' focused={focused}/>
         )}}

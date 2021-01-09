@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { AuthContext } from "../../Helper/AuthProvider";
 import Center from "../Center/Center";
-import { Button, Text, Image, View, StyleSheet, TouchableWithoutFeedback } from "react-native";
+import { Text, Image, View, StyleSheet, TouchableWithoutFeedback } from "react-native";
 import PageOne from "../../Containers/OnboardingPage/PageOne";
 import PageTwo from "../../Containers/OnboardingPage/PageTwo";
 import PageThree from "../../Containers/OnboardingPage/PageThree";
@@ -13,7 +13,7 @@ import { Fonts } from '../../Constants/Fonts';
 import AppLoading from 'expo-app-loading';
 import { useNavigation } from "@react-navigation/native";
 import { TouchableOpacity } from "react-native";
-import { Input, Layout } from "@ui-kitten/components";
+import { Input } from "@ui-kitten/components";
 
 const Stack = createStackNavigator();
 
@@ -37,20 +37,29 @@ const Login = () => {
     <View style={styles.center}>
       <Image
         source={require('../../Assets/logo/logo.png')}
-        style={{width: 277, height: 189}}
+        style={{width: 150, height: 150}}
       />
-      <Text style={{fontFamily: 'Bold', fontSize: 16}}>learn. have fun. together.</Text>
+      <Text style={{
+        fontFamily: 'Bold',
+        fontSize: 20,
+        marginTop: 20,
+        marginBottom: 4
+      }}>SchoolPlanny</Text>
+      <Text style={{
+        fontFamily: 'Regular',
+        fontSize: 14,
+        marginTop: 12,
+        marginBottom: 20,
+        color: '#979797'
+      }}>Aplikasi Pengelola Kegiatan Siswa</Text>
       <View style={{width: 300}}>
         <Input
           value={email}
-          label='Email'
-          placeholder='Place your email'
+          placeholder='Nomor ID siswa'
           onChangeText={nextValue => setEmail(nextValue)}
         />
         <Input
-          value={password}
-          label='Password'
-          placeholder='Place your Text'
+          placeholder='Kata sandi'
           secureTextEntry={true}
           onChangeText={nextValue => setPassword(nextValue)}
         />
@@ -64,11 +73,8 @@ const Login = () => {
             color: '#FFFFFF'
           }}
         >
-          Login
+          Masuk
         </Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={() => {navigation.navigate('PageOne')}}>
-        <Text style={{fontFamily: 'Medium', fontSize: 16, color: '#63C7FD'}}>Don't have account, sign me up!</Text>
       </TouchableOpacity>
     </View>
   ) : <AppLoading/>;
@@ -92,7 +98,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: '#E5FCFB'
+    backgroundColor: '#FFFFFF'
   },
   button: {
     marginVertical: 4,
@@ -121,11 +127,11 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.22,
     shadowRadius: 2.22,
-    backgroundColor: '#63C7FD',
+    backgroundColor: '#598BFF',
     borderRadius: 10,
     paddingHorizontal: 10,
     paddingTop: 16,
-    paddingBottom: 6,
+    paddingBottom: 16,
     alignItems: 'center'
   }
 });

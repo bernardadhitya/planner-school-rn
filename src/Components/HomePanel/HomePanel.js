@@ -1,7 +1,6 @@
 import { useFonts } from '@use-expo/font';
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { Layout } from '@ui-kitten/components';
 import IconAssignments from '../../Assets/icons/IconAssignments';
 import IconGames from '../../Assets/icons/IconGames';
 import IconLiveClass from '../../Assets/icons/IconLiveClass';
@@ -15,80 +14,52 @@ const HomePanel = (props) => {
   let [fontsLoaded] = useFonts(Fonts);
 
   const panelHeaders = {
-    LiveClass: {
-      icon: <IconLiveClass color="#EF5B54"/>,
-      title: "Your Next Class",
-      subtitle: "Don’t be late for class!",
+    Calendar: {
+      title: "Jadwal Hari Ini",
       content: <LiveClassPanelContent/>
     },
     Assignments: {
-      icon: <IconAssignments color="#56BBB4"/>,
-      title: "Your Assignments",
-      subtitle: "You have 3 assignments waiting for you",
+      title: "Tugas",
       content: <AssignmentsPanelContent/>
-    },
-    Games: {
-      icon: <IconGames color="#9DCC39"/>,
-      title: "Your Achievements",
-      subtitle: "Good job, champ! Keep up the good work!",
-      content: <GamesPanelContent/>
     }
   }
 
   return (
-    <Layout
+    <View
       style={styles.column}
-      level='3'
     >
-      <Layout
+      <View
         style={styles.row}
-        level='3'
       >
-        <Layout
-          style={{
-            marginRight: 15
-          }}
-          level='3'
-        >
-          {panelHeaders[type].icon}
-        </Layout>
-        <Layout level='3'>
+        <View>
           <Text style={{
             fontFamily: 'Bold',
             fontSize: 16
           }}>
             {panelHeaders[type].title}
           </Text>
-          <Text style={{
-            fontFamily: 'Regular',
-            fontSize: 10,
-            marginBottom: 10
-          }}>
-            {panelHeaders[type].subtitle}
-          </Text>
-        </Layout>
-        <Layout
+        </View>
+        <View
           style={{
             flex: 1,
             flexDirection: "row",
             justifyContent: "flex-end"
           }}
-          level='3'
         >
           <Text style={{
             fontFamily: 'Medium',
             fontSize: 16,
-            color: '#63C7FD',
+            color: '#598BFF',
             justifyContent: 'center'
           }}>
-            View All
+            Lihat Semua
           </Text>
-        </Layout>
-      </Layout>
-      <Layout level='3'>
+        </View>
+      </View>
+      <View style={{marginTop: 14}}>
         {panelHeaders[type].content}
-      </Layout>
-    </Layout>
+      </View>
+    </View>
   )
 }
 
@@ -101,7 +72,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row'
   },
-  layout: {
+  View: {
     flex: 1,
     justifyContent: 'center',
     marginVertical: 10

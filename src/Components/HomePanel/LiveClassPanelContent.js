@@ -1,13 +1,15 @@
 import React, { useContext } from 'react';
 import { useFonts } from '@use-expo/font';
 import { View, Text, StyleSheet } from 'react-native';
-import { Layout, Card } from '@ui-kitten/components';
+import { Card } from '@ui-kitten/components';
 import { Fonts } from '../../Constants/Fonts';
 import AppLoading from 'expo-app-loading';
 import CharacterMrTeacher from '../../Assets/characters/CharacterMrTeacher';
 import { Characters } from '../../Constants/Characters';
 import { AuthContext } from '../../Helper/AuthProvider';
 import { Colors } from '../../Constants/Colors';
+import IconBook from '../../Assets/icons/IconBook';
+import IconClock from '../../Assets/icons/IconClock';
 
 const LiveClassPanelContent = () => {
   const {user: {username}} = useContext(AuthContext);
@@ -15,41 +17,43 @@ const LiveClassPanelContent = () => {
 
   const renderPanel = () => {
     return username === 'Bernard' ? (
-      <Layout style={styles.row} level='3'>
-      <Layout style={styles.column} level='3'>
-        <View style={{backgroundColor: '#FDD444', borderRadius: 10}}>
+      <View style={styles.row}>
+      <View style={styles.column}>
+        <View style={{backgroundColor: '#F9F9FB', borderRadius: 10}}>
           <View style={styles.row}>
-            <View>
-              { Characters[0] }
+            <View style={{marginHorizontal: 25, marginVertical: 20}}>
+              <Text style={{textAlign: 'center'}}>07.30</Text>
+              <Text style={{textAlign: 'center'}}>-</Text>
+              <Text style={{textAlign: 'center'}}>08.30</Text>
             </View>
+            <View style={{
+              height: 50,
+              width: 1,
+              backgroundColor: '#A7A7A9',
+              marginRight: 20,
+              marginTop: 20
+            }}></View>
             <View style={styles.center}>
-              <Text style={{fontFamily: 'Bold', fontSize: 16}}>Mathematics</Text>
-              <Text style={{fontFamily: 'Regular', fontSize: 10}}>Naomi</Text>
-            </View>
-            <View style={styles.center}>
-              <View style={{
-                alignSelf: 'flex-start',
-                backgroundColor:'#FFF5E3',
-                paddingHorizontal: 8,
-                paddingTop: 6,
-                borderRadius: 15,
-                justifyContent: 'center',
-                marginLeft: 20
-              }}>
-                <Text style={{
-                  fontFamily: 'SemiBold',
-                  fontSize: 12,
-                  color: '#EF5B54',
-                  
-                }}>
-                  09.00AM
+              <Text style={{fontFamily: 'SemiBold', fontSize: 16, color: '#598BFF'}}>
+                Ilmu Pengetahuan Alam
+              </Text>
+              <View style={{flexDirection: 'row', marginTop: 8}}>
+                <IconBook/>
+                <Text style={{fontFamily: 'Regular', fontSize: 12, marginLeft: 10}}>
+                  Reaksi Redoks dan Elektrokimia
+                </Text>
+              </View>
+              <View style={{flexDirection: 'row', marginTop: 8}}>
+                <IconClock/>
+                <Text style={{fontFamily: 'Regular', fontSize: 12, marginLeft: 10}}>
+                  1 Jam (60 menit)
                 </Text>
               </View>
             </View>
           </View>
         </View>
-      </Layout>
-    </Layout>
+      </View>
+    </View>
     ) : (
       <View style={{alignItems: 'center', paddingTop: 14}}>
         <Text style={{fontFamily: 'SemiBold', fontSize: 14}}>There is no class online right now</Text>
@@ -69,7 +73,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
   },
-  layout: {
+  View: {
     flex: 1,
     justifyContent: 'center',
     marginVertical: 10

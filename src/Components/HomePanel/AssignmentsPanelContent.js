@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { useFonts } from '@use-expo/font';
-import { View, Text, StyleSheet } from 'react-native';
-import { Layout, Card } from '@ui-kitten/components';
+import { View, Text, StyleSheet, Image } from 'react-native';
+import { Card } from '@ui-kitten/components';
 import { Fonts } from '../../Constants/Fonts';
 import AppLoading from 'expo-app-loading';
 import CharacterMrTeacher from '../../Assets/characters/CharacterMrTeacher';
@@ -22,64 +22,79 @@ const AssignmentsPanelContent = () => {
 
   const renderAssignmentsPanelCard = (backgroundColor, title, className, teacherName, avatar) => {
     return (
-      <Layout style={styles.column, {marginRight: 10}} level='3'>
+      <View style={styles.column, {marginRight: 10, padding: 10}}>
         <View style={{
-          backgroundColor: backgroundColor,
+          backgroundColor: '#FFFFFF',
           borderRadius: 10,
-          paddingRight: 10,
-          height: 170
+          shadowColor: "#000",
+          shadowOffset: {
+            width: 0,
+            height: 1,
+          },
+          shadowOpacity: 0.22,
+          shadowRadius: 2.22,
+          elevation: 3,
         }}>
-          <View style={styles.row}>
-            <View style={{flex:1, justifyContent: 'flex-end'}}>
-              { Characters[avatar] }
-            </View>
-            <View style={styles.center}>
-              <Text style={{
-                fontFamily: 'Bold',
-                fontSize: 16,
-                flexShrink: 1,
-                flexDirection: 'row'
-              }}>
-                {title}
-              </Text>
-              
-              <View>
-                <View style={{
-                  alignSelf: 'flex-start',
-                  backgroundColor:'#FFF5E3',
-                  paddingHorizontal: 8,
-                  paddingTop: 6,
-                  borderRadius: 15,
-                  justifyContent: 'center',
-                  marginBottom: 4
-                }}>
-                  <Text style={{
-                    fontFamily: 'SemiBold',
-                    fontSize: 12,
-                    color: '#EF5B54',
-                  }}>
-                    Due 16/11/2020
-                  </Text>
-                </View>
-              </View>
-              <Text style={{fontFamily: 'Bold', fontSize: 10}}>{className}</Text>
-              <Text style={{fontFamily: 'Regular', fontSize: 10}}>{teacherName}</Text>
-            </View>
+          <View style={{
+            margin: 8,
+            backgroundColor: '#E3466D',
+            width: 60,
+            padding: 6,
+            borderRadius: 10
+          }}>
+            <Text style={{
+              textAlign: 'center',
+              fontFamily: 'Regular',
+              color: '#FFFFFF'
+            }}>
+              5 hari
+            </Text>
+          </View>
+          <View style={{
+            marginBottom: 15,
+            marginHorizontal: 15,
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}>
+            <Image
+              source={require('../../Assets/logo/Chemistry.png')}
+              style={{
+                width: 80,
+                height: 80,
+              }}
+            />
+            <Text style={{
+              fontFamily: 'SemiBold',
+              fontSize: 16,
+              flexShrink: 1,
+              textAlign: 'center',
+              marginTop: 8
+            }}>
+              {title}
+            </Text>
+            <Text style={{
+              fontFamily: 'Regular',
+              fontSize: 12,
+              textAlign: 'center',
+              marginTop: 8
+            }}>
+              26/10/2020
+            </Text>
           </View>
         </View>
-      </Layout>
+      </View>
     )
   }
 
   const renderPanel = () => {
     return username === 'Bernard' ? (
-      <Layout style={styles.row} level='3'>
+      <View style={styles.row}>
         <ScrollView horizontal>
           { renderAssignmentsPanelCard(Colors.aqua, 'Do exercise 2A\nno.1-5', 'Science', 'Naomi', 4) }
           { renderAssignmentsPanelCard(Colors.yellow, 'Exercise page\n12-13 no. 1-10', 'Mathematics', 'Naomi', 0) }
           { renderAssignmentsPanelCard(Colors.yellow, 'Exercise page\n1-5', 'Mathematics', 'Naomi', 0) }
         </ScrollView>
-      </Layout>
+      </View>
     ) : (
       <View style={{alignItems: 'center', paddingTop: 14}}>
         <Text style={{fontFamily: 'SemiBold', fontSize: 14}}>There is no assignments right now</Text>
@@ -99,7 +114,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
   },
-  layout: {
+  View: {
     flex: 1,
     justifyContent: 'center',
     marginVertical: 10

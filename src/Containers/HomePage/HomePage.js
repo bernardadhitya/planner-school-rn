@@ -12,7 +12,6 @@ import AppLoading from 'expo-app-loading';
 import { useFonts } from '@use-expo/font';
 import { AuthContext } from "../../Helper/AuthProvider";
 import HomePanel from '../../Components/HomePanel/HomePanel';
-import { Layout } from '@ui-kitten/components';
 import { View } from 'react-native';
 import IconLogout from '../../Assets/icons/IconLogout';
 
@@ -32,7 +31,7 @@ const Feed = () => {
       <SafeAreaView
         style={{
           flex: 1,
-          backgroundColor: '#EDF1F7'
+          backgroundColor: '#FFFFFF'
         }}
       >
         <ScrollView
@@ -40,32 +39,36 @@ const Feed = () => {
             paddingHorizontal: 20,
           }}
         >
-          <Layout
+          <View
             style={{
               flex: 1,
               flexDirection: 'row',
               justifyContent: "center",
-              marginTop: 30,
+              marginTop: 64,
               marginBottom: 16
             }}
-            level='3'
           >
-            <Layout style={styles.container} level='3'>
+            <View style={styles.container}>
               <TouchableOpacity style={{
                 marginRight: 10,
-                paddingTop: 14,
-                paddingHorizontal: 10,
-                backgroundColor: '#FDD444',
-                borderRadius: 8
+                height: 50,
+                width: 50,
+                backgroundColor: '#598BFF',
+                borderRadius: 25,
+                marginTop: 10
               }}>
-                <Text style={{fontSize: 16}}>🦊</Text>
               </TouchableOpacity>
               <View style={{
                 paddingTop: 14,
                 paddingBottom: 6,
                 paddingHorizontal: 10
               }}>
-                <Text style={{ fontFamily: 'Medium', fontSize: 16 }}>Hi, {username}!</Text>
+                <Text style={{ fontFamily: 'Bold', fontSize: 20 }}>
+                  Hi, {username}!
+                </Text>
+                <Text style={{ fontFamily: 'SemiBold', fontSize: 12, marginVertical: 10 }}>
+                  Sabtu, 24 Oktober 2020
+                </Text>
               </View>
               <TouchableOpacity
                 style={{
@@ -80,17 +83,14 @@ const Feed = () => {
               >
                 <IconLogout />
               </TouchableOpacity>
-            </Layout>
-          </Layout>
-          <Layout style={styles.layout} level='3'>
-            <HomePanel type='LiveClass'/>
-          </Layout>
-          <Layout style={styles.layout} level='3'>
+            </View>
+          </View>
+          <View style={styles.View}>
+            <HomePanel type='Calendar'/>
+          </View>
+          <View style={styles.View}>
             <HomePanel type='Assignments'/>
-          </Layout>
-          <Layout style={styles.layout} level='3'>
-            <HomePanel type='Games'/>
-          </Layout>
+          </View>
           <View style={{height: 100}}></View>
         </ScrollView>
       </SafeAreaView>
@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
   },
-  layout: {
+  View: {
     flex: 1,
     justifyContent: 'center',
     marginVertical: 10

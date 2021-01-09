@@ -1,14 +1,28 @@
 import * as React from "react"
-import Svg, { Path } from "react-native-svg"
+import Svg, { Defs, Path, Use } from "react-native-svg"
 
 const IconHome = (props) => {
-  const { color } = props;
+  const { color, focused } = props;
 
   return (
-    <Svg width={21} height={23} viewBox="0 0 21 23" {...props}>
-      <Path
-        d="M17.97 18.839c0 .763-.62 1.383-1.381 1.383H3.986c-.762 0-1.382-.62-1.382-1.383v-7.381c0-.366.149-.724.409-.982l7.274-7.206 7.275 7.206c.26.258.409.616.409.982v7.38zm1-9.783l-7.978-7.904a1.002 1.002 0 00-1.41 0L1.606 9.056a3.405 3.405 0 00-1.001 2.402v7.38a3.386 3.386 0 003.382 3.384h12.603a3.386 3.386 0 003.382-3.383v-7.381c0-.896-.365-1.771-1.001-2.402z"
-        fill={color}
+    <Svg
+      width={18}
+      height={20}
+      viewBox="0 0 18 20"
+      xmlns="http://www.w3.org/2000/svg"
+      xmlnsXlink="http://www.w3.org/1999/xlink"
+      {...props}
+    >
+      <Defs>
+        <Path
+          d="M11.285 2.3c.377-.384 1.053-.384 1.43 0l7.709 7.885c.366.376.576.9.576 1.439V20c0 1.103-.847 2-1.888 2H16v-9a1 1 0 00-1-1H9a1 1 0 00-1 1v9H4.889c-1.041 0-1.89-.897-1.89-2v-8.376c0-.54.21-1.063.576-1.438zM14 14v7h-4v-7h4z"
+          id="prefix__a"
+        />
+      </Defs>
+      <Use
+        fill={focused ? "#FFFFFF" : "#979797"}
+        xlinkHref="#prefix__a"
+        transform="translate(-3 -2)"
         fillRule="evenodd"
       />
     </Svg>

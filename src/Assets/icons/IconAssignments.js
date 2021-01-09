@@ -1,15 +1,29 @@
 import * as React from "react"
-import Svg, { Path } from "react-native-svg"
+import Svg, { Defs, Path, Use } from "react-native-svg"
 /* SVGR has dropped some elements not supported by react-native-svg: title */
 
 const IconAssignments = (props) => {
-  const { color } = props;
+  const { color, focused } = props;
 
   return (
-    <Svg width={23} height={20} viewBox="0 0 23 20" {...props}>
-      <Path
-        d="M20.035 17.459l-17.497.051V6.923h8.75c.072 0 .143-.012.213-.027l8.534-.024v10.587zM2.538 2.625h5.967l1.158 2.298H2.538V2.625zm17.55 2.298h-8.185l-1.889-3.748a1.002 1.002 0 00-.894-.55H1.538a1 1 0 00-1 1V17.51a1.95 1.95 0 001.95 1.949h17.6a1.95 1.95 0 001.947-1.949V6.872a1.95 1.95 0 00-1.948-1.949z"
-        fill={color}
+    <Svg
+      width={18}
+      height={20}
+      viewBox="0 0 18 20"
+      xmlns="http://www.w3.org/2000/svg"
+      xmlnsXlink="http://www.w3.org/1999/xlink"
+      {...props}
+    >
+      <Defs>
+        <Path
+          d="M19 11H5V7c0-.551.449-1 1-1h1v1c0 .55.45 1 1 1s1-.45 1-1V6h6v1c0 .55.45 1 1 1s1-.45 1-1V6h1c.551 0 1 .449 1 1v4zm-3 6h-4c-.55 0-1-.45-1-1s.45-1 1-1h4c.55 0 1 .45 1 1s-.45 1-1 1zm-8 0c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zM18 4h-1V3c0-.55-.45-1-1-1s-1 .45-1 1v1H9V3c0-.55-.45-1-1-1s-1 .45-1 1v1H6C4.346 4 3 5.346 3 7v12c0 1.654 1.346 3 3 3h12c1.654 0 3-1.346 3-3V7c0-1.654-1.346-3-3-3z"
+          id="prefix__a"
+        />
+      </Defs>
+      <Use
+        fill={ focused ? "#FFFFFF" : "#979797"}
+        xlinkHref="#prefix__a"
+        transform="translate(-3 -2)"
         fillRule="evenodd"
       />
     </Svg>

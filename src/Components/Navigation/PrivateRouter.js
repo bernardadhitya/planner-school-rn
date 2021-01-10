@@ -2,11 +2,13 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { AnimatedTabBarNavigator } from "react-native-animated-nav-tab-bar";
 import IconHome from "../../Assets/icons/IconHome";
-import IconAssignments from "../../Assets/icons/IconAssignments";
+import IconAssignments from "../../Assets/icons/IconCalendar";
 import AssignmentPage from "../../Containers/AssignmentPage/AssignmentPage";
 import HomePage from "../../Containers/HomePage/HomePage";
 import CalendarPage from "../../Containers/CalendarPage/CalendarPage";
 import AllAssignmentPage from "../../Containers/AssignmentPage/AllAssignmentPage";
+import IconMood from "../../Assets/icons/IconMood";
+import IconProfile from "../../Assets/icons/IconProfile";
 
 const Tabs = AnimatedTabBarNavigator();
 const Stack = createStackNavigator();
@@ -54,7 +56,7 @@ const PrivateRouter = () => {
       }}
 
       appearence={{
-        activeTabBackgrounds: ['#598BFF', '#598BFF'],
+        activeTabBackgrounds: ['#598BFF', '#598BFF', '#598BFF', '#598BFF'],
         shadow: true,
         whenActiveShow: 'icon-only'
       }}
@@ -70,7 +72,21 @@ const PrivateRouter = () => {
         name="Calendar"
         component={CalendarPage}
         options={{ tabBarIcon: ({ focused }) => (
-          <IconAssignments color='#56BBB4' focused={focused}/>
+          <IconAssignments color='#FFFFFF' focused={focused}/>
+        )}}
+      />
+      <Tabs.Screen
+        name="Mood"
+        component={CalendarPage}
+        options={{ tabBarIcon: ({ focused }) => (
+          <IconMood color='#FFFFFF' focused={focused}/>
+        )}}
+      />
+      <Tabs.Screen
+        name="Profile"
+        component={CalendarPage}
+        options={{ tabBarIcon: ({ focused }) => (
+          <IconProfile color='#FFFFFF' focused={focused}/>
         )}}
       />
     </Tabs.Navigator>

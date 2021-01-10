@@ -2,7 +2,7 @@ import { useFonts } from '@use-expo/font';
 import React from 'react';
 import { View, Text, StyleSheet, Touchable } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import IconAssignments from '../../Assets/icons/IconAssignments';
+import IconAssignments from '../../Assets/icons/IconCalendar';
 import IconGames from '../../Assets/icons/IconGames';
 import IconLiveClass from '../../Assets/icons/IconLiveClass';
 import { Fonts } from '../../Constants/Fonts';

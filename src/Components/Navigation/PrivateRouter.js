@@ -12,6 +12,7 @@ import IconProfile from "../../Assets/icons/IconProfile";
 import MoodTrackerPage from "../../Containers/MoodTrackerPage/MoodTrackerPage";
 import DailyQuizPage from "../../Containers/MoodTrackerPage/DailyQuizPage";
 import MoodTrackerSinglePage from "../../Containers/MoodTrackerPage/MoodTrackerSinglePage";
+import ProfilePage from "../../Containers/ProfilePage/ProfilePage";
 
 const Tabs = AnimatedTabBarNavigator();
 const Stack = createStackNavigator();
@@ -82,6 +83,25 @@ const MoodTrackerRoute = () => {
   )
 }
 
+const ProfileRoute = () => {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        header: () => null
+      }}
+      initialRouteName="Profile"
+    >
+      <Stack.Screen
+        options={{
+          headerTitle: "Profile"
+        }}
+        name="Profile"
+        component={ProfilePage}
+      />
+    </Stack.Navigator>
+  )
+}
+
 const PrivateRouter = () => {
 
   return (
@@ -120,7 +140,7 @@ const PrivateRouter = () => {
       />
       <Tabs.Screen
         name="Profile"
-        component={CalendarPage}
+        component={ProfileRoute}
         options={{ tabBarIcon: ({ focused }) => (
           <IconProfile color='#FFFFFF' focused={focused}/>
         )}}

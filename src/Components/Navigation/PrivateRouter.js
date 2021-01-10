@@ -6,6 +6,7 @@ import IconAssignments from "../../Assets/icons/IconAssignments";
 import AssignmentPage from "../../Containers/AssignmentPage/AssignmentPage";
 import HomePage from "../../Containers/HomePage/HomePage";
 import CalendarPage from "../../Containers/CalendarPage/CalendarPage";
+import AllAssignmentPage from "../../Containers/AssignmentPage/AllAssignmentPage";
 
 const Tabs = AnimatedTabBarNavigator();
 const Stack = createStackNavigator();
@@ -30,6 +31,13 @@ const HomeRoute = () => {
           headerTitle: "Assignments"
         }}
         name="Assignments"
+        component={AllAssignmentPage}
+      />
+      <Stack.Screen
+        options={{
+          headerTitle: "Assignment"
+        }}
+        name="Assignment"
         component={AssignmentPage}
       />
     </Stack.Navigator>

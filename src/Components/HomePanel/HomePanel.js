@@ -12,7 +12,7 @@ import LiveClassPanelContent from './LiveClassPanelContent';
 import { useNavigation } from '@react-navigation/native';
 
 const HomePanel = (props) => {
-  const { type } = props;
+  const { type, viewAll } = props;
   const navigation = useNavigation();
   let [fontsLoaded] = useFonts(Fonts);
 
@@ -49,7 +49,7 @@ const HomePanel = (props) => {
             justifyContent: "flex-end"
           }}
         >
-          <TouchableOpacity onPress={() => { navigation.navigate('Assignments') }}>
+          { viewAll ? <TouchableOpacity onPress={() => { navigation.navigate('Assignments') }}>
             <Text style={{
               fontFamily: 'Medium',
               fontSize: 16,
@@ -57,8 +57,8 @@ const HomePanel = (props) => {
               justifyContent: 'center'
             }}>
               Lihat Semua
-            </Text>
-          </TouchableOpacity>
+            </Text> 
+          </TouchableOpacity> : null}
         </View>
       </View>
       <View style={{marginTop: 14}}>

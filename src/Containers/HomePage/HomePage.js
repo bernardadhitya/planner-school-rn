@@ -89,7 +89,7 @@ const Feed = () => {
             <HomePanel type='Calendar'/>
           </View>
           <View style={styles.View}>
-            <HomePanel type='Assignments'/>
+            <HomePanel type='Assignments' viewAll/>
           </View>
           <View style={{height: 100}}></View>
         </ScrollView>

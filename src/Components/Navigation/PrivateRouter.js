@@ -11,6 +11,7 @@ import IconMood from "../../Assets/icons/IconMood";
 import IconProfile from "../../Assets/icons/IconProfile";
 import MoodTrackerPage from "../../Containers/MoodTrackerPage/MoodTrackerPage";
 import DailyQuizPage from "../../Containers/MoodTrackerPage/DailyQuizPage";
+import MoodTrackerSinglePage from "../../Containers/MoodTrackerPage/MoodTrackerSinglePage";
 
 const Tabs = AnimatedTabBarNavigator();
 const Stack = createStackNavigator();
@@ -69,6 +70,13 @@ const MoodTrackerRoute = () => {
         }}
         name="DailyQuiz"
         component={DailyQuizPage}
+      />
+      <Stack.Screen
+        options={{
+          headerTitle: "MoodTrackerSingle"
+        }}
+        name="MoodTrackerSingle"
+        component={MoodTrackerSinglePage}
       />
     </Stack.Navigator>
   )

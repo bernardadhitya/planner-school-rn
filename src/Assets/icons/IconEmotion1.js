@@ -2,11 +2,11 @@ import * as React from "react"
 import Svg, { Path } from "react-native-svg"
 
 const IconEmotion1 = (props) => {
-  const { focused } = props;
+  const { focused, size } = props;
   return (
     <Svg
-      width={23}
-      height={23}
+      width={size || 23}
+      height={size || 23}
       viewBox="0 0 23 23"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

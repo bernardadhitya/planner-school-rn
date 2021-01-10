@@ -13,13 +13,16 @@ const MoodTrackerPage = () => {
 
   const renderMoodCard = () => {
     return (
-      <View style={{
-        flex: 1,
-        flexDirection: 'row',
-        paddingVertical: 20,
-        borderTopWidth: 1,
-        borderColor: '#C7C7C7'
-      }}>
+      <TouchableOpacity
+        style={{
+          flex: 1,
+          flexDirection: 'row',
+          paddingVertical: 20,
+          borderTopWidth: 1,
+          borderColor: '#C7C7C7'
+        }}
+        onPress={() => { navigation.navigate('MoodTrackerSingle') }}
+      >
         <Text
           style={{
             fontSize: 16,
@@ -36,7 +39,7 @@ const MoodTrackerPage = () => {
         }}>
           <IconEmotion1/>
         </View>
-      </View>
+      </TouchableOpacity>
     )
   }
 

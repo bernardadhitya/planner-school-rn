@@ -5,8 +5,10 @@ import AppLoading from 'expo-app-loading';
 import { useFonts } from '@use-expo/font';
 import { ScrollView } from 'react-native';
 import IconEmotion1 from '../../Assets/icons/IconEmotion1';
+import { useNavigation } from '@react-navigation/native';
 
 const MoodTrackerPage = () => {
+  const navigation = useNavigation();
   let [fontsLoaded] = useFonts(Fonts);
 
   const renderMoodCard = () => {
@@ -112,6 +114,7 @@ const MoodTrackerPage = () => {
                 paddingBottom: 16,
                 alignItems: 'center',
               }}
+              onPress={() => { navigation.navigate('DailyQuiz') }}
             >
               <Text
                 style={{

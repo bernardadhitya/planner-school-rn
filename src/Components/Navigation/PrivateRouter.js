@@ -10,6 +10,7 @@ import AllAssignmentPage from "../../Containers/AssignmentPage/AllAssignmentPage
 import IconMood from "../../Assets/icons/IconMood";
 import IconProfile from "../../Assets/icons/IconProfile";
 import MoodTrackerPage from "../../Containers/MoodTrackerPage/MoodTrackerPage";
+import DailyQuizPage from "../../Containers/MoodTrackerPage/DailyQuizPage";
 
 const Tabs = AnimatedTabBarNavigator();
 const Stack = createStackNavigator();
@@ -67,7 +68,7 @@ const MoodTrackerRoute = () => {
           headerTitle: "DailyQuiz"
         }}
         name="DailyQuiz"
-        component={AllAssignmentPage}
+        component={DailyQuizPage}
       />
     </Stack.Navigator>
   )

@@ -13,6 +13,7 @@ import MoodTrackerPage from "../../Containers/MoodTrackerPage/MoodTrackerPage";
 import DailyQuizPage from "../../Containers/MoodTrackerPage/DailyQuizPage";
 import MoodTrackerSinglePage from "../../Containers/MoodTrackerPage/MoodTrackerSinglePage";
 import ProfilePage from "../../Containers/ProfilePage/ProfilePage";
+import TeacherContactPage from "../../Containers/ProfilePage/TeacherContactPage";
 
 const Tabs = AnimatedTabBarNavigator();
 const Stack = createStackNavigator();
@@ -97,6 +98,13 @@ const ProfileRoute = () => {
         }}
         name="Profile"
         component={ProfilePage}
+      />
+      <Stack.Screen
+        options={{
+          headerTitle: "TeacherContactPage"
+        }}
+        name="TeacherContactPage"
+        component={TeacherContactPage}
       />
     </Stack.Navigator>
   )

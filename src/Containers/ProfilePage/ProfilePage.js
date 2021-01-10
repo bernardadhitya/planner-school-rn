@@ -5,8 +5,10 @@ import AppLoading from 'expo-app-loading';
 import { useFonts } from '@use-expo/font';
 import { ScrollView } from 'react-native';
 import IconSetting from '../../Assets/icons/IconSetting';
+import { useNavigation } from '@react-navigation/native';
 
 const ProfilePage = () => {
+  const navigation = useNavigation();
   let [fontsLoaded] = useFonts(Fonts);
 
   const renderProfileDetail = () => {
@@ -128,7 +130,7 @@ const ProfilePage = () => {
               justifyContent: "flex-end"
             }}
           >
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => {navigation.navigate('TeacherContactPage')}}>
               <Text style={{
                 fontFamily: 'Medium',
                 fontSize: 16,

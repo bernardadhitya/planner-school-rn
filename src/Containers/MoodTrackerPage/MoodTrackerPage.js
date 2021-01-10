@@ -23,21 +23,25 @@ const MoodTrackerPage = () => {
         }}
         onPress={() => { navigation.navigate('MoodTrackerSingle') }}
       >
-        <Text
-          style={{
-            fontSize: 16,
-            fontFamily: 'Regular'
-          }}
-        >
-          07/07/2020
-        </Text>
+        <View style={{ justifyContent: 'center'}}>
+          <Text
+            style={{
+              fontSize: 16,
+              fontFamily: 'Regular'
+            }}
+          >
+            07/07/2020
+          </Text>
+        </View>
         <View style={{
           flex: 1,
           flexDirection: "row",
           justifyContent: "flex-end",
           marginTop: 10,
         }}>
-          <IconEmotion1/>
+          <View style={{ justifyContent: 'center'}}>
+            <IconEmotion1/>
+          </View>
         </View>
       </TouchableOpacity>
     )

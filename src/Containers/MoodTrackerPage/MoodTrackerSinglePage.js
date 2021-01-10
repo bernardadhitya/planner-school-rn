@@ -75,22 +75,28 @@ const MoodTrackerSinglePage = () => {
           borderColor: '#C7C7C7'
         }}
       >
-        <Text
-          style={{
-            fontSize: 24,
-            fontFamily: 'Regular'
-          }}
-        >
-          07/07/2020
-        </Text>
+        <View style={{justifyContent: 'center'}}>
+          <Text
+            style={{
+              fontSize: 24,
+              fontFamily: 'Regular'
+            }}
+          >
+            07/07/2020
+          </Text>
+        </View>
         <View style={{
           flex: 1,
           flexDirection: "row",
           justifyContent: "flex-end",
           marginTop: 10,
         }}>
-          <Text>Mood hari ini: </Text>
-          <IconEmotion1 focused/>
+          <View style={{justifyContent: 'center'}}>
+            <Text>Mood hari ini: </Text>
+          </View>
+          <View style={{justifyContent: 'center'}}>
+            <IconEmotion1 focused/>
+          </View>
         </View>
       </View>
     )

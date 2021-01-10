@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Text, SafeAreaView, View, TouchableOpacity } from 'react-native';
 import { Fonts } from '../../Constants/Fonts';
 import AppLoading from 'expo-app-loading';
@@ -6,62 +6,40 @@ import { useFonts } from '@use-expo/font';
 import { ScrollView } from 'react-native';
 import IconBack from '../../Assets/icons/IconBack';
 import { useNavigation } from '@react-navigation/native';
-import IconEmotion1 from '../../Assets/icons/IconEmotion1';
-import IconEmotion2 from '../../Assets/icons/IconEmotion2';
-import IconEmotion3 from '../../Assets/icons/IconEmotion3';
-import IconEmotion4 from '../../Assets/icons/IconEmotion4';
 import { Input } from '@ui-kitten/components';
+import QuizCard from '../../Components/MoodTrackerPanel/QuizCard';
 
 const DailyQuizPage = () => {
   const navigation = useNavigation();
   let [fontsLoaded] = useFonts(Fonts);
+  const [selectedOption, setSelectedOption] = useState([null, null, null, null]);
+  const [counter, setCounter] = useState(0);
 
-  const renderQuizCard = (question) => {
-    return (
-      <View style={{
-        paddingVertical: 25,
-        alignItems: 'center',
-        borderBottomWidth: 1,
-        borderColor: '#C7C7C7'
-      }}>
-        <Text style={{textAlign: 'center'}}>{question}</Text>
-        <View style={{
-          flexDirection: 'row'
-        }}>
-          <TouchableOpacity
-            style={{margin: 20}}
-          >
-            <IconEmotion1/>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{margin: 20}}
-          >
-            <IconEmotion2/>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{margin: 20}}
-          >
-            <IconEmotion3/>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{margin: 20}}
-          >
-            <IconEmotion4/>
-          </TouchableOpacity>
-        </View>
-      </View>
-    )
+  const handleSelectOption = (questionNumber, answer) => {
+    let updatedSelectedOption = selectedOption;
+    updatedSelectedOption[questionNumber] = answer;
+    setSelectedOption(updatedSelectedOption);
+    setCounter(counter + 1);
+    console.log('selected options:', selectedOption);
   }
 
   const renderQuizPanel = () => {
-    return (
-      <View>
-        {renderQuizCard('Bagaimana harimu hari ini?')}
-        {renderQuizCard('Seberapa puas kamu dengan bimbingan guru yang telah diberikan?')}
-        {renderQuizCard('Bagaimana relasimu dengan teman-teman di sekolah?')}
-        {renderQuizCard('Apakah perilakuku sudah mencerminkan apa yang ingin aku capai?')}
-      </View>
-    )
+    const questions = [
+      'Bagaimana harimu hari ini?',
+      'Seberapa puas kamu dengan bimbingan guru yang telah diberikan?',
+      'Bagaimana relasimu dengan teman-teman di sekolah?',
+      'Apakah perilakuku sudah mencerminkan apa yang ingin aku capai?'
+    ]
+    return questions.map((question, idx) => {
+      return (
+        <QuizCard
+          question={question} 
+          questionNumber={idx}
+          selectedOption={selectedOption[idx]}
+          handleSelectOption={handleSelectOption}
+        />
+      )
+    })
   }
 
   if (!fontsLoaded) {
@@ -90,6 +68,7 @@ const DailyQuizPage = () => {
               <IconBack/>
             </TouchableOpacity>
             <Text style={{ fontFamily: 'Bold', fontSize: 21 }}>Mood Tracker</Text>
+            <Text style={{color: '#FFFFFF'}}>{counter}</Text>
           </View>
           {renderQuizPanel()}
           <Input
@@ -118,7 +97,6 @@ const DailyQuizPage = () => {
               paddingBottom: 16,
               alignItems: 'center',
             }}
-            onPress={() => { navigation.navigate('DailyQuiz') }}
           >
             <Text
               style={{

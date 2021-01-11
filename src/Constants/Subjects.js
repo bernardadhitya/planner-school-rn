@@ -1,14 +1,3 @@
-const Subjects = [
-  'Kimia',
-  'Fisika',
-  'Biologi',
-  'Matematika',
-  'PPKN',
-  'Keagamaan',
-  'Musik',
-  'Komputer'
-]
-
 const DetailedSubjects = [
   {
     name: 'Kimia',

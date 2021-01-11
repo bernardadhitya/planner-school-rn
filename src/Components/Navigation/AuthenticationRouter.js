@@ -26,7 +26,7 @@ const Login = () => {
   const [password, setPassword] = React.useState('');
 
   const checkLogin = () => {
-    if (email === 'naomi@homerooom.com'){
+    if (email === 'naomi'){
       loginAsTeacher();
     } else {
       loginAsStudent();

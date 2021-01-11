@@ -26,8 +26,6 @@ const AllAssignmentPage = () => {
       }
     })
 
-    console.log(formattedSubjects);
-
     return formattedSubjects.map((subjects) => {
       return (
         <View style={{

@@ -5,101 +5,55 @@ import {
   TouchableOpacity,
   View,
   SafeAreaView,
-  Button,
   StyleSheet,
   ScrollView
 } from 'react-native';
 import { Fonts } from '../../Constants/Fonts';
 import AppLoading from 'expo-app-loading';
 import { useFonts } from '@use-expo/font';
-import { Layout } from '@ui-kitten/components';
 import IconLogout from '../../Assets/icons/IconLogout';
 import { AuthContext } from "../../Helper/AuthProvider";
-import TeacherClassCard from '../../Components/HomePanel/TeacherClassCard';
-import { FloatingAction } from "react-native-floating-action";
-import { useMemoOne } from 'use-memo-one';
-import BottomSheet from 'reanimated-bottom-sheet';
-import Animated from 'react-native-reanimated';
-import CreateClassForm from '../../Components/TeacherHomePanel/CreateClassForm';
-import { getClassesByUserId, getUserById } from '../../../firebase';
+import DetailedSubjects from '../../Constants/Subjects';
+import ThumbnailCard from '../../Components/ThumbnailCard/ThumbnailCard';
+import TeacherMenu from '../../Constants/TeacherMenu';
 
-const { Bold } = Fonts;
-
-const actions = [
-  {
-    text: "Create Class",
-    icon: require("../../Assets/icons/IconAdd.png"),
-    name: "ButtonCreateClass",
-    position: 1
-  }
-];
-
-const TeacherHomePage = ({ navigation, route }) => {
+const TeacherHomePage = () => {
   const { user: { userId, username }, logout } = useContext(AuthContext);
   let [fontsLoaded] = useFonts(Fonts);
-  const [userData, setUserData] = useState({});
-  const [classes, setClasses] = useState([]);
-  const [trigger, setTrigger] = useState(0);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const fetchedClassesByUserId = await getClassesByUserId(userId);
-      const fetchedUserById = await getUserById(userId);
+  const renderThumbnails = () => {
+    const formattedSubjects = [];
+    let temp = []
 
-      sheetRef.current.snapTo(2);
-
-      setClasses(fetchedClassesByUserId);
-      setUserData(fetchedUserById);
-    }
-    fetchData();
-  }, [trigger]);
-
-  let sheetRef = useRef(null);
-  let fall = useMemoOne(() => new Animated.Value(1), []);
-
-  const renderContent = () => (
-    <Layout
-      style={{
-        backgroundColor: 'white',
-        padding: 16,
-        height: 700
-      }}
-    >
-      <Text style={{fontFamily: 'Bold', fontSize: 21}}>Create Class</Text>
-      <CreateClassForm teacherId={userData.userId}/>
-    </Layout>
-  );
-
-  const renderShadow = () => {
-    const animatedShadowOpacity = Animated.interpolate(fall, {
-      inputRange: [0, 1],
-      outputRange: [0.5, 0],
+    TeacherMenu.forEach((subject, idx) => {
+      if (idx % 2 === 0){
+        temp = [subject];
+      } else {
+        temp.push(subject);
+        formattedSubjects.push(temp);
+      }
     })
 
-    return (
-      <Animated.View
-        pointerEvents="none"
-        style={[
-          styles.shadowContainer,
-          {
-            opacity: animatedShadowOpacity,
-          },
-        ]}
-      />
-    )
-  }
-
-  const renderTeacherClassCard = () => {
-    if (!userData.classes) return;
-    return classes.map((classData, index) => {
+    return formattedSubjects.map((subjects) => {
       return (
-        <TouchableOpacity onPress={() => {
-          navigation.navigate("Class", {classId: userData.classes[index]});
+        <View style={{
+          flex: 1,
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          alignItems: 'flex-start'
         }}>
-          <TeacherClassCard classData={classData}/>
-        </TouchableOpacity>
+          { subjects.map(subject => {
+            return (
+              <ThumbnailCard
+                title={subject.name}
+                image={subject.image}
+                redirectTo={'Assignment'}
+              />
+            )
+          })}
+        </View>
       )
-    });
+    })
   }
   
   if (!fontsLoaded) {
@@ -109,48 +63,44 @@ const TeacherHomePage = ({ navigation, route }) => {
       <SafeAreaView
         style={{
           flex: 1,
-          backgroundColor: '#EDF1F7'
+          backgroundColor: '#FFFFFF'
         }}
       >
-        <BottomSheet
-          ref={sheetRef}
-          initialSnap={2}
-          callbackNode={fall}
-          snapPoints={[620, 500, -100]}
-          renderContent={renderContent}
-          borderRadius={16}
-        />
         <ScrollView
           style={{
-            paddingHorizontal: 20
+            paddingHorizontal: 20,
           }}
         >
-          <Layout
+          <View
             style={{
               flex: 1,
               flexDirection: 'row',
               justifyContent: "center",
-              marginTop: 30,
+              marginTop: 64,
               marginBottom: 16
             }}
-            level='3'
           >
-            <Layout style={styles.container} level='3'>
+            <View style={styles.container}>
               <TouchableOpacity style={{
                 marginRight: 10,
-                paddingTop: 14,
-                paddingHorizontal: 10,
-                backgroundColor: '#FDD444',
-                borderRadius: 8
+                height: 50,
+                width: 50,
+                backgroundColor: '#598BFF',
+                borderRadius: 25,
+                marginTop: 10
               }}>
-                <Text style={{fontSize: 16}}>🦊</Text>
               </TouchableOpacity>
               <View style={{
                 paddingTop: 14,
                 paddingBottom: 6,
                 paddingHorizontal: 10
               }}>
-                <Text style={{ fontFamily: 'Medium', fontSize: 16 }}>Hi, {username}!</Text>
+                <Text style={{ fontFamily: 'Bold', fontSize: 20 }}>
+                  Hi, {username}!
+                </Text>
+                <Text style={{ fontFamily: 'SemiBold', fontSize: 12, marginVertical: 10 }}>
+                  Sabtu, 24 Oktober 2020
+                </Text>
               </View>
               <TouchableOpacity
                 style={{
@@ -165,35 +115,10 @@ const TeacherHomePage = ({ navigation, route }) => {
               >
                 <IconLogout />
               </TouchableOpacity>
-            </Layout>
-          </Layout>
-          <Text style={{fontFamily: 'Bold', fontSize: 16}}>Your Classes</Text>
-
-          { renderTeacherClassCard() }
-
-          <TouchableOpacity 
-            style={{ height: 100 }}
-            onPress={() => { console.log(trigger); setTrigger(trigger + 1)}}
-          >
-            
-          </TouchableOpacity>
+            </View>
+          </View>
+          {renderThumbnails()}
         </ScrollView>
-        <FloatingAction
-          actions={actions}
-          onPressItem={() => sheetRef.current.snapTo(0)}
-          overrideWithAction={true}
-          color='#FFFFFF'
-          shadow={{
-            shadowColor: "#000",
-            shadowOffset: {
-              width: 0,
-              height: 1,
-            },
-            shadowOpacity: 0.22,
-            shadowRadius: 2.22,
-          }}
-        />
-        {renderShadow()}
       </SafeAreaView>
     )
   }

@@ -24,11 +24,11 @@ const ThumbnailCard = (props) => {
         },
         shadowOpacity: 0.22,
         shadowRadius: 2.22,
-        elevation: 3,
+        elevation: 3
       }}>
         <TouchableOpacity
           style={{
-            marginBottom: 15,
+            marginVertical: 15,
             marginHorizontal: 15,
             justifyContent: 'center',
             alignItems: 'center'

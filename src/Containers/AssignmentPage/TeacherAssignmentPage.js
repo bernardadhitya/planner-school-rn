@@ -1,110 +1,19 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
-import { Text, TouchableOpacity, View, SafeAreaView, StyleSheet } from 'react-native';
+import React from 'react';
+import { Text, SafeAreaView, View, TouchableOpacity } from 'react-native';
 import { Fonts } from '../../Constants/Fonts';
 import AppLoading from 'expo-app-loading';
 import { useFonts } from '@use-expo/font';
 import { ScrollView } from 'react-native';
 import IconBack from '../../Assets/icons/IconBack';
 import { useNavigation } from '@react-navigation/native';
-import TeacherAssignmentCard from '../../Components/TeacherAssignmentPanel/TeacherAssignmentCard';
-import AssignmentTabButton from '../../Components/AssignmentPanel/AssignmentTabButton';
-import TeacherClassStudentCard from '../../Components/TeacherClassStudentPanel/TeacherClassStudentCard';
-import Animated from 'react-native-reanimated';
-import { useMemoOne } from 'use-memo-one';
-import BottomSheet from 'reanimated-bottom-sheet';
-import { Layout } from '@ui-kitten/components';
-import TeacherAssignmentSubmissionPanel from './TeacherAssignmentSubmissionPanel';
-import { getClassById } from '../../../firebase';
+import { Input, Select, SelectItem, IndexPath, Datepicker } from '@ui-kitten/components';
 
-const TeacherAssignmentPage = ({route}) => {
-  const { classId, assignment } = route.params;
+const TeacherAssignmentPage = () => {
   const navigation = useNavigation();
-  const [selectedTab, setSelectedTab] = useState('submitted');
   let [fontsLoaded] = useFonts(Fonts);
-  const [assignmentData, setAssignmentData] = useState({});
-  const [classData, setClassData] = useState({});
-  const [studentData, setStudentData] = useState('');
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const fetchedClassById = await getClassById(classId);
-      setClassData(fetchedClassById);
-      setAssignmentData(assignment);
-    };
-    fetchData();
-  }, []);
-
-  let sheetRef = useRef(null);
-  let fall = useMemoOne(() => new Animated.Value(1), []);
-
-  const renderContent = () => {
-    console.log('assignmentId', assignment.assignment_id)
-    console.log('studentId', studentData)
-    return (
-      <Layout
-        style={{
-          backgroundColor: 'white',
-          padding: 16,
-          height: 700
-        }}
-      >
-        <TeacherAssignmentSubmissionPanel
-          status={selectedTab}
-          assignmentId={assignment.assignment_id}
-          studentId={studentData}
-        />
-      </Layout>
-    )
-  };
-
-  const renderShadow = () => {
-    const animatedShadowOpacity = Animated.interpolate(fall, {
-      inputRange: [0, 1],
-      outputRange: [0.5, 0],
-    })
-
-    return (
-      <Animated.View
-        pointerEvents="none"
-        style={[
-          styles.shadowContainer,
-          {
-            opacity: animatedShadowOpacity,
-          },
-        ]}
-      />
-    )
-  }
-
-  const renderTeacherClassTabButton = (title) => {
-    const isActive = selectedTab === title.toLowerCase();
-    const active = isActive ? 'active' : 'inactive';
-  
-    return (
-      <TouchableOpacity
-        style={{ flex: 1 }}
-        onPress={() => setSelectedTab(title.toLowerCase())}
-      >
-        <AssignmentTabButton active={active} title={title}/>
-      </TouchableOpacity>
-    )
-  }
-  
-  const renderStudentSubmissionCards = () => {
-    const { students } = assignment;
-
-    return students[selectedTab].map((studentId) => (
-      <TouchableOpacity
-        onPress={() => {
-          setStudentData(studentId);
-          sheetRef.current.snapTo(0);
-        }}
-      >
-        <TeacherClassStudentCard studentId={studentId}/>
-      </TouchableOpacity>
-    ))
-  }
+  const [selectedIndex, setSelectedIndex] = React.useState(new IndexPath(0));
+  const [date, setDate] = React.useState(new Date());
 
   if (!fontsLoaded) {
     return <AppLoading />;
@@ -112,88 +21,114 @@ const TeacherAssignmentPage = ({route}) => {
     return ( 
       <SafeAreaView
         style={{
-          flex: 1
+          flex: 1,
+          backgroundColor: '#FFFFFF'
         }}
       >
-        <BottomSheet
-          ref={sheetRef}
-          initialSnap={2}
-          callbackNode={fall}
-          snapPoints={[620, 500, -100]}
-          renderContent={renderContent}
-          borderRadius={16}
-        />
         <ScrollView style={{paddingHorizontal: 20}}>
           <View
             style={{
               flex: 1,
-              flexDirection: 'row',
-              marginTop: 30
+              marginTop: 50,
+              marginBottom: 30,
+              flexDirection: 'row'
             }}
           >
-            <TouchableOpacity 
-              style={{
-                paddingTop: 1,
-                paddingRight: 18
-              }}
-              onPress={() => {
-                navigation.goBack()
-              }}
+            <TouchableOpacity
+              style={{marginRight: 16}}
+              onPress={() => { navigation.goBack() }}
             >
               <IconBack/>
             </TouchableOpacity>
-            <Text style={{ fontFamily: 'Bold', fontSize: 21 }}>Assignments</Text>
+            <Text style={{fontFamily: 'Bold', fontSize: 21}}>Mood Tracker</Text>
           </View>
-          <View>
-            <TeacherAssignmentCard classData={classData} assignmentData={assignment}/>
+
+          <View style={{marginVertical: 10, width: '100%'}}>
+            <Input
+              label='Judul'
+            />
           </View>
-          <View style={{
-            marginTop: 16,
-            backgroundColor: '#EAEAEA',
-            borderRadius: 8,
-            flexDirection: 'row',
-            justifyContent: 'space-between'
-          }}>
-            { renderTeacherClassTabButton('Submitted') }
-            { renderTeacherClassTabButton('Graded') }
+
+          <View style={{marginVertical: 10, width: '100%'}}>
+            <Select
+              selectedIndex={selectedIndex}
+              onSelect={index => setSelectedIndex(index)}
+              label='Mata Pelajaran'
+            >
+              <SelectItem title='Option 1'/>
+              <SelectItem title='Option 2'/>
+              <SelectItem title='Option 3'/>
+            </Select>
           </View>
-          <View>
-            { renderStudentSubmissionCards() }
+
+          <View style={{marginVertical: 10, width: '100%'}}>
+            <Select
+              selectedIndex={selectedIndex}
+              onSelect={index => setSelectedIndex(index)}
+              label='Kelas'
+            >
+              <SelectItem title='Option 1'/>
+              <SelectItem title='Option 2'/>
+              <SelectItem title='Option 3'/>
+            </Select>
           </View>
+
+          <View style={{marginVertical: 10, width: '100%'}}>
+            <Datepicker
+              date={date}
+              onSelect={nextDate => setDate(nextDate)}
+              label='Batas Tanggal'
+            />
+          </View>
+
+          <View style={{marginVertical: 10, width: '100%'}}>
+            <Input
+              label='Subjek'
+            />
+          </View>
+
+          <View style={{marginTop: 10, width: '100%'}}>
+            <Input
+              label='Catatan'
+              multiline
+              textStyle={{ minHeight: 80 }}
+            />
+          </View>
+
+          <TouchableOpacity
+            style={{
+              marginTop: 20,
+              width: '100%',
+              shadowColor: "#000",
+              shadowOffset: {
+                width: 0,
+                height: 1,
+              },
+              shadowOpacity: 0.22,
+              shadowRadius: 2.22,
+              backgroundColor: '#598BFF',
+              borderRadius: 10,
+              paddingHorizontal: 10,
+              paddingTop: 16,
+              paddingBottom: 16,
+              alignItems: 'center',
+            }}
+          >
+            <Text
+              style={{
+                fontFamily: 'Bold',
+                fontSize: 16,
+                color: '#FFFFFF'
+              }}
+            >
+              Submit
+            </Text>
+          </TouchableOpacity>
+          <View style={{height: 50}}></View>
         </ScrollView>
-        {renderShadow()}
       </SafeAreaView>
     )
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'row',
-  },
-  layout: {
-    flex: 1,
-    justifyContent: 'center',
-    marginVertical: 10
-  },
-  column: {
-    flexDirection: 'column',
-  },
-  row: {
-    flexDirection: 'row',
-  },
-  layout: {
-    justifyContent: 'center',
-    marginVertical: 10
-  },
-  center: {
-    justifyContent: 'center',
-  },
-  shadowContainer: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: '#000',
-  }
-});
 
 export default TeacherAssignmentPage;

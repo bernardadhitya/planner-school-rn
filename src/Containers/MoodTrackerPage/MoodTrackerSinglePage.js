@@ -10,7 +10,6 @@ import IconEmotion1 from '../../Assets/icons/IconEmotion1';
 import IconEmotion2 from '../../Assets/icons/IconEmotion2';
 import IconEmotion3 from '../../Assets/icons/IconEmotion3';
 import IconEmotion4 from '../../Assets/icons/IconEmotion4';
-import { Input } from '@ui-kitten/components';
 
 const MoodTrackerSinglePage = () => {
   const navigation = useNavigation();

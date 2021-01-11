@@ -12,7 +12,7 @@ const TeacherMenu = [
   {
     name: 'Tambah Tugas',
     image: require('../Assets/logo/Math.png'),
-    redirectTo: 'MoodTracker'
+    redirectTo: 'Assignments'
   },
   {
     name: 'Kalender',

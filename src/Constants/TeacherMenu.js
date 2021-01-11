@@ -7,7 +7,7 @@ const TeacherMenu = [
   {
     name: 'Daftar Murid',
     image: require('../Assets/logo/Student.png'),
-    redirectTo: 'MoodTracker'
+    redirectTo: 'Students'
   },
   {
     name: 'Tambah Tugas',
@@ -17,7 +17,7 @@ const TeacherMenu = [
   {
     name: 'Kalender',
     image: require('../Assets/logo/Calendar.png'),
-    redirectTo: 'MoodTracker'
+    redirectTo: 'Calendar'
   }
 ]
 

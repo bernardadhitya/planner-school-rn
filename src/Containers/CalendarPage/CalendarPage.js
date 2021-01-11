@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Text, SafeAreaView, View } from 'react-native';
+import { Text, SafeAreaView, View, TouchableOpacity } from 'react-native';
 import { Fonts } from '../../Constants/Fonts';
 import AppLoading from 'expo-app-loading';
 import { useFonts } from '@use-expo/font';
@@ -8,8 +8,14 @@ import { Calendar } from '@ui-kitten/components';
 import IconBook from '../../Assets/icons/IconBook';
 import IconBookmark from '../../Assets/icons/IconBookmark';
 import IconClock from '../../Assets/icons/IconClock';
+import { useContext } from 'react';
+import { AuthContext } from '../../Helper/AuthProvider';
+import IconBack from '../../Assets/icons/IconBack';
+import { useNavigation } from '@react-navigation/native';
 
 const CalendarPage = () => {
+  const navigation = useNavigation();
+  const { user: { role } } = useContext(AuthContext);
   let [fontsLoaded] = useFonts(Fonts);
   const [date, setDate] = useState(new Date());
 
@@ -81,23 +87,32 @@ const CalendarPage = () => {
           <View
             style={{
               flex: 1,
-              marginTop: 50
+              marginTop: 50,
+              marginBottom: 30,
+              flexDirection: 'row'
             }}
           >
+            {role === 'teacher' ? <TouchableOpacity
+              style={{marginRight: 16}}
+              onPress={() => { navigation.goBack() }}
+            >
+              <IconBack/>
+            </TouchableOpacity> : null}
             <Text style={{ fontFamily: 'Bold', fontSize: 21 }}>Kalender</Text>
-            <View style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginTop: 30
-            }}>
-              <Calendar
-                date={date}
-                onSelect={nextDate => setDate(nextDate)}
-              />
-            </View>
-            {renderSchedules()}
-            {renderSchedules()}
           </View>
+          <View style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginTop: 30
+          }}>
+            <Calendar
+              date={date}
+              onSelect={nextDate => setDate(nextDate)}
+            />
+          </View>
+          {renderSchedules()}
+          {renderSchedules()}
+          <View style={{height: 50}}></View>
         </ScrollView>
       </SafeAreaView>
     )

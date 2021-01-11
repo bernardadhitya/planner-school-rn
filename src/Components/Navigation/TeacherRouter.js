@@ -9,6 +9,7 @@ import TeacherGamePage from "../../Containers/GamesPage/TeacherGamePage";
 import TeacherMoodTrackerPage from "../../Containers/MoodTrackerPage/TeacherMoodTrackerPage";
 import MoodTrackerPage from "../../Containers/MoodTrackerPage/MoodTrackerPage";
 import MoodTrackerSinglePage from "../../Containers/MoodTrackerPage/MoodTrackerSinglePage";
+import CalendarPage from "../../Containers/CalendarPage/CalendarPage";
 
 const Stack = createStackNavigator();
 
@@ -86,7 +87,7 @@ const TeacherRouter = () => {
           headerTitle: "Calendar"
         }}
         name="Calendar"
-        component={LiveClassVideoCallPage}
+        component={CalendarPage}
       />
     </Stack.Navigator>
   )

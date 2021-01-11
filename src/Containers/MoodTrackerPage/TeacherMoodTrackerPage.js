@@ -14,7 +14,7 @@ const TeacherMoodTrackerPage = () => {
 
   const renderStudentMoodCard = () => {
     return (
-      <View
+      <TouchableOpacity
         style={{
           flex: 1,
           flexDirection: 'row',
@@ -22,6 +22,7 @@ const TeacherMoodTrackerPage = () => {
           borderBottomWidth: 1,
           borderColor: '#C7C7C7'
         }}
+        onPress={() => { navigation.navigate('MoodTracker') }}
       >
         <Image
           source={require('../../Assets/logo/Student.png')}
@@ -59,7 +60,7 @@ const TeacherMoodTrackerPage = () => {
             <IconEmotion1 focused/>
           </View>
         </View>
-      </View>
+      </TouchableOpacity>
     )
   }
 

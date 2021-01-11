@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Text, SafeAreaView, View, Image, TouchableOpacity } from 'react-native';
 import { Fonts } from '../../Constants/Fonts';
 import AppLoading from 'expo-app-loading';
@@ -6,8 +6,11 @@ import { useFonts } from '@use-expo/font';
 import { ScrollView } from 'react-native';
 import IconEmotion1 from '../../Assets/icons/IconEmotion1';
 import { useNavigation } from '@react-navigation/native';
+import { AuthContext } from '../../Helper/AuthProvider';
+import IconBack from '../../Assets/icons/IconBack';
 
 const MoodTrackerPage = () => {
+  const { user: { role } } = useContext(AuthContext);
   const navigation = useNavigation();
   let [fontsLoaded] = useFonts(Fonts);
 
@@ -76,6 +79,12 @@ const MoodTrackerPage = () => {
               flexDirection: 'row'
             }}
           >
+            { role === 'teacher' ? <TouchableOpacity
+              style={{marginRight: 16}}
+              onPress={() => { navigation.goBack() }}
+            >
+              <IconBack/>
+            </TouchableOpacity> : null }
             <Text style={{ fontFamily: 'Bold', fontSize: 21 }}>Mood Tracker</Text>
           </View>
           <View style={{
@@ -103,7 +112,7 @@ const MoodTrackerPage = () => {
             }}>
               Total refleksi: 20
             </Text>
-            <TouchableOpacity
+            { role === 'student' ? <TouchableOpacity
               style={{
                 marginTop: 20,
                 width: '100%',
@@ -132,7 +141,7 @@ const MoodTrackerPage = () => {
               >
                 Mulai Refleksi Hari Ini
               </Text>
-            </TouchableOpacity>
+            </TouchableOpacity> : null}
             { renderMoodPanel() }
           </View>
         </ScrollView>

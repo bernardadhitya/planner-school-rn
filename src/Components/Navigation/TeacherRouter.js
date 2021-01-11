@@ -7,8 +7,43 @@ import TeacherStudentPage from "../../Containers/StudentPage/TeacherStudentPage"
 import LiveClassVideoCallPage from "../../Containers/LiveClassPage/LiveClassVideoCallPage";
 import TeacherGamePage from "../../Containers/GamesPage/TeacherGamePage";
 import TeacherMoodTrackerPage from "../../Containers/MoodTrackerPage/TeacherMoodTrackerPage";
+import MoodTrackerPage from "../../Containers/MoodTrackerPage/MoodTrackerPage";
+import MoodTrackerSinglePage from "../../Containers/MoodTrackerPage/MoodTrackerSinglePage";
 
 const Stack = createStackNavigator();
+
+const TeacherMoodTrackerRoute = () => {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        header: () => null
+      }}
+      initialRouteName="MoodTrackers"
+    >
+      <Stack.Screen
+        options={{
+          headerTitle: "MoodTrackers"
+        }}
+        name="MoodTrackers"
+        component={TeacherMoodTrackerPage}
+      />
+      <Stack.Screen
+        options={{
+          headerTitle: "MoodTracker"
+        }}
+        name="MoodTracker"
+        component={MoodTrackerPage}
+      />
+      <Stack.Screen
+        options={{
+          headerTitle: "MoodTrackerSingle"
+        }}
+        name="MoodTrackerSingle"
+        component={MoodTrackerSinglePage}
+      />
+    </Stack.Navigator>
+  )
+}
 
 const TeacherRouter = () => {
   return (
@@ -30,7 +65,7 @@ const TeacherRouter = () => {
           headerTitle: "MoodTracker"
         }}
         name="MoodTracker"
-        component={TeacherMoodTrackerPage}
+        component={TeacherMoodTrackerRoute}
       />
       <Stack.Screen
         options={{

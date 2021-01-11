@@ -6,6 +6,7 @@ import TeacherAssignmentPage from "../../Containers/AssignmentPage/TeacherAssign
 import TeacherStudentPage from "../../Containers/StudentPage/TeacherStudentPage";
 import LiveClassVideoCallPage from "../../Containers/LiveClassPage/LiveClassVideoCallPage";
 import TeacherGamePage from "../../Containers/GamesPage/TeacherGamePage";
+import TeacherMoodTrackerPage from "../../Containers/MoodTrackerPage/TeacherMoodTrackerPage";
 
 const Stack = createStackNavigator();
 
@@ -26,10 +27,10 @@ const TeacherRouter = () => {
       />
       <Stack.Screen
         options={{
-          headerTitle: "Class"
+          headerTitle: "MoodTracker"
         }}
-        name="Class"
-        component={TeacherClassPage}
+        name="MoodTracker"
+        component={TeacherMoodTrackerPage}
       />
       <Stack.Screen
         options={{
@@ -40,24 +41,17 @@ const TeacherRouter = () => {
       />
       <Stack.Screen
         options={{
-          headerTitle: "Student"
+          headerTitle: "Students"
         }}
-        name="Student"
+        name="Students"
         component={TeacherStudentPage}
       />
       <Stack.Screen
         options={{
-          headerTitle: "LiveClass"
+          headerTitle: "Calendar"
         }}
-        name="LiveClass"
+        name="Calendar"
         component={LiveClassVideoCallPage}
-      />
-      <Stack.Screen
-        options={{
-          headerTitle: "Game"
-        }}
-        name="Game"
-        component={TeacherGamePage}
       />
     </Stack.Navigator>
   )

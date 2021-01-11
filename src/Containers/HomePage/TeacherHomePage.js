@@ -16,6 +16,7 @@ import { AuthContext } from "../../Helper/AuthProvider";
 import DetailedSubjects from '../../Constants/Subjects';
 import ThumbnailCard from '../../Components/ThumbnailCard/ThumbnailCard';
 import TeacherMenu from '../../Constants/TeacherMenu';
+import { useNavigation } from '@react-navigation/native';
 
 const TeacherHomePage = () => {
   const { user: { userId, username }, logout } = useContext(AuthContext);
@@ -47,7 +48,7 @@ const TeacherHomePage = () => {
               <ThumbnailCard
                 title={subject.name}
                 image={subject.image}
-                redirectTo={'Assignment'}
+                redirectTo={subject.redirectTo}
               />
             )
           })}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState} from 'react';
 import { Text, SafeAreaView, View, TouchableOpacity } from 'react-native';
 import { Fonts } from '../../Constants/Fonts';
 import AppLoading from 'expo-app-loading';
@@ -7,13 +7,36 @@ import { ScrollView } from 'react-native';
 import IconBack from '../../Assets/icons/IconBack';
 import { useNavigation } from '@react-navigation/native';
 import { Input, Select, SelectItem, IndexPath, Datepicker } from '@ui-kitten/components';
+import DetailedSubjects from '../../Constants/Subjects';
+import { getAllClasses } from '../../../firebase';
 
 const TeacherAssignmentPage = () => {
   const navigation = useNavigation();
   let [fontsLoaded] = useFonts(Fonts);
 
-  const [selectedIndex, setSelectedIndex] = React.useState(new IndexPath(0));
-  const [date, setDate] = React.useState(new Date());
+  const [title, setTitle] = useState('');
+  const [selectedSubject, setSelectedSubject] = useState(new IndexPath(0));
+  const [selectedClass, setSelectedClass] = useState(new IndexPath(0));
+  const [chapter, setChapter] = useState('');
+  const [deadline, setDeadline] = useState(new Date());
+  const [note, setNote] = useState('');
+  const [allClasses, setAllClasses] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const fetchedAllClasses = await getAllClasses();
+      const allClassesData = fetchedAllClasses.map(
+        fetchedClass => {
+          return {
+            class_id: fetchedClass.class_id,
+            name: fetchedClass.name
+          }
+        }
+      );
+      setAllClasses(allClassesData);
+    }
+    fetchData();
+  }, []);
 
   if (!fontsLoaded) {
     return <AppLoading />;
@@ -40,43 +63,47 @@ const TeacherAssignmentPage = () => {
             >
               <IconBack/>
             </TouchableOpacity>
-            <Text style={{fontFamily: 'Bold', fontSize: 21}}>Mood Tracker</Text>
+            <Text style={{fontFamily: 'Bold', fontSize: 21}}>Tambah Tugas</Text>
           </View>
 
           <View style={{marginVertical: 10, width: '100%'}}>
             <Input
               label='Judul'
+              value={title}
+              onChangeText={nextValue => setTitle(nextValue)}
+              placeholder='Masukkan judul tugas disini'
             />
           </View>
 
           <View style={{marginVertical: 10, width: '100%'}}>
             <Select
-              selectedIndex={selectedIndex}
-              onSelect={index => setSelectedIndex(index)}
+              selectedIndex={selectedSubject}
+              onSelect={index => setSelectedSubject(index)}
               label='Mata Pelajaran'
+              value={DetailedSubjects[selectedSubject.row].name}
             >
-              <SelectItem title='Option 1'/>
-              <SelectItem title='Option 2'/>
-              <SelectItem title='Option 3'/>
+              { DetailedSubjects.map(subject => <SelectItem title={subject.name}/>)}
             </Select>
           </View>
 
-          <View style={{marginVertical: 10, width: '100%'}}>
-            <Select
-              selectedIndex={selectedIndex}
-              onSelect={index => setSelectedIndex(index)}
-              label='Kelas'
-            >
-              <SelectItem title='Option 1'/>
-              <SelectItem title='Option 2'/>
-              <SelectItem title='Option 3'/>
-            </Select>
-          </View>
+          {
+            allClasses.length > 0 ?
+            <View style={{marginVertical: 10, width: '100%'}}>
+              <Select
+                selectedIndex={selectedClass}
+                onSelect={index => setSelectedClass(index)}
+                label='Kelas'
+                value={allClasses[selectedClass.row].name}
+              >
+                { allClasses.map(classData => <SelectItem title={classData.name}/>)}
+              </Select>
+            </View> : null
+          }
 
           <View style={{marginVertical: 10, width: '100%'}}>
             <Datepicker
-              date={date}
-              onSelect={nextDate => setDate(nextDate)}
+              date={deadline}
+              onSelect={nextDate => setDeadline(nextDate)}
               label='Batas Tanggal'
             />
           </View>
@@ -84,6 +111,9 @@ const TeacherAssignmentPage = () => {
           <View style={{marginVertical: 10, width: '100%'}}>
             <Input
               label='Subjek'
+              value={chapter}
+              onChangeText={nextValue => setChapter(nextValue)}
+              placeholder='Masukkan subjek tugas disini'
             />
           </View>
 
@@ -92,6 +122,9 @@ const TeacherAssignmentPage = () => {
               label='Catatan'
               multiline
               textStyle={{ minHeight: 80 }}
+              value={note}
+              onChangeText={nextValue => setNote(nextValue)}
+              placeholder='Masukkan catatan anda disini'
             />
           </View>
 

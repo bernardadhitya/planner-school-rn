@@ -87,17 +87,13 @@ const AssignmentsPanelContent = () => {
   }
 
   const renderPanel = () => {
-    return username === 'Bernard' ? (
+    return (
       <View style={styles.row}>
         <ScrollView horizontal>
           { renderAssignmentsPanelCard(Colors.aqua, 'Do exercise 2A\nno.1-5', 'Science', 'Naomi', 4) }
           { renderAssignmentsPanelCard(Colors.yellow, 'Exercise page\n12-13 no. 1-10', 'Mathematics', 'Naomi', 0) }
           { renderAssignmentsPanelCard(Colors.yellow, 'Exercise page\n1-5', 'Mathematics', 'Naomi', 0) }
         </ScrollView>
-      </View>
-    ) : (
-      <View style={{alignItems: 'center', paddingTop: 14}}>
-        <Text style={{fontFamily: 'SemiBold', fontSize: 14}}>There is no assignments right now</Text>
       </View>
     )
   }

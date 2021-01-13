@@ -19,7 +19,7 @@ import TeacherMenu from '../../Constants/TeacherMenu';
 import { useNavigation } from '@react-navigation/native';
 
 const TeacherHomePage = () => {
-  const { user: { userId, username }, logout } = useContext(AuthContext);
+  const { user: { name }, logout } = useContext(AuthContext);
   let [fontsLoaded] = useFonts(Fonts);
 
   const renderThumbnails = () => {
@@ -97,7 +97,7 @@ const TeacherHomePage = () => {
                 paddingHorizontal: 10
               }}>
                 <Text style={{ fontFamily: 'Bold', fontSize: 20 }}>
-                  Hi, {username}!
+                  Hi, {name}!
                 </Text>
                 <Text style={{ fontFamily: 'SemiBold', fontSize: 12, marginVertical: 10 }}>
                   Sabtu, 24 Oktober 2020

@@ -15,12 +15,10 @@ import HomePanel from '../../Components/HomePanel/HomePanel';
 import { View } from 'react-native';
 import IconLogout from '../../Assets/icons/IconLogout';
 
-const { Bold } = Fonts;
-
 const Stack = createStackNavigator();
 
 const Feed = () => {
-  const { user: { username }, logout } = useContext(AuthContext);
+  const { user: { name }, logout } = useContext(AuthContext);
 
   let [fontsLoaded] = useFonts(Fonts);
   
@@ -64,7 +62,7 @@ const Feed = () => {
                 paddingHorizontal: 10
               }}>
                 <Text style={{ fontFamily: 'Bold', fontSize: 20 }}>
-                  Hi, {username}!
+                  Hi, {name}!
                 </Text>
                 <Text style={{ fontFamily: 'SemiBold', fontSize: 12, marginVertical: 10 }}>
                   Sabtu, 24 Oktober 2020

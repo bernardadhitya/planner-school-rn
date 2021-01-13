@@ -27,9 +27,9 @@ export const Routes = () => {
           const { role } = userJson;
 
           if(role === 'student'){
-            loginAsStudent();
+            loginAsStudent(userJson);
           } else if (role === 'teacher'){
-            loginAsTeacher();
+            loginAsTeacher(userJson);
           }
         }
         setLoading(false);

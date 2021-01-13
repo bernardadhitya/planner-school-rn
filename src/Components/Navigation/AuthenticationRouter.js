@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { AuthContext } from "../../Helper/AuthProvider";
 import Center from "../Center/Center";
@@ -14,6 +14,7 @@ import AppLoading from 'expo-app-loading';
 import { useNavigation } from "@react-navigation/native";
 import { TouchableOpacity } from "react-native";
 import { Input } from "@ui-kitten/components";
+import { getAllUsers } from "../../../firebase";
 
 const Stack = createStackNavigator();
 
@@ -22,14 +23,27 @@ const Login = () => {
   const { loginAsStudent, loginAsTeacher } = useContext(AuthContext);
   let [fontsLoaded] = useFonts(Fonts);
 
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [allUsers, setAllUsers] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const fetchedAllUsers = await getAllUsers();
+      setAllUsers(fetchedAllUsers);
+    }
+    fetchData();
+  }, []);
 
   const checkLogin = () => {
-    if (email === 'naomi'){
-      loginAsTeacher();
+    const matchingUser = allUsers.filter(userData => userData.user_id === email)[0];
+
+    if (!matchingUser) return false;
+
+    if (matchingUser.role === 'teacher'){
+      loginAsTeacher(matchingUser);
     } else {
-      loginAsStudent();
+      loginAsStudent(matchingUser);
     }
   }
 

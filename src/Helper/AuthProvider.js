@@ -14,23 +14,13 @@ export const AuthProvider= ({ children }) => {
     <AuthContext.Provider
       value={{
         user,
-        loginAsStudent: () => {
-          const fakeStudent = { 
-            userId: 'arwM0bzRmcUljhivBrPu',
-            username: "Bernard",
-            role: 'student'
-          };
-          setUser(fakeStudent);
-          AsyncStorage.setItem("user", JSON.stringify(fakeStudent));
+        loginAsStudent: (student) => {
+          setUser(student);
+          AsyncStorage.setItem("user", JSON.stringify(student));
         },
-        loginAsTeacher: () => {
-          const fakeTeacher = {
-            userId: 'XEtwJg8K0yfvRIgLiKXO',
-            username: "Naomi",
-            role: 'teacher'
-          };
-          setUser(fakeTeacher);
-          AsyncStorage.setItem("user", JSON.stringify(fakeTeacher));
+        loginAsTeacher: (teacher) => {
+          setUser(teacher);
+          AsyncStorage.setItem("user", JSON.stringify(teacher));
         },
         register: (userData) => {
           const { userName } = userData;

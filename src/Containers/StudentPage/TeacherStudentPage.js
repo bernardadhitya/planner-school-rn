@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, SafeAreaView, TouchableOpacity, View, Image } from 'react-native';
 import { Fonts } from '../../Constants/Fonts';
 import AppLoading from 'expo-app-loading';
@@ -7,12 +7,22 @@ import { ScrollView } from 'react-native';
 import IconBack from '../../Assets/icons/IconBack';
 import { useNavigation } from '@react-navigation/native';
 import IconEmotion1 from '../../Assets/icons/IconEmotion1';
+import { getAllStudents } from '../../../firebase';
 
 const TeacherMoodTrackerPage = () => {
   const navigation = useNavigation();
+  const [allStudents, setAllStudents] = useState([]);
   let [fontsLoaded] = useFonts(Fonts);
 
-  const renderStudentCard = () => {
+  useEffect(() => {
+    const fetchData = async () => {
+      const fetchedAllStudents = await getAllStudents();
+      setAllStudents(fetchedAllStudents);
+    }
+    fetchData();
+  }, []);
+
+  const renderStudentCard = (name, phone) => {
     return (
       <View
         style={{
@@ -37,7 +47,7 @@ const TeacherMoodTrackerPage = () => {
               fontFamily: 'SemiBold'
             }}
           >
-            Biyan Alya Safira
+            {name}
           </Text>
           <Text
             style={{
@@ -46,7 +56,7 @@ const TeacherMoodTrackerPage = () => {
               marginTop: 8
             }}
           >
-           089512345678
+            {phone}
           </Text>
         </View>
       </View>
@@ -80,16 +90,13 @@ const TeacherMoodTrackerPage = () => {
             </TouchableOpacity>
             <Text style={{ fontFamily: 'Bold', fontSize: 21 }}>Daftar Murid</Text>
           </View>
-          {renderStudentCard()}
-          {renderStudentCard()}
-          {renderStudentCard()}
-          {renderStudentCard()}
-          {renderStudentCard()}
-          {renderStudentCard()}
-          {renderStudentCard()}
-          {renderStudentCard()}
-          {renderStudentCard()}
-          {renderStudentCard()}
+          {
+            allStudents.length > 0 ?
+              allStudents.map(student => 
+                renderStudentCard(student.name, student.phone)  
+              )
+            : null
+          }
         </ScrollView>
       </SafeAreaView>
     )

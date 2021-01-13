@@ -166,7 +166,9 @@ const ProfilePage = () => {
               justifyContent: "flex-end"
             }}
           >
-            <TouchableOpacity onPress={() => {navigation.navigate('TeacherContactPage')}}>
+            <TouchableOpacity onPress={() => {navigation.navigate('TeacherContactPage', {
+              allTeachersData: allTeachers
+            })}}>
               <Text style={{
                 fontFamily: 'Medium',
                 fontSize: 16,

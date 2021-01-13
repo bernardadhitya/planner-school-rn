@@ -7,11 +7,13 @@ import { ScrollView } from 'react-native';
 import IconBack from '../../Assets/icons/IconBack';
 import { useNavigation } from '@react-navigation/native';
 
-const TeacherContactPage = () => {
+const TeacherContactPage = (props) => {
+  const { route: { params } } = props;
+  const { allTeachersData } = params;
   const navigation = useNavigation();
   let [fontsLoaded] = useFonts(Fonts);
 
-  const renderTeacherContactCard = () => {
+  const renderTeacherContactCard = (userName, userPhone) => {
     return (
       <View
         style={{
@@ -36,7 +38,7 @@ const TeacherContactPage = () => {
               fontFamily: 'SemiBold'
             }}
           >
-            Ms. DIANA ROSIANNE
+            {userName}
           </Text>
           <Text
             style={{
@@ -54,7 +56,7 @@ const TeacherContactPage = () => {
           marginTop: 10,
         }}>
           <View style={{ justifyContent: 'center' }}>
-            <Text>+6281234567890</Text>
+            <Text>{userPhone}</Text>
           </View>
         </View>
       </View>
@@ -88,16 +90,13 @@ const TeacherContactPage = () => {
             </TouchableOpacity>
             <Text style={{ fontFamily: 'Bold', fontSize: 21 }}>Kontak Guru</Text>
           </View>
-          {renderTeacherContactCard()}
-          {renderTeacherContactCard()}
-          {renderTeacherContactCard()}
-          {renderTeacherContactCard()}
-          {renderTeacherContactCard()}
-          {renderTeacherContactCard()}
-          {renderTeacherContactCard()}
-          {renderTeacherContactCard()}
-          {renderTeacherContactCard()}
-          {renderTeacherContactCard()}
+          {
+            allTeachersData ?
+              allTeachersData.map(teacher => 
+                renderTeacherContactCard(teacher.name, teacher.phone)  
+              )
+            : null
+          }
         </ScrollView>
       </SafeAreaView>
     )

@@ -119,6 +119,16 @@ export const getAllStudents = async () => {
   return data;
 }
 
+export const getAllTeachers = async () => {
+  const response = await db.collection('users').where("role", "==", "teacher").get();
+  const data = response.docs.map(doc => {
+    const responseId = doc.id;
+    const responseData = doc.data();
+    return { user_id: responseId, ...responseData }
+  });
+  return data;
+}
+
 export const getClassById = async (classId) => {
   const response = await db.collection('classes').doc(classId).get();
   const responseId = response.id;

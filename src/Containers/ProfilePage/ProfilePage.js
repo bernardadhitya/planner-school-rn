@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Text, SafeAreaView, View, TouchableOpacity, Image } from 'react-native';
 import { Fonts } from '../../Constants/Fonts';
 import AppLoading from 'expo-app-loading';
@@ -6,10 +6,41 @@ import { useFonts } from '@use-expo/font';
 import { ScrollView } from 'react-native';
 import IconSetting from '../../Assets/icons/IconSetting';
 import { useNavigation } from '@react-navigation/native';
+import { AuthContext } from '../../Helper/AuthProvider';
+import { getAllTeachers, getClassById } from '../../../firebase';
 
 const ProfilePage = () => {
+  const {
+    user: {
+      user_id,
+      name,
+      class: { classID, name: grade },
+      phone,
+      dob,
+      pob
+    },
+    logout
+  } = useContext(AuthContext);
+  const [teacherName, setTeacherName] = useState('');
+  const [allTeachers, setAllTeachers] = useState([]);
   const navigation = useNavigation();
   let [fontsLoaded] = useFonts(Fonts);
+
+  const dateOfBirth = new Date(dob.seconds * 1000).toLocaleDateString("id");
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const fetchedClass = await getClassById(classID);
+      const fetchedAllTeacher = await getAllTeachers();
+
+      const { teacher: { name }} = fetchedClass;
+      console.log(fetchedAllTeacher);
+
+      setTeacherName(name);
+      setAllTeachers(fetchedAllTeacher);
+    }
+    fetchData();
+  }, []);
 
   const renderProfileDetail = () => {
     return (
@@ -23,40 +54,44 @@ const ProfilePage = () => {
         <View style={{flexDirection: 'row', marginBottom: 20}}>
           <View style={{width: '50%'}}>
             <Text style={{fontFamily: 'Regular', fontSize: 12}}>Name Lengkap</Text>
-            <Text style={{fontFamily: 'SemiBold', marginTop: 10}}>Bernard Adhitya</Text>
+            <Text style={{fontFamily: 'SemiBold', marginTop: 10}}>{name}</Text>
           </View>
           <View style={{width: '50%'}}>
             <Text style={{fontFamily: 'Regular', fontSize: 12}}>Wali Kelas</Text>
-            <Text style={{fontFamily: 'SemiBold', marginTop: 10}}>Ms. Rina Radolph</Text>
+            <Text style={{fontFamily: 'SemiBold', marginTop: 10}}>
+              {teacherName || '-'}
+            </Text>
           </View>
         </View>
 
         <View style={{flexDirection: 'row', marginBottom: 20}}>
           <View style={{width: '50%'}}>
             <Text style={{fontFamily: 'Regular', fontSize: 12}}>Kelas</Text>
-            <Text style={{fontFamily: 'SemiBold', marginTop: 10}}>XII IPA 3</Text>
+            <Text style={{fontFamily: 'SemiBold', marginTop: 10}}>{grade}</Text>
           </View>
           <View style={{width: '50%'}}>
             <Text style={{fontFamily: 'Regular', fontSize: 12}}>No. Telepon</Text>
-            <Text style={{fontFamily: 'SemiBold', marginTop: 10}}>+6281234567890</Text>
+            <Text style={{fontFamily: 'SemiBold', marginTop: 10}}>{phone}</Text>
           </View>
         </View>
 
         <View style={{flexDirection: 'row'}}>
           <View style={{width: '50%'}}>
             <Text style={{fontFamily: 'Regular', fontSize: 12}}>Tempat/Tanggal Lahir</Text>
-            <Text style={{fontFamily: 'SemiBold', marginTop: 10}}>Jakarta, 3 Mei 1999</Text>
+            <Text style={{fontFamily: 'SemiBold', marginTop: 10}}>
+              {`${pob}, ${dateOfBirth}`}
+            </Text>
           </View>
           <View style={{width: '50%'}}>
             <Text style={{fontFamily: 'Regular', fontSize: 12}}>ID</Text>
-            <Text style={{fontFamily: 'SemiBold', marginTop: 10}}>bernardadhitya</Text>
+            <Text style={{fontFamily: 'SemiBold', marginTop: 10}}>{user_id}</Text>
           </View>
         </View>
       </View>
     )
   }
 
-  const renderTeacherContactCard = () => {
+  const renderTeacherContactCard = (userName, userPhone) => {
     return (
       <View
         style={{
@@ -81,7 +116,7 @@ const ProfilePage = () => {
               fontFamily: 'SemiBold'
             }}
           >
-            Ms. DIANA ROSIANNE
+            {userName}
           </Text>
           <Text
             style={{
@@ -99,7 +134,7 @@ const ProfilePage = () => {
           marginTop: 10,
         }}>
           <View style={{ justifyContent: 'center' }}>
-            <Text>+6281234567890</Text>
+            <Text>{userPhone}</Text>
           </View>
         </View>
       </View>
@@ -107,6 +142,7 @@ const ProfilePage = () => {
   }
 
   const renderTeacherContact = () => {
+
     return (
       <View>
         <View
@@ -142,11 +178,13 @@ const ProfilePage = () => {
             </TouchableOpacity>
           </View>
         </View>
-        { renderTeacherContactCard() }
-        { renderTeacherContactCard() }
-        { renderTeacherContactCard() }
-        { renderTeacherContactCard() }
-        { renderTeacherContactCard() }
+        {
+          allTeachers.length > 0 ?
+            allTeachers.map(teacher => 
+              renderTeacherContactCard(teacher.name, teacher.phone)  
+            )
+          : null
+        }
       </View>
     )
   }
@@ -196,14 +234,14 @@ const ProfilePage = () => {
             fontSize: 21,
             marginTop: 20
           }}>
-            Bernard
+            { name }
           </Text>
           <Text style={{
             fontFamily: 'Regular',
             fontSize: 16,
             marginTop: 10
           }}>
-            Kelas: XII IPA 4
+            {`Kelas: ${grade}`}
           </Text>
         </View>
         { renderProfileDetail() }

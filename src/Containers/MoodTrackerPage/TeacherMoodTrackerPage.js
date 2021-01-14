@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, SafeAreaView, TouchableOpacity, View, Image } from 'react-native';
 import { Fonts } from '../../Constants/Fonts';
 import AppLoading from 'expo-app-loading';
@@ -7,12 +7,22 @@ import { ScrollView } from 'react-native';
 import IconBack from '../../Assets/icons/IconBack';
 import { useNavigation } from '@react-navigation/native';
 import IconEmotion1 from '../../Assets/icons/IconEmotion1';
+import { getAllStudentsMood } from '../../../firebase';
 
 const TeacherMoodTrackerPage = () => {
   const navigation = useNavigation();
+  const [studentsData, setStudentsData] = useState([]);
   let [fontsLoaded] = useFonts(Fonts);
 
-  const renderStudentMoodCard = () => {
+  useEffect(() => {
+    const fetchData = async () => {
+      const fetchedAllStudentsMoodData = await getAllStudentsMood();
+      setStudentsData(fetchedAllStudentsMoodData);
+    }
+    fetchData();
+  }, []);
+
+  const renderStudentMoodCard = (userID, name, moods) => {
     return (
       <TouchableOpacity
         style={{
@@ -22,7 +32,12 @@ const TeacherMoodTrackerPage = () => {
           borderBottomWidth: 1,
           borderColor: '#C7C7C7'
         }}
-        onPress={() => { navigation.navigate('MoodTracker') }}
+        onPress={() => { navigation.navigate('MoodTracker',
+          {
+            userID,
+            studentName: name
+          }
+        ) }}
       >
         <Image
           source={require('../../Assets/logo/Student.png')}
@@ -38,7 +53,7 @@ const TeacherMoodTrackerPage = () => {
               fontFamily: 'SemiBold'
             }}
           >
-            Biyan Alya Safira
+            { name }
           </Text>
           <Text
             style={{
@@ -47,7 +62,7 @@ const TeacherMoodTrackerPage = () => {
               marginTop: 8
             }}
           >
-            Total refleksi: 20
+            {`Total refleksi: ${moods.length}`}
           </Text>
         </View>
         <View style={{
@@ -61,6 +76,13 @@ const TeacherMoodTrackerPage = () => {
           </View>
         </View>
       </TouchableOpacity>
+    )
+  }
+
+  const renderStudentMoodPanel = () => {
+    if (studentsData.length < 1) return;
+    return studentsData.map(student => 
+      renderStudentMoodCard(student.user_id, student.name, student.moods)
     )
   }
 
@@ -91,16 +113,7 @@ const TeacherMoodTrackerPage = () => {
             </TouchableOpacity>
             <Text style={{ fontFamily: 'Bold', fontSize: 21 }}>Mood Tracker</Text>
           </View>
-          {renderStudentMoodCard()}
-          {renderStudentMoodCard()}
-          {renderStudentMoodCard()}
-          {renderStudentMoodCard()}
-          {renderStudentMoodCard()}
-          {renderStudentMoodCard()}
-          {renderStudentMoodCard()}
-          {renderStudentMoodCard()}
-          {renderStudentMoodCard()}
-          {renderStudentMoodCard()}
+          {renderStudentMoodPanel()}
         </ScrollView>
       </SafeAreaView>
     )

@@ -13,8 +13,9 @@ import IconEmotion2 from '../../Assets/icons/IconEmotion2';
 import IconEmotion3 from '../../Assets/icons/IconEmotion3';
 import IconEmotion4 from '../../Assets/icons/IconEmotion4';
 
-const MoodTrackerPage = () => {
+const MoodTrackerPage = (props) => {
   const { user: { user_id, role, name } } = useContext(AuthContext);
+  const { route: { params } } = props;
   const [refresh, setRefresh] = useState(0);
   const [moods, setMoods] = useState([]);
   const navigation = useNavigation();
@@ -22,7 +23,9 @@ const MoodTrackerPage = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const fetchedMoodsByUserID = await getAllMoodsByUserId(user_id);
+      const fetchedMoodsByUserID = await getAllMoodsByUserId(
+        role === 'student' ? user_id : params.userID
+      );
       setMoods(fetchedMoodsByUserID);
     }
     fetchData();
@@ -128,7 +131,7 @@ const MoodTrackerPage = () => {
               fontSize: 21,
               marginTop: 20
             }}>
-              { name }
+              { role === 'student' ? name : params.studentName }
             </Text>
             <Text style={{
               fontFamily: 'Regular',

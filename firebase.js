@@ -44,7 +44,6 @@ export const createMoodPost = async (moodData) => {
     responses,
     userID
   })
-  console.log('mood posted!');
 }
 
 // export const createSubmission = async (submissionData) => {
@@ -188,6 +187,25 @@ export const getClassesByUserId = async (userId) => {
   const classesData = await getClassesData();
 
   return classesData;
+}
+
+export const getAllStudentsMood = async () => {
+  const allStudents = await getAllStudents();
+
+  const getAllStudentsMoodData = async (students) => {
+    return Promise.all(students.map(async (student) => {
+      const studentMoods = await getAllMoodsByUserId(student.user_id)
+      return {
+        user_id: student.user_id,
+        name: student.name,
+        moods: studentMoods
+      }
+    }));
+  };
+
+  const allStudentsMoodData = await getAllStudentsMoodData(allStudents);
+
+  return allStudentsMoodData;
 }
 
 // export const getSubmissionByUserIdAndAssignmentId = async (userId, assignmentId) => {

@@ -13,8 +13,6 @@ const QuizCard = (props) => {
   const { question, questionNumber, selectedOption, handleSelectOption } = props
   let [fontsLoaded] = useFonts(Fonts);
 
-  console.log(questionNumber, ':', selectedOption);
-
   return fontsLoaded ? (
     <View style={{
       paddingVertical: 25,

@@ -26,11 +26,9 @@ const DailyQuizPage = (props) => {
     updatedSelectedOption[questionNumber] = answer;
     setSelectedOption(updatedSelectedOption);
     setCounter(counter + 1);
-    console.log('selected options:', selectedOption);
   }
 
   const handleSubmitMoodPost = async () => {
-    console.log('button submit is clicked');
     const moodData = {
       datePosted: new Date(),
       responses: {
@@ -42,7 +40,6 @@ const DailyQuizPage = (props) => {
       },
       userID: user_id
     }
-    console.log('mood data:', moodData);
     await createMoodPost(moodData)
     onGoBack();
     navigation.goBack();

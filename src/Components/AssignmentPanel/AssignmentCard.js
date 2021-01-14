@@ -1,18 +1,18 @@
 import React from 'react';
 import { useFonts } from '@use-expo/font';
 import { View, Text, StyleSheet } from 'react-native';
-import { Card, Layout } from '@ui-kitten/components';
 import { Fonts } from '../../Constants/Fonts';
 import AppLoading from 'expo-app-loading';
-import CharacterMrTeacher from '../../Assets/characters/CharacterMrTeacher';
-import IconImageAttachment from '../../Assets/icons/IconImageAttachment';
-import { Characters } from '../../Constants/Characters';
 import IconBook from '../../Assets/icons/IconBook';
 import IconClock from '../../Assets/icons/IconClock';
 
 const AssignmentCard = (props) => {
-  const {title, color, avatar, teacherName, className, detail} = props;
+  const {title, chapter, deadline, note} = props;
   let [fontsLoaded] = useFonts(Fonts);
+
+  const formattedDeadline = new Date(deadline * 1000);
+  const currentDate = new Date();
+  const dueInDays = Math.floor((formattedDeadline - currentDate) / (1000*60*60*24));
 
   return fontsLoaded ? (
     <View
@@ -25,18 +25,18 @@ const AssignmentCard = (props) => {
       }}
     >
       <Text style={{fontFamily: 'SemiBold', fontSize: 16, color: '#598BFF'}}>
-        Ilmu Pengetahuan Alam
+        { title }
       </Text>
       <View style={{flexDirection: 'row', marginTop: 8}}>
         <IconBook/>
         <Text style={{fontFamily: 'Regular', fontSize: 12, marginLeft: 10}}>
-          Reaksi Redoks dan Elektrokimia
+          { chapter }
         </Text>
       </View>
       <View style={{flexDirection: 'row', marginTop: 8}}>
         <IconClock/>
         <Text style={{fontFamily: 'Regular', fontSize: 12, marginLeft: 10}}>
-          1 Jam (60 menit)
+          {`Batas: ${formattedDeadline.toLocaleDateString('id')} (${dueInDays} hari)`}
         </Text>
       </View>
     </View>

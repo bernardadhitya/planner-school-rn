@@ -1,14 +1,11 @@
 import React, { useContext } from 'react';
 import { useFonts } from '@use-expo/font';
 import { View, Text, StyleSheet, Image } from 'react-native';
-import { Card } from '@ui-kitten/components';
 import { Fonts } from '../../Constants/Fonts';
 import AppLoading from 'expo-app-loading';
-import CharacterMrTeacher from '../../Assets/characters/CharacterMrTeacher';
 import { ScrollView } from 'react-native';
-import { Characters } from '../../Constants/Characters';
-import { Colors } from '../../Constants/Colors';
 import { AuthContext } from '../../Helper/AuthProvider';
+import DetailedSubjects from '../../Constants/Subjects';
 
 const ASSIGNMENTS = [
   {
@@ -16,11 +13,32 @@ const ASSIGNMENTS = [
   }
 ]
 
-const AssignmentsPanelContent = () => {
-  const { user: {username} } = useContext(AuthContext);
+const AssignmentsPanelContent = (props) => {
+  const { assignments } = props;
   let [fontsLoaded] = useFonts(Fonts);
 
-  const renderAssignmentsPanelCard = (backgroundColor, title, className, teacherName, avatar) => {
+  const renderThumbnaiImage = (thumbnailSubject) => {
+    const thumbailImage = DetailedSubjects.filter(
+      subject => subject.name === thumbnailSubject)[0];
+    return (
+      <Image
+        source={thumbailImage.image}
+        style={{
+          width: 80,
+          height: 80,
+        }}
+      />
+    )
+  }
+
+  const renderAssignmentsPanelCard = (assignment) => {
+    const { title, deadline, subject } = assignment;
+
+    const formattedDeadline = new Date(deadline.seconds * 1000)
+    const currentDate = new Date();
+
+    const dueInDays = Math.floor((formattedDeadline - currentDate) / (1000*60*60*24));
+
     return (
       <View style={styles.column, {marginRight: 4, padding: 10}}>
         <View style={{
@@ -38,7 +56,7 @@ const AssignmentsPanelContent = () => {
           <View style={{
             margin: 8,
             backgroundColor: '#E3466D',
-            width: 60,
+            width: 80,
             padding: 6,
             borderRadius: 10
           }}>
@@ -47,7 +65,7 @@ const AssignmentsPanelContent = () => {
               fontFamily: 'Regular',
               color: '#FFFFFF'
             }}>
-              5 hari
+              {`${dueInDays} hari`}
             </Text>
           </View>
           <View style={{
@@ -56,13 +74,7 @@ const AssignmentsPanelContent = () => {
             justifyContent: 'center',
             alignItems: 'center'
           }}>
-            <Image
-              source={require('../../Assets/logo/Chemistry.png')}
-              style={{
-                width: 80,
-                height: 80,
-              }}
-            />
+            { renderThumbnaiImage(subject) }
             <Text style={{
               fontFamily: 'SemiBold',
               fontSize: 16,
@@ -78,7 +90,7 @@ const AssignmentsPanelContent = () => {
               textAlign: 'center',
               marginTop: 8
             }}>
-              26/10/2020
+              {formattedDeadline.toLocaleDateString("id")}
             </Text>
           </View>
         </View>
@@ -87,12 +99,11 @@ const AssignmentsPanelContent = () => {
   }
 
   const renderPanel = () => {
+    if (assignments.length < 1) return null;
     return (
       <View style={styles.row}>
         <ScrollView horizontal>
-          { renderAssignmentsPanelCard(Colors.aqua, 'Do exercise 2A\nno.1-5', 'Science', 'Naomi', 4) }
-          { renderAssignmentsPanelCard(Colors.yellow, 'Exercise page\n12-13 no. 1-10', 'Mathematics', 'Naomi', 0) }
-          { renderAssignmentsPanelCard(Colors.yellow, 'Exercise page\n1-5', 'Mathematics', 'Naomi', 0) }
+          { assignments.map(assignment => renderAssignmentsPanelCard(assignment)) }
         </ScrollView>
       </View>
     )

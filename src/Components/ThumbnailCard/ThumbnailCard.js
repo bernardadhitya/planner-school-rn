@@ -9,7 +9,7 @@ import { useNavigation } from '@react-navigation/native';
 
 const ThumbnailCard = (props) => {
   const navigation = useNavigation();
-  const { title, subtitle, image, redirectTo } = props;
+  const { title, subtitle, image, redirectTo, data = null } = props;
   let [fontsLoaded] = useFonts(Fonts);
 
   return fontsLoaded ? (
@@ -33,7 +33,7 @@ const ThumbnailCard = (props) => {
             justifyContent: 'center',
             alignItems: 'center'
           }}
-          onPress={() => {navigation.navigate(redirectTo)}}
+          onPress={() => {navigation.navigate(redirectTo, { subject: title, data })}}
         >
           <Image
             source={image}

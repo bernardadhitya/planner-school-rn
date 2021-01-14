@@ -98,6 +98,16 @@ export const createMoodPost = async (moodData) => {
 //   });
 // }
 
+export const getAssignmentsByClassId = async (classID) => {
+  const response = await db.collection('assignments').where("classID", "==", classID).get();
+  const data = response.docs.map(doc => {
+    const responseId = doc.id;
+    const responseData = doc.data();
+    return { assignment_id: responseId, ...responseData }
+  });
+  return data;
+}
+
 export const getAllClasses = async () => {
   const response = await db.collection('classes').get();
   const data = response.docs.map(doc => {

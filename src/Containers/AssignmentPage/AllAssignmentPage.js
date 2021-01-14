@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text, SafeAreaView, View, TouchableOpacity } from 'react-native';
 import { Fonts } from '../../Constants/Fonts';
 import AppLoading from 'expo-app-loading';
@@ -8,10 +8,31 @@ import IconBack from '../../Assets/icons/IconBack';
 import DetailedSubjects from '../../Constants/Subjects';
 import ThumbnailCard from '../../Components/ThumbnailCard/ThumbnailCard';
 import { useNavigation } from '@react-navigation/native';
+import _ from 'lodash';
 
-const AllAssignmentPage = () => {
+const AllAssignmentPage = (props) => {
   const navigation = useNavigation();
+  const { route: { params }} = props;
+  const { data } = params;
+  const [assignments, setAssignments] = useState([]);
   let [fontsLoaded] = useFonts(Fonts);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const formattedAssignments = data.map(assignment => {
+        const { deadline } = assignment;
+        const formattedDeadline = deadline.seconds;
+        return {
+          ...assignment,
+          deadline: formattedDeadline,
+        }
+      })
+      const groupedAssignments = _.groupBy(formattedAssignments, 'subject');
+      console.log(groupedAssignments);
+      setAssignments(groupedAssignments);
+    }
+    fetchData();
+  }, []);
 
   const renderThumbnails = () => {
     const formattedSubjects = [];
@@ -35,12 +56,15 @@ const AllAssignmentPage = () => {
           alignItems: 'flex-start'
         }}>
           { subjects.map(subject => {
+            const totalAssignment = assignments[subject.name] !== undefined ?
+              assignments[subject.name].length : 0
             return (
               <ThumbnailCard
                 title={subject.name}
-                subtitle={'Total: 3 tugas'}
+                subtitle={`Total: ${totalAssignment} tugas`}
                 image={subject.image}
                 redirectTo={'Assignment'}
+                data={assignments[subject.name] || []}
               />
             )
           })}

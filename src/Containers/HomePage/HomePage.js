@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { createStackNavigator } from "@react-navigation/stack";
 import {
   Text,
@@ -14,13 +14,29 @@ import { AuthContext } from "../../Helper/AuthProvider";
 import HomePanel from '../../Components/HomePanel/HomePanel';
 import { View } from 'react-native';
 import IconLogout from '../../Assets/icons/IconLogout';
+import { getAssignmentsByClassId } from '../../../firebase';
 
 const Stack = createStackNavigator();
 
 const Feed = () => {
-  const { user: { name }, logout } = useContext(AuthContext);
+  const {
+    user: {
+      name,
+      class: { classID }
+    },
+    logout
+  } = useContext(AuthContext);
+  const [assignments, setAssignments] = useState([]);
 
   let [fontsLoaded] = useFonts(Fonts);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const fetchedAssignments = await getAssignmentsByClassId(classID);
+      setAssignments(fetchedAssignments);
+    }
+    fetchData();
+  }, []);
   
   if(!fontsLoaded){
     return <AppLoading/>
@@ -87,7 +103,7 @@ const Feed = () => {
             <HomePanel type='Calendar'/>
           </View>
           <View style={styles.View}>
-            <HomePanel type='Assignments' viewAll/>
+            <HomePanel type='Assignments' viewAll data={assignments}/>
           </View>
           <View style={{height: 100}}></View>
         </ScrollView>

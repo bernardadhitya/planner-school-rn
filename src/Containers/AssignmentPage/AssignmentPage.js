@@ -22,41 +22,33 @@ import { Colors } from '../../Constants/Colors';
 import IconBack from '../../Assets/icons/IconBack';
 import { useNavigation } from '@react-navigation/native';
 
-const Stack = createStackNavigator();
-
-const Feed = () => {
+const AssignmentPage = (props) => {
+  const { route: {params} } = props;
+  const { subject, data: assignments } = params;
+  console.log(assignments);
   const navigation = useNavigation();
   const [selectedTab, setSelectedTab] = useState('assigned');
   let [fontsLoaded] = useFonts(Fonts);
-  const [assignmentDetails, setAssignmentDetails] = useState({});
 
   let sheetRef = useRef(null);
   let fall = useMemoOne(() => new Animated.Value(1), []);
   
   const AssignedTab = () => {
-    return (
-      <>
+    return assignments.map(assignment => {
+      return (
         <TouchableOpacity onPress={() => {
           sheetRef.current.snapTo(0)
         }}
         >
           <AssignmentCard
-            className={'Mathematics - Class 1A'}
-            teacherName={'Naomi'}
-            avatar={0}
-            color={Colors.yellow}
-            title={'Exercise page 12-13 no. 1-10'}
+            title={assignment.title}
+            chapter={assignment.chapter}
+            deadline={assignment.deadline}
+            note={assignment.note}
           />
         </TouchableOpacity>
-        <AssignmentCard
-          className={'Science - Class 6C'}
-          teacherName={'Naomi'}
-          avatar={4}
-          color={Colors.aqua}
-          title={'Do exercise 2A no.1-5'}
-        />
-      </>
-    )
+      )
+    })
   }
 
   const SubmittedTab = () => {
@@ -190,10 +182,10 @@ const Feed = () => {
             />
             <View style={{justifyContent: 'center', marginLeft: 20}}>
               <Text style={{ fontFamily: 'Bold', fontSize: 21 }}>
-                Kimia
+                { subject }
               </Text>
               <Text style={{ fontFamily: 'Regular', fontSize: 14, marginTop: 10 }}>
-                Total Tugas: 3
+                {`Total Tugas: ${assignments.length}`}
               </Text>
             </View>
           </View>
@@ -220,35 +212,6 @@ const Feed = () => {
       </SafeAreaView>
     )
   }
-}
-
-const AssignmentPage = () => {
-  return (
-    <Stack.Navigator
-      initialRouteName="Assignments"
-      screenOptions={{
-        headerShown: false
-      }}
-    >
-      <Stack.Screen
-        name="Assignments"
-        options={{
-          headerRight: () => {
-            return (
-              <TouchableOpacity
-                onPress={() => {
-                  logout();
-                }}
-              >
-                <Text>LOGOUT</Text>
-              </TouchableOpacity>
-            );
-          }
-        }}
-        component={Feed}
-      />
-    </Stack.Navigator>
-  )
 }
 
 

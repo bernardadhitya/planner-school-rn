@@ -37,6 +37,16 @@ export const createAssignment = async (assignmentData, classId) => {
   })
 }
 
+export const createMoodPost = async (moodData) => {
+  const { datePosted, responses, userID } = moodData;
+  await db.collection('moods').add({
+    datePosted,
+    responses,
+    userID
+  })
+  console.log('mood posted!');
+}
+
 // export const createSubmission = async (submissionData) => {
 //   const { assignmentId, studentId, classId, attachment } = submissionData;
 //   await db.collection('submissions').add({

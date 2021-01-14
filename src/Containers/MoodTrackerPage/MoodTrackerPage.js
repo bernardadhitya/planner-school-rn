@@ -14,7 +14,8 @@ import IconEmotion3 from '../../Assets/icons/IconEmotion3';
 import IconEmotion4 from '../../Assets/icons/IconEmotion4';
 
 const MoodTrackerPage = () => {
-  const { user: { user_id, role } } = useContext(AuthContext);
+  const { user: { user_id, role, name } } = useContext(AuthContext);
+  const [refresh, setRefresh] = useState(0);
   const [moods, setMoods] = useState([]);
   const navigation = useNavigation();
   let [fontsLoaded] = useFonts(Fonts);
@@ -25,7 +26,7 @@ const MoodTrackerPage = () => {
       setMoods(fetchedMoodsByUserID);
     }
     fetchData();
-  }, []);
+  }, [refresh]);
 
   const renderMoodCard = (datePosted, responses) => {
     const formattedDatePosted = new Date(datePosted.seconds * 1000)
@@ -127,14 +128,14 @@ const MoodTrackerPage = () => {
               fontSize: 21,
               marginTop: 20
             }}>
-              Bernard
+              { name }
             </Text>
             <Text style={{
               fontFamily: 'Regular',
               fontSize: 16,
               marginTop: 10
             }}>
-              Total refleksi: 20
+              Total refleksi: { moods.length }
             </Text>
             { role === 'student' ? <TouchableOpacity
               style={{
@@ -154,7 +155,12 @@ const MoodTrackerPage = () => {
                 paddingBottom: 16,
                 alignItems: 'center',
               }}
-              onPress={() => { navigation.navigate('DailyQuiz') }}
+              onPress={() => {
+                navigation.navigate(
+                  'DailyQuiz',
+                  { onGoBack: () => {setRefresh(refresh + 1)}}
+                )
+              }}
             >
               <Text
                 style={{

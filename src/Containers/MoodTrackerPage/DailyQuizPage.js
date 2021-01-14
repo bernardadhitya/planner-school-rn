@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Text, SafeAreaView, View, TouchableOpacity } from 'react-native';
 import { Fonts } from '../../Constants/Fonts';
 import AppLoading from 'expo-app-loading';
@@ -8,11 +8,17 @@ import IconBack from '../../Assets/icons/IconBack';
 import { useNavigation } from '@react-navigation/native';
 import { Input } from '@ui-kitten/components';
 import QuizCard from '../../Components/MoodTrackerPanel/QuizCard';
+import { AuthContext } from '../../Helper/AuthProvider';
+import { createMoodPost } from '../../../firebase';
 
-const DailyQuizPage = () => {
+const DailyQuizPage = (props) => {
+  const { route: { params }} = props;
+  const { onGoBack } = params;
+  const { user: { user_id } } = useContext(AuthContext); 
   const navigation = useNavigation();
   let [fontsLoaded] = useFonts(Fonts);
   const [selectedOption, setSelectedOption] = useState([null, null, null, null]);
+  const [note, setNote] = useState('');
   const [counter, setCounter] = useState(0);
 
   const handleSelectOption = (questionNumber, answer) => {
@@ -21,6 +27,25 @@ const DailyQuizPage = () => {
     setSelectedOption(updatedSelectedOption);
     setCounter(counter + 1);
     console.log('selected options:', selectedOption);
+  }
+
+  const handleSubmitMoodPost = async () => {
+    console.log('button submit is clicked');
+    const moodData = {
+      datePosted: new Date(),
+      responses: {
+        1: selectedOption[0],
+        2: selectedOption[1],
+        3: selectedOption[2],
+        4: selectedOption[3],
+        5: note
+      },
+      userID: user_id
+    }
+    console.log('mood data:', moodData);
+    await createMoodPost(moodData)
+    onGoBack();
+    navigation.goBack();
   }
 
   const renderQuizPanel = () => {
@@ -78,6 +103,7 @@ const DailyQuizPage = () => {
             style={{
               marginTop: 20
             }}
+            onChangeText={nextValue => setNote(nextValue)}
           />
           <TouchableOpacity
             style={{
@@ -97,6 +123,7 @@ const DailyQuizPage = () => {
               paddingBottom: 16,
               alignItems: 'center',
             }}
+            onPress={() => handleSubmitMoodPost()}
           >
             <Text
               style={{

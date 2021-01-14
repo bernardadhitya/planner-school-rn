@@ -11,11 +11,13 @@ import IconEmotion2 from '../../Assets/icons/IconEmotion2';
 import IconEmotion3 from '../../Assets/icons/IconEmotion3';
 import IconEmotion4 from '../../Assets/icons/IconEmotion4';
 
-const MoodTrackerSinglePage = () => {
+const MoodTrackerSinglePage = (props) => {
+  const { route: { params } } = props;
+  const { datePosted, responses } = params;
   const navigation = useNavigation();
   let [fontsLoaded] = useFonts(Fonts);
 
-  const renderQuizCard = (question) => {
+  const renderQuizCard = (question, response) => {
     return (
       <View style={{
         paddingVertical: 25,
@@ -30,22 +32,22 @@ const MoodTrackerSinglePage = () => {
           <View
             style={{margin: 20}}
           >
-            <IconEmotion1/>
+            <IconEmotion1 focused={response === 0}/>
           </View>
           <View
             style={{margin: 20}}
           >
-            <IconEmotion2/>
+            <IconEmotion2 focused={response === 1}/>
           </View>
           <View
             style={{margin: 20}}
           >
-            <IconEmotion3/>
+            <IconEmotion3 focused={response === 2}/>
           </View>
           <View
             style={{margin: 20}}
           >
-            <IconEmotion4/>
+            <IconEmotion4 focused={response === 3}/>
           </View>
         </View>
       </View>
@@ -55,15 +57,24 @@ const MoodTrackerSinglePage = () => {
   const renderQuizPanel = () => {
     return (
       <View>
-        {renderQuizCard('Bagaimana harimu hari ini?')}
-        {renderQuizCard('Seberapa puas kamu dengan bimbingan guru yang telah diberikan?')}
-        {renderQuizCard('Bagaimana relasimu dengan teman-teman di sekolah?')}
-        {renderQuizCard('Apakah perilakuku sudah mencerminkan apa yang ingin aku capai?')}
+        {renderQuizCard('Bagaimana harimu hari ini?', responses[1])}
+        {renderQuizCard('Seberapa puas kamu dengan bimbingan guru yang telah diberikan?', responses[2])}
+        {renderQuizCard('Bagaimana relasimu dengan teman-teman di sekolah?', responses[3])}
+        {renderQuizCard('Apakah perilakuku sudah mencerminkan apa yang ingin aku capai?', responses[4])}
       </View>
     )
   }
 
   const renderResult = () => {
+    const averageMood = Math.round((responses[1] + responses[2] + responses[3] + responses[4]) / 4) ;
+    const IconEmotions = {
+      0: <IconEmotion1 focused/>,
+      1: <IconEmotion2 focused/>,
+      2: <IconEmotion3 focused/>,
+      3: <IconEmotion4 focused/>,
+      4: <IconEmotion4 focused/>,
+    }
+
     return (
       <View
         style={{
@@ -81,7 +92,7 @@ const MoodTrackerSinglePage = () => {
               fontFamily: 'Regular'
             }}
           >
-            07/07/2020
+            { datePosted }
           </Text>
         </View>
         <View style={{
@@ -94,7 +105,7 @@ const MoodTrackerSinglePage = () => {
             <Text>Mood hari ini: </Text>
           </View>
           <View style={{justifyContent: 'center'}}>
-            <IconEmotion1 focused/>
+            { IconEmotions[averageMood] }
           </View>
         </View>
       </View>
@@ -136,7 +147,7 @@ const MoodTrackerSinglePage = () => {
               marginVertical: 20
             }}
           >
-            Et enim dolor adipisicing consectetur laborum ullamco aute pariatur sit voluptate. Anim irure sint in aliqua ea occaecat mollit voluptate qui aliqua reprehenderit sunt fugiat veniam. Quis et minim dolore labore eiusmod irure sunt ullamco. Ut deserunt veniam ex magna est mollit incididunt sit nostrud. Nisi labore ullamco et ullamco veniam. Voluptate reprehenderit quis mollit cillum reprehenderit ullamco culpa nostrud laborum nisi.
+            {responses[5]}
           </Text>
         </ScrollView>
         <View style={{height: 50}}></View>

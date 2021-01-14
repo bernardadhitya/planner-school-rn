@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Text, SafeAreaView, View, Image, TouchableOpacity } from 'react-native';
 import { Fonts } from '../../Constants/Fonts';
 import AppLoading from 'expo-app-loading';
@@ -8,13 +8,37 @@ import IconEmotion1 from '../../Assets/icons/IconEmotion1';
 import { useNavigation } from '@react-navigation/native';
 import { AuthContext } from '../../Helper/AuthProvider';
 import IconBack from '../../Assets/icons/IconBack';
+import { getAllMoodsByUserId } from '../../../firebase';
+import IconEmotion2 from '../../Assets/icons/IconEmotion2';
+import IconEmotion3 from '../../Assets/icons/IconEmotion3';
+import IconEmotion4 from '../../Assets/icons/IconEmotion4';
 
 const MoodTrackerPage = () => {
-  const { user: { role } } = useContext(AuthContext);
+  const { user: { user_id, role } } = useContext(AuthContext);
+  const [moods, setMoods] = useState([]);
   const navigation = useNavigation();
   let [fontsLoaded] = useFonts(Fonts);
 
-  const renderMoodCard = () => {
+  useEffect(() => {
+    const fetchData = async () => {
+      const fetchedMoodsByUserID = await getAllMoodsByUserId(user_id);
+      setMoods(fetchedMoodsByUserID);
+    }
+    fetchData();
+  }, []);
+
+  const renderMoodCard = (datePosted, responses) => {
+    const formattedDatePosted = new Date(datePosted.seconds * 1000)
+      .toLocaleDateString("id");
+    const averageMood = Math.round((responses[1] + responses[2] + responses[3] + responses[4]) / 4) ;
+    const IconEmotions = {
+      0: <IconEmotion1 focused/>,
+      1: <IconEmotion2 focused/>,
+      2: <IconEmotion3 focused/>,
+      3: <IconEmotion4 focused/>,
+      4: <IconEmotion4 focused/>,
+    }
+
     return (
       <TouchableOpacity
         style={{
@@ -24,7 +48,9 @@ const MoodTrackerPage = () => {
           borderTopWidth: 1,
           borderColor: '#C7C7C7'
         }}
-        onPress={() => { navigation.navigate('MoodTrackerSingle') }}
+        onPress={() => { navigation.navigate('MoodTrackerSingle', 
+          {datePosted: formattedDatePosted, responses}
+        )}}
       >
         <View style={{ justifyContent: 'center'}}>
           <Text
@@ -33,7 +59,7 @@ const MoodTrackerPage = () => {
               fontFamily: 'Regular'
             }}
           >
-            07/07/2020
+            { formattedDatePosted }
           </Text>
         </View>
         <View style={{
@@ -43,7 +69,7 @@ const MoodTrackerPage = () => {
           marginTop: 10,
         }}>
           <View style={{ justifyContent: 'center'}}>
-            <IconEmotion1/>
+            { IconEmotions[averageMood] }
           </View>
         </View>
       </TouchableOpacity>
@@ -53,9 +79,7 @@ const MoodTrackerPage = () => {
   const renderMoodPanel = () => {
     return (
       <View style={{width: '100%', marginTop: 20}}>
-        { renderMoodCard() }
-        { renderMoodCard() }
-        { renderMoodCard() }
+        { moods.map(mood => renderMoodCard(mood.datePosted, mood.responses)) }
       </View>
     )
   }

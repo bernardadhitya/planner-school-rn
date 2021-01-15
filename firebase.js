@@ -251,11 +251,8 @@ export const getAllStudentsMood = async () => {
 }
 
 export const getAllSchedulesByTeacherId = async (teacherID) => {
-  console.log('teacher id:', teacherID);
   const userData = await getUserById(teacherID);
-  console.log('teacher data:', userData);
   const { classes } = userData;
-  console.log('classes:', classes);
 
   const getSchedulesData = async () => {
     return Promise.all(classes.map(classData => getSchedulesByClassId(classData.classID)));

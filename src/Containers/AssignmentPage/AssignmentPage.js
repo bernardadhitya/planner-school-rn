@@ -21,6 +21,7 @@ import { useMemoOne } from 'use-memo-one';
 import { Colors } from '../../Constants/Colors';
 import IconBack from '../../Assets/icons/IconBack';
 import { useNavigation } from '@react-navigation/native';
+import DetailedSubjects from '../../Constants/Subjects';
 
 const AssignmentPage = (props) => {
   const { route: {params} } = props;
@@ -174,7 +175,8 @@ const AssignmentPage = (props) => {
             flexDirection: 'row'
           }}>
             <Image
-              source={require('../../Assets/logo/Chemistry.png')}
+              source={DetailedSubjects.filter(
+                subjectData => subjectData.name === subject)[0].image}
               style={{
                 width: 100,
                 height: 100,

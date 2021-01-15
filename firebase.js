@@ -48,8 +48,6 @@ export const createMoodPost = async (moodData) => {
 
 export const createAssignmentPost = async (assignmentData) => {
   const { chapter, deadline, note, title, subject, classID } = assignmentData;
-  console.log('data to send:', assignmentData);
-
   await db.collection('assignments').add({
     chapter,
     deadline,
@@ -58,8 +56,6 @@ export const createAssignmentPost = async (assignmentData) => {
     subject,
     classID
   });
-
-  console.log('data sent')
 }
 
 // export const createSubmission = async (submissionData) => {
@@ -170,6 +166,16 @@ export const getAllMoodsByUserId = async (userID) => {
     const responseId = doc.id;
     const responseData = doc.data();
     return { mood_id: responseId, ...responseData }
+  });
+  return data;
+}
+
+export const getAllSchedules = async () => {
+  const response = await db.collection('schedules').get();
+  const data = response.docs.map(doc => {
+    const responseId = doc.id;
+    const responseData = doc.data();
+    return { schedule_id: responseId, ...responseData }
   });
   return data;
 }

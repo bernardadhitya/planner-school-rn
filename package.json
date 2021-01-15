@@ -24,6 +24,7 @@
     "faker": "^4.1.0",
     "firebase": "7.9.0",
     "lodash": "^4.17.20",
+    "moment": "^2.29.1",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-firebase-hooks": "^2.2.0",

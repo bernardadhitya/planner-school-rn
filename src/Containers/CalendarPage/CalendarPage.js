@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text, SafeAreaView, View, TouchableOpacity } from 'react-native';
 import { Fonts } from '../../Constants/Fonts';
 import AppLoading from 'expo-app-loading';
@@ -12,14 +12,44 @@ import { useContext } from 'react';
 import { AuthContext } from '../../Helper/AuthProvider';
 import IconBack from '../../Assets/icons/IconBack';
 import { useNavigation } from '@react-navigation/native';
+import { getAllSchedules } from '../../../firebase';
+import moment from 'moment';
+import _ from 'lodash';
 
 const CalendarPage = () => {
   const navigation = useNavigation();
   const { user: { role } } = useContext(AuthContext);
   let [fontsLoaded] = useFonts(Fonts);
   const [date, setDate] = useState(new Date());
+  const [schedules, setSchedules] = useState([]);
 
-  const renderSchedule = () => {
+  useEffect(() => {
+    const fetchData = async () => {
+      const fetchedAllSchedules = await getAllSchedules();
+      const formattedSchedules = fetchedAllSchedules.map(schedule => {
+        const { schedule_id, subject, dayAndTime } = schedule;
+        const startDate = new Date(dayAndTime.seconds * 1000);
+        const endDate = new Date((dayAndTime.seconds + 3600) * 1000);
+
+        const startTime = moment(startDate).format('hh:mm');
+        const endTime = moment(endDate).format('hh:mm');
+        
+        return {
+          schedule_id,
+          subject,
+          date: startDate,
+          day: startDate.getDay(),
+          startTime,
+          endTime
+        }
+      })
+      setSchedules(formattedSchedules);
+    }
+    fetchData();
+  }, []);
+
+  const renderSchedule = (schedule) => {
+    const { subject } = schedule;
     return (
       <View
         style={{
@@ -31,14 +61,8 @@ const CalendarPage = () => {
         }}
       >
         <Text style={{fontFamily: 'SemiBold', fontSize: 16, color: '#598BFF'}}>
-          Ilmu Pengetahuan Alam
+          {subject}
         </Text>
-        <View style={{flexDirection: 'row', marginTop: 8}}>
-          <IconBook/>
-          <Text style={{fontFamily: 'Regular', fontSize: 12, marginLeft: 10}}>
-            Reaksi Redoks dan Elektrokimia
-          </Text>
-        </View>
         <View style={{flexDirection: 'row', marginTop: 8}}>
           <IconClock/>
           <Text style={{fontFamily: 'Regular', fontSize: 12, marginLeft: 10}}>
@@ -50,24 +74,31 @@ const CalendarPage = () => {
   }
 
   const renderSchedules = () => {
-    return (
-      <View>
-        <View style={{
-          flexDirection: 'row',
-          marginTop: 21
-        }}>
-          <IconBookmark/>
-          <Text style={{
-            fontFamily: 'SemiBold',
-            marginLeft: 10
+    const schedulesOnSelectedDay = schedules.filter(schedule => 
+      schedule.day === date.getDay()
+    ).sort((a,b) => {return a.date.getHours() - b.date.getHours()});
+
+    return schedulesOnSelectedDay.map(schedule => {
+      const { startTime, endTime } = schedule;
+
+      return (
+        <View>
+          <View style={{
+            flexDirection: 'row',
+            marginTop: 21
           }}>
-            07.30 - 08.30
-          </Text>
+            <IconBookmark/>
+            <Text style={{
+              fontFamily: 'SemiBold',
+              marginLeft: 10
+            }}>
+             { `${startTime} - ${endTime}`}
+            </Text>
+          </View>
+          {renderSchedule(schedule)}
         </View>
-        {renderSchedule()}
-        {renderSchedule()}
-      </View>
-    );
+      )
+    })
   }
 
   if (!fontsLoaded) {
@@ -110,7 +141,6 @@ const CalendarPage = () => {
               onSelect={nextDate => setDate(nextDate)}
             />
           </View>
-          {renderSchedules()}
           {renderSchedules()}
           <View style={{height: 50}}></View>
         </ScrollView>

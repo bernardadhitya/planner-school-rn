@@ -13,29 +13,29 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-export const createAssignment = async (assignmentData, classId) => {
-  const { title, instructions, dueDate } = assignmentData;
-  await db.collection('assignments').add({
-    title,
-    instructions,
-    dueDate
-  })
-  .then(async (assignmentRef) => {
-    const classData = await getClassById(classId);
-    const { assignments } = classData;
-    assignments.push({
-      assignment_id: assignmentRef.id,
-      title,
-      students: {
-        graded: [],
-        submitted: []
-      }
-    });
-    await db.collection('classes').doc(classId).update({
-      assignments
-    });
-  })
-}
+// export const createAssignment = async (assignmentData, classId) => {
+//   const { title, instructions, dueDate } = assignmentData;
+//   await db.collection('assignments').add({
+//     title,
+//     instructions,
+//     dueDate
+//   })
+//   .then(async (assignmentRef) => {
+//     const classData = await getClassById(classId);
+//     const { assignments } = classData;
+//     assignments.push({
+//       assignment_id: assignmentRef.id,
+//       title,
+//       students: {
+//         graded: [],
+//         submitted: []
+//       }
+//     });
+//     await db.collection('classes').doc(classId).update({
+//       assignments
+//     });
+//   })
+// }
 
 export const createMoodPost = async (moodData) => {
   const { datePosted, responses, userID } = moodData;
@@ -43,7 +43,23 @@ export const createMoodPost = async (moodData) => {
     datePosted,
     responses,
     userID
-  })
+  });
+}
+
+export const createAssignmentPost = async (assignmentData) => {
+  const { chapter, deadline, note, title, subject, classID } = assignmentData;
+  console.log('data to send:', assignmentData);
+
+  await db.collection('assignments').add({
+    chapter,
+    deadline,
+    note,
+    title,
+    subject,
+    classID
+  });
+
+  console.log('data sent')
 }
 
 // export const createSubmission = async (submissionData) => {

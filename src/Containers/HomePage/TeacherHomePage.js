@@ -1,5 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
+import React, { useContext } from 'react';
 import {
   Text,
   TouchableOpacity,
@@ -13,10 +12,8 @@ import AppLoading from 'expo-app-loading';
 import { useFonts } from '@use-expo/font';
 import IconLogout from '../../Assets/icons/IconLogout';
 import { AuthContext } from "../../Helper/AuthProvider";
-import DetailedSubjects from '../../Constants/Subjects';
 import ThumbnailCard from '../../Components/ThumbnailCard/ThumbnailCard';
 import TeacherMenu from '../../Constants/TeacherMenu';
-import { useNavigation } from '@react-navigation/native';
 
 const TeacherHomePage = () => {
   const { user: { name }, logout } = useContext(AuthContext);

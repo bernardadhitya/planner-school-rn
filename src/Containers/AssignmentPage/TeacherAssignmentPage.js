@@ -8,7 +8,7 @@ import IconBack from '../../Assets/icons/IconBack';
 import { useNavigation } from '@react-navigation/native';
 import { Input, Select, SelectItem, IndexPath, Datepicker } from '@ui-kitten/components';
 import DetailedSubjects from '../../Constants/Subjects';
-import { getAllClasses } from '../../../firebase';
+import { createAssignmentPost, getAllClasses } from '../../../firebase';
 
 const TeacherAssignmentPage = () => {
   const navigation = useNavigation();
@@ -37,6 +37,19 @@ const TeacherAssignmentPage = () => {
     }
     fetchData();
   }, []);
+
+  const handleCreateAssignment = async () => {
+    const newAssignment = {
+      chapter,
+      deadline,
+      note,
+      title,
+      subject: DetailedSubjects[selectedSubject.row].name,
+      classID: allClasses[selectedClass.row].class_id
+    }
+    await createAssignmentPost(newAssignment);
+    navigation.goBack();
+  }
 
   if (!fontsLoaded) {
     return <AppLoading />;
@@ -146,6 +159,7 @@ const TeacherAssignmentPage = () => {
               paddingBottom: 16,
               alignItems: 'center',
             }}
+            onPress={() => {handleCreateAssignment()}}
           >
             <Text
               style={{
@@ -157,7 +171,7 @@ const TeacherAssignmentPage = () => {
               Submit
             </Text>
           </TouchableOpacity>
-          <View style={{height: 50}}></View>
+          <View style={{height: 200}}></View>
         </ScrollView>
       </SafeAreaView>
     )

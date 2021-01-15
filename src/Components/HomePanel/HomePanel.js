@@ -19,7 +19,7 @@ const HomePanel = (props) => {
   const panelHeaders = {
     Calendar: {
       title: "Jadwal Hari Ini",
-      content: <LiveClassPanelContent/>
+      content: <LiveClassPanelContent schedules={data}/>
     },
     Assignments: {
       title: "Tugas",

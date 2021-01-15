@@ -14,26 +14,37 @@ import { AuthContext } from "../../Helper/AuthProvider";
 import HomePanel from '../../Components/HomePanel/HomePanel';
 import { View } from 'react-native';
 import IconLogout from '../../Assets/icons/IconLogout';
-import { getAssignmentsByClassId } from '../../../firebase';
+import { getAssignmentsByClassId, getSchedulesByClassId } from '../../../firebase';
 
 const Stack = createStackNavigator();
 
 const Feed = () => {
   const {
-    user: {
-      name,
-      class: { classID }
-    },
+    user: { name, class: { classID } },
     logout
   } = useContext(AuthContext);
   const [assignments, setAssignments] = useState([]);
+  const [schedules, setSchedules] = useState([]);
 
   let [fontsLoaded] = useFonts(Fonts);
 
   useEffect(() => {
     const fetchData = async () => {
       const fetchedAssignments = await getAssignmentsByClassId(classID);
+      const fetchedSchedules = await getSchedulesByClassId(classID);
+
+      const scheduleToday = fetchedSchedules.filter(schedule => {
+        const scheduleDay = new Date(schedule.dayAndTime.seconds * 1000).getDay();
+        const currentDay = new Date().getDay();
+        return scheduleDay === currentDay;
+      }).sort((a,b) => {
+        const firstDate = new Date(a.dayAndTime.seconds * 1000);
+        const secondDate = new Date(b.dayAndTime.seconds * 1000);
+        return firstDate.getHours() - secondDate.getHours();
+      });;
+
       setAssignments(fetchedAssignments);
+      setSchedules(scheduleToday);
     }
     fetchData();
   }, []);
@@ -100,7 +111,7 @@ const Feed = () => {
             </View>
           </View>
           <View style={styles.View}>
-            <HomePanel type='Calendar'/>
+            <HomePanel type='Calendar' data={schedules}/>
           </View>
           <View style={styles.View}>
             <HomePanel type='Assignments' viewAll data={assignments}/>

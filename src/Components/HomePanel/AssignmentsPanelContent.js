@@ -99,14 +99,17 @@ const AssignmentsPanelContent = (props) => {
   }
 
   const renderPanel = () => {
-    if (assignments.length < 1) return null;
-    return (
+    return assignments.length > 0 ?
       <View style={styles.row}>
         <ScrollView horizontal>
           { assignments.map(assignment => renderAssignmentsPanelCard(assignment)) }
         </ScrollView>
       </View>
-    )
+      : <View>
+          <Text style={{fontFamily: 'SemiBold', textAlign: 'center'}}>
+            Tidak ada tugas saat ini
+          </Text>
+        </View>;
   }
 
   return fontsLoaded ? renderPanel() : <AppLoading/>;

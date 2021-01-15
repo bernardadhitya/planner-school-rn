@@ -1,60 +1,63 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { useFonts } from '@use-expo/font';
 import { View, Text, StyleSheet } from 'react-native';
-import { Card } from '@ui-kitten/components';
 import { Fonts } from '../../Constants/Fonts';
 import AppLoading from 'expo-app-loading';
-import CharacterMrTeacher from '../../Assets/characters/CharacterMrTeacher';
-import { Characters } from '../../Constants/Characters';
-import { AuthContext } from '../../Helper/AuthProvider';
-import { Colors } from '../../Constants/Colors';
 import IconBook from '../../Assets/icons/IconBook';
 import IconClock from '../../Assets/icons/IconClock';
+import moment from 'moment';
 
-const LiveClassPanelContent = () => {
-  const { user } = useContext(AuthContext);
+const LiveClassPanelContent = (props) => {
+  const { schedules } = props;
   let [fontsLoaded] = useFonts(Fonts);
 
-  const renderPanel = () => {
+  const renderScheduleCard = (schedule) => {
+    const { subject, dayAndTime } = schedule;
+
+    const formattedStartDate = new Date(dayAndTime.seconds * 1000);
+    const formattedEndDate = new Date((dayAndTime.seconds + 3600) * 1000);
+    const startTime = moment(formattedStartDate).format('hh:mm');
+    const endTime = moment(formattedEndDate).format('hh:mm');
+
     return (
-      <View style={styles.row}>
-        <View style={styles.column}>
-          <View style={{backgroundColor: '#F9F9FB', borderRadius: 10}}>
-            <View style={styles.row}>
-              <View style={{marginHorizontal: 25, marginVertical: 20}}>
-                <Text style={{textAlign: 'center'}}>07.30</Text>
-                <Text style={{textAlign: 'center'}}>-</Text>
-                <Text style={{textAlign: 'center'}}>08.30</Text>
-              </View>
-              <View style={{
-                height: 50,
-                width: 1,
-                backgroundColor: '#A7A7A9',
-                marginRight: 20,
-                marginTop: 20
-              }}></View>
-              <View style={styles.center}>
-                <Text style={{fontFamily: 'SemiBold', fontSize: 16, color: '#598BFF'}}>
-                  Ilmu Pengetahuan Alam
-                </Text>
-                <View style={{flexDirection: 'row', marginTop: 8}}>
-                  <IconBook/>
-                  <Text style={{fontFamily: 'Regular', fontSize: 12, marginLeft: 10}}>
-                    Reaksi Redoks dan Elektrokimia
-                  </Text>
-                </View>
-                <View style={{flexDirection: 'row', marginTop: 8}}>
-                  <IconClock/>
-                  <Text style={{fontFamily: 'Regular', fontSize: 12, marginLeft: 10}}>
-                    1 Jam (60 menit)
-                  </Text>
-                </View>
-              </View>
+      <View style={{backgroundColor: '#F9F9FB', borderRadius: 10, marginBottom: 10}}>
+        <View style={styles.row}>
+          <View style={{marginHorizontal: 25, marginVertical: 20}}>
+            <Text style={{textAlign: 'center'}}>{startTime}</Text>
+            <Text style={{textAlign: 'center'}}>-</Text>
+            <Text style={{textAlign: 'center'}}>{endTime}</Text>
+          </View>
+          <View style={{
+            height: 50,
+            width: 1,
+            backgroundColor: '#A7A7A9',
+            marginRight: 20,
+            marginTop: 20
+          }}></View>
+          <View style={styles.center}>
+            <Text style={{fontFamily: 'SemiBold', fontSize: 16, color: '#598BFF'}}>
+              {subject}
+            </Text>
+            <View style={{flexDirection: 'row', marginTop: 8}}>
+              <IconClock/>
+              <Text style={{fontFamily: 'Regular', fontSize: 12, marginLeft: 10}}>
+                1 Jam (60 menit)
+              </Text>
             </View>
           </View>
         </View>
       </View>
     )
+  }
+
+  const renderPanel = () => {
+    return schedules.length > 0 ?
+      schedules.map(schedule => renderScheduleCard(schedule))
+      : <View>
+          <Text style={{fontFamily: 'SemiBold', textAlign: 'center'}}>
+            Tidak ada jadwal hari ini
+          </Text>
+        </View>;
   }
 
   return fontsLoaded ? renderPanel() : <AppLoading/>;

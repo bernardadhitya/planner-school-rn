@@ -12,20 +12,30 @@ import { useContext } from 'react';
 import { AuthContext } from '../../Helper/AuthProvider';
 import IconBack from '../../Assets/icons/IconBack';
 import { useNavigation } from '@react-navigation/native';
-import { getAllSchedules } from '../../../firebase';
+import { getAllSchedules, getAllSchedulesByTeacherId, getSchedulesByClassId } from '../../../firebase';
 import moment from 'moment';
 import _ from 'lodash';
 
 const CalendarPage = () => {
   const navigation = useNavigation();
-  const { user: { role } } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
+  const { role } = user;
   let [fontsLoaded] = useFonts(Fonts);
   const [date, setDate] = useState(new Date());
   const [schedules, setSchedules] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const fetchedAllSchedules = await getAllSchedules();
+      const fetchedData = 
+        role === 'student' ?
+          await getSchedulesByClassId(user.class.classID)
+          : await getAllSchedulesByTeacherId(user.user_id);
+
+      const fetchedAllSchedules =
+        role === 'student' ?
+          fetchedData
+          : fetchedData.reduce((schedules, schedule) => [...schedules, ...schedule], []);
+
       const formattedSchedules = fetchedAllSchedules.map(schedule => {
         const { schedule_id, subject, dayAndTime } = schedule;
         const startDate = new Date(dayAndTime.seconds * 1000);

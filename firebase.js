@@ -180,6 +180,16 @@ export const getAllSchedules = async () => {
   return data;
 }
 
+export const getSchedulesByClassId = async (classID) => {
+  const response = await db.collection('schedules').where("classID", "==", classID).get();
+  const data = response.docs.map(doc => {
+    const responseId = doc.id;
+    const responseData = doc.data();
+    return { schedule_id: responseId, ...responseData }
+  });
+  return data;
+}
+
 export const getClassById = async (classId) => {
   const response = await db.collection('classes').doc(classId).get();
   const responseId = response.id;
@@ -238,6 +248,24 @@ export const getAllStudentsMood = async () => {
   const allStudentsMoodData = await getAllStudentsMoodData(allStudents);
 
   return allStudentsMoodData;
+}
+
+export const getAllSchedulesByTeacherId = async (teacherID) => {
+  console.log('teacher id:', teacherID);
+  const userData = await getUserById(teacherID);
+  console.log('teacher data:', userData);
+  const { classes } = userData;
+  console.log('classes:', classes);
+
+  const getSchedulesData = async () => {
+    return Promise.all(classes.map(classData => getSchedulesByClassId(classData.classID)));
+  };
+
+  const schedulesData = await getSchedulesData();
+
+  console.log('schedules data:', schedulesData);
+
+  return schedulesData;
 }
 
 // export const getSubmissionByUserIdAndAssignmentId = async (userId, assignmentId) => {

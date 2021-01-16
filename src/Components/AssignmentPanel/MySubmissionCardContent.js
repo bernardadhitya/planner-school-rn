@@ -4,11 +4,11 @@ import { View, Text, StyleSheet } from 'react-native';
 import { Layout, Card } from '@ui-kitten/components';
 import { Fonts } from '../../Constants/Fonts';
 import AppLoading from 'expo-app-loading';
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, Image } from 'react-native';
 import IconImageAttachment from '../../Assets/icons/IconImageAttachment';
 
 const MySubmissionCardContent = (props) => {
-  const { status, onClick, onSubmit } = props
+  const { status, image, fileName, onClick, onSubmit } = props
   let [fontsLoaded] = useFonts(Fonts);
 
   const renderAssignedContent = () => (
@@ -16,6 +16,20 @@ const MySubmissionCardContent = (props) => {
       <Text style={{fontFamily: 'Regular', fontSize: 10, color: '#EF5B54', marginTop: 6}}>
         Jangan lupa unggah tugas sebelum batas pengumpulan!
       </Text>
+      {image ? 
+        <View style={{flexDirection: 'row'}}>
+          <View style={{justifyContent: 'center'}}>
+            <Image
+              source={{ uri: image }}
+              style={{height: 50, width: 50, marginVertical: 10}}
+            />
+          </View>
+          <View style={{justifyContent: 'center', marginLeft: 10}}>
+            <Text style={{fontSize: 10, fontFamily: 'SemiBold', marginBottom: 4}}>{fileName}</Text>
+            <Text style={{fontSize: 10, fontFamily: 'Regular'}}>{new Date().toLocaleDateString('id')}</Text>
+          </View>
+        </View>
+      : null}
       <TouchableOpacity onPress={() => {onClick()}}>
         <View style={styles.center, {
           marginTop: 16,

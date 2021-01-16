@@ -145,6 +145,8 @@ const AssignmentPage = (props) => {
         onClick={handleClick}
         onSubmit={handleSubmit}
         loading={loading}
+        image={image}
+        fileName={fileName}
       />
     </View>
   );

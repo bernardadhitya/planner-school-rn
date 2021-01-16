@@ -7,7 +7,7 @@ import MySubmissionCardContent from './MySubmissionCardContent';
 import { Spinner } from '@ui-kitten/components';
 
 const MySubmissionCard = (props) => {
-  const {detail, status, onClick, onSubmit, loading} = props;
+  const {detail, status, onClick, onSubmit, loading, image, fileName} = props;
   let [fontsLoaded] = useFonts(Fonts);
 
   return fontsLoaded ? (
@@ -47,7 +47,13 @@ const MySubmissionCard = (props) => {
               </Text>
             </View>
           </View>
-          <MySubmissionCardContent status={status} onClick={onClick} onSubmit={onSubmit}/>
+          <MySubmissionCardContent
+            status={status}
+            image={image}
+            fileName={fileName}
+            onClick={onClick}
+            onSubmit={onSubmit}
+          />
           {loading ? <View style={{flexDirection: 'row', justifyContent: 'center', marginTop: 20}}>
             <View style={{justifyContent: 'center'}}>
               <Spinner/>

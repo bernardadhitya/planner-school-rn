@@ -4,9 +4,10 @@ import { View, Text, StyleSheet } from 'react-native';
 import { Fonts } from '../../Constants/Fonts';
 import AppLoading from 'expo-app-loading';
 import MySubmissionCardContent from './MySubmissionCardContent';
+import { Spinner } from '@ui-kitten/components';
 
 const MySubmissionCard = (props) => {
-  const {detail, status, onClick, onSubmit} = props;
+  const {detail, status, onClick, onSubmit, loading} = props;
   let [fontsLoaded] = useFonts(Fonts);
 
   return fontsLoaded ? (
@@ -47,6 +48,14 @@ const MySubmissionCard = (props) => {
             </View>
           </View>
           <MySubmissionCardContent status={status} onClick={onClick} onSubmit={onSubmit}/>
+          {loading ? <View style={{flexDirection: 'row', justifyContent: 'center', marginTop: 20}}>
+            <View style={{justifyContent: 'center'}}>
+              <Spinner/>
+            </View>
+            <View style={{justifyContent: 'center'}}>
+              <Text style={{fontFamily: 'SemiBold', marginLeft: 10}}>Uploading...</Text>
+            </View>
+          </View> : null}
         </View>
       </View>
     </View>

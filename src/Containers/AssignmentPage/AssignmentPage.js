@@ -36,12 +36,13 @@ const AssignmentPage = (props) => {
   const [selectedAssignment, setSelectedAssignment] = useState({});
   const [image, setImage] = useState('');
   const [fileName, setFileName] = useState('');
+  const [loading, setLoading] = useState(false);
   let [fontsLoaded] = useFonts(Fonts);
 
   let sheetRef = useRef(null);
   let fall = useMemoOne(() => new Animated.Value(1), []);
 
-  const openImagePickerAsync = async () => {
+  const handleClick = async () => {
     let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
     if (permissionResult.granted === false) {
@@ -60,6 +61,8 @@ const AssignmentPage = (props) => {
   }
 
   const handleSubmit = async () => {
+    setLoading(true);
+
     const submission = {
       studentID: user_id,
       assignmentID: selectedAssignment.assignment_id,
@@ -69,6 +72,8 @@ const AssignmentPage = (props) => {
     const submissionID = await createSubmissionPost(submission);
     await uploadImage(image, submissionID + '/' + fileName);
     sheetRef.current.snapTo(2);
+
+    setLoading(false);
   }
 
   const AssignedTab = () => {
@@ -137,8 +142,9 @@ const AssignmentPage = (props) => {
       />
       <MySubmissionCard
         status={selectedTab}
-        onClick={openImagePickerAsync}
+        onClick={handleClick}
         onSubmit={handleSubmit}
+        loading={loading}
       />
     </View>
   );

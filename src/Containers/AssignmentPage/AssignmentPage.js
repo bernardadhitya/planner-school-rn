@@ -73,6 +73,8 @@ const AssignmentPage = (props) => {
     await uploadImage(image, submissionID + '/' + fileName);
     sheetRef.current.snapTo(2);
 
+    setImage('');
+    setFileName('');
     setLoading(false);
   }
 

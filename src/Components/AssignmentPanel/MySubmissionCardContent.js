@@ -68,61 +68,27 @@ const MySubmissionCardContent = (props) => {
         }}>
           <Card>
             <Layout style={styles.row}>
-              <Layout style={styles.column, {marginRight: 35}}>
-                <IconImageAttachment />
+              <Layout style={styles.column, {marginRight: 35, justifyContent: 'center'}}>
+                <Image
+                  source={{uri: image}}
+                  style={{height: 50, width: 50}}
+                />
               </Layout>
-              <Layout style={styles.column}>
-                <Text style={{fontFamily: 'Medium', fontSize: 10}}>Bernard_Exercise.jpg</Text>
+              <Layout style={styles.column, {justifyContent: 'center'}}>
+                <Text style={{fontFamily: 'Medium', fontSize: 10}}>{fileName}</Text>
                 <Text style={{fontFamily: 'Regular', fontSize: 8}}>2.4 MB</Text>
               </Layout>
             </Layout>
           </Card>
         </View>
       </TouchableOpacity>
-    </View>
-  )
-
-  const renderGradedContent = () => (
-    <View>
-      <Text style={{fontFamily: 'Regular', fontSize: 10, marginTop: 6}}>
-        Score
-      </Text>
-      <Text style={{fontFamily: 'SemiBold', fontSize: 12}}>
-        9/10
-      </Text>
-      <TouchableOpacity onPress={() => console.log('pressed')}>
-        <View style={{
-          marginTop: 6,
-        }}>
-          <Card>
-            <Layout style={styles.row}>
-              <Layout style={styles.column, {marginRight: 35}}>
-                <IconImageAttachment />
-              </Layout>
-              <Layout style={styles.column}>
-                <Text style={{fontFamily: 'Medium', fontSize: 10}}>Bernard_Exercise.jpg</Text>
-                <Text style={{fontFamily: 'Regular', fontSize: 8}}>2.4 MB</Text>
-              </Layout>
-            </Layout>
-          </Card>
-        </View>
-      </TouchableOpacity>
-      <Text style={{fontFamily: 'Regular', fontSize: 10, marginTop: 12}}>
-        Teacher's Note
-      </Text>
-      <Card>
-        <Text style={{fontFamily: 'Regular', fontSize: 12}}>
-        Good job! Keep up the good work
-        </Text>
-      </Card>
     </View>
   )
 
   const renderSubmissionContent = () => {
     const submissionContents = {
       berjalan: renderAssignedContent(),
-      selesai: renderSubmittedContent(),
-      graded: renderGradedContent()
+      selesai: renderSubmittedContent()
     }
     return submissionContents[status]
   };

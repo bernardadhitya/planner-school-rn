@@ -7,8 +7,10 @@ import MySubmissionCardContent from './MySubmissionCardContent';
 import { Spinner } from '@ui-kitten/components';
 
 const MySubmissionCard = (props) => {
-  const {detail, status, onClick, onSubmit, loading, image, fileName} = props;
+  const {status, onClick, onSubmit, loading, image, fileName} = props;
   let [fontsLoaded] = useFonts(Fonts);
+
+  console.log(props);
 
   return fontsLoaded ? (
     <View style={styles.row, {marginVertical: 10}} level='3'>

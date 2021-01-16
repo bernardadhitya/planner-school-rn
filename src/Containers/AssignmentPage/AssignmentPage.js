@@ -115,29 +115,11 @@ const AssignmentPage = (props) => {
       )
     })
   }
-  
-  const GradedTab = () => {
-    return (
-      <TouchableOpacity onPress={() => {
-        sheetRef.current.snapTo(1)
-      }}
-      >
-        <AssignmentCard
-          className={'Mathematics - Class 1A'}
-          teacherName={'Naomi'}
-          avatar={0}
-          color={Colors.yellow}
-          title={'Exercise page 1-2 no. 1-5'}
-        />
-      </TouchableOpacity>
-    )
-  }
 
   const renderSelectedTab = () => {
     const tabsOption = {
       berjalan: <AssignedTab/>,
-      selesai: <SubmittedTab/>,
-      graded: <GradedTab/>
+      selesai: <SubmittedTab/>
     }
     return tabsOption[selectedTab]
   }
@@ -164,8 +146,14 @@ const AssignmentPage = (props) => {
         onClick={handleClick}
         onSubmit={handleSubmit}
         loading={loading}
-        image={image}
-        fileName={fileName}
+        image={
+          !selectedAssignment.hasOwnProperty('submitted') || !selectedAssignment.submitted ? 
+          image : selectedAssignment.submittedData.image
+        }
+        fileName={
+          !selectedAssignment.hasOwnProperty('submitted') || !selectedAssignment.submitted ?
+          fileName : selectedAssignment.submittedData.filePath
+        }
       />
     </View>
   );

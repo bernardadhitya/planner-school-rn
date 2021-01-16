@@ -54,6 +54,15 @@ export const uploadImage = async (uri, imageFulPath) => {
   return ref.put(blob);
 }
 
+export const getImageUrlByImageRef = async (imageRef) => {
+  const response = await imageRef.getDownloadURL().then((url) => {
+    return url;
+  }).catch(function (error) {
+    console.log(error)
+  });
+  return response;
+}
+
 export const getAssignmentsByClassId = async (classID) => {
   const response = await db.collection('assignments').where("classID", "==", classID).get();
   const data = response.docs.map(doc => {
@@ -208,16 +217,32 @@ export const getAllSchedulesByTeacherId = async (teacherID) => {
 }
 
 export const getSubmissionStatus = async (assignment, studentID) => {
+  const getMedia = async (result) => {
+    return await getImageUrlByImageRef(result[0])
+  };
   const {assignment_id} = assignment;
   console.log(assignment_id, studentID)
   const response = await db.collection('submissions')
     .where("assignmentID", "==", assignment_id)
     .where("studentID", "==", studentID)
     .get();
-
-  console.log(response.docs.length);
+  
   const submitted = response.docs.length > 0;
-  return { ...assignment, submitted };
+  const submissionID = submitted ? response.docs[0].id : null;
+  const submissionData = submitted ? response.docs[0].data() : null;
+
+  const folderPath = `/${submissionID}`;
+  const fileNames = await storage.child(folderPath).listAll();
+  const image = submitted ? await getMedia(fileNames.items) : null;
+
+  console.log(image);
+
+  const submittedData = submitted ? {
+    submissionID,
+    ...submissionData,
+    image
+  } : null;
+  return { ...assignment, submitted, submittedData };
 }
 
 export const getAllSubmissionStatusByUserId = async (studentID, classID) => {

@@ -14,7 +14,7 @@ import { AuthContext } from "../../Helper/AuthProvider";
 import HomePanel from '../../Components/HomePanel/HomePanel';
 import { View } from 'react-native';
 import IconLogout from '../../Assets/icons/IconLogout';
-import { getAllSubmissionStatusByUserId, getAssignmentsByClassId, getSchedulesByClassId } from '../../../firebase';
+import { getAllSubmissionStatusByUserId, getSchedulesByClassId } from '../../../firebase';
 
 const Stack = createStackNavigator();
 
@@ -32,6 +32,8 @@ const Feed = () => {
     const fetchData = async () => {
       const fetchedAssignments = await getAllSubmissionStatusByUserId(user_id, classID);
       const fetchedSchedules = await getSchedulesByClassId(classID);
+
+      console.log(fetchedAssignments);
 
       const scheduleToday = fetchedSchedules.filter(schedule => {
         const scheduleDay = new Date(schedule.dayAndTime.seconds * 1000).getDay();
@@ -92,7 +94,7 @@ const Feed = () => {
                   Hi, {name}!
                 </Text>
                 <Text style={{ fontFamily: 'SemiBold', fontSize: 12, marginVertical: 10 }}>
-                  Sabtu, 24 Oktober 2020
+                  {new Date().toString()}
                 </Text>
               </View>
               <TouchableOpacity

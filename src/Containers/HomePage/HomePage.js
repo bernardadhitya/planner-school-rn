@@ -14,13 +14,13 @@ import { AuthContext } from "../../Helper/AuthProvider";
 import HomePanel from '../../Components/HomePanel/HomePanel';
 import { View } from 'react-native';
 import IconLogout from '../../Assets/icons/IconLogout';
-import { getAssignmentsByClassId, getSchedulesByClassId } from '../../../firebase';
+import { getAllSubmissionStatusByUserId, getAssignmentsByClassId, getSchedulesByClassId } from '../../../firebase';
 
 const Stack = createStackNavigator();
 
 const Feed = () => {
   const {
-    user: { name, class: { classID } },
+    user: { user_id, name, class: { classID } },
     logout
   } = useContext(AuthContext);
   const [assignments, setAssignments] = useState([]);
@@ -31,6 +31,8 @@ const Feed = () => {
   useEffect(() => {
     const fetchData = async () => {
       const fetchedAssignments = await getAssignmentsByClassId(classID);
+      const submissionStatus = await getAllSubmissionStatusByUserId(user_id, classID);
+      console.log(submissionStatus);
       const fetchedSchedules = await getSchedulesByClassId(classID);
 
       const scheduleToday = fetchedSchedules.filter(schedule => {

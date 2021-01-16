@@ -1,16 +1,12 @@
 import React from 'react';
 import { useFonts } from '@use-expo/font';
 import { View, Text, StyleSheet } from 'react-native';
-import { Card, Layout } from '@ui-kitten/components';
 import { Fonts } from '../../Constants/Fonts';
 import AppLoading from 'expo-app-loading';
-import CharacterMrTeacher from '../../Assets/characters/CharacterMrTeacher';
-import IconImageAttachment from '../../Assets/icons/IconImageAttachment';
-import { TouchableOpacity } from 'react-native';
 import MySubmissionCardContent from './MySubmissionCardContent';
 
 const MySubmissionCard = (props) => {
-  const {detail, status} = props;
+  const {detail, status, onClick, onSubmit} = props;
   let [fontsLoaded] = useFonts(Fonts);
 
   return fontsLoaded ? (
@@ -35,7 +31,7 @@ const MySubmissionCard = (props) => {
           <View style={styles.row}>
             <View style={styles.col}>
               <Text style={{fontFamily: 'Medium', fontSize: 12}}>
-                My Submission
+                Tugas saya
               </Text>
             </View>
             <View style={{flex: 1}}>
@@ -50,7 +46,7 @@ const MySubmissionCard = (props) => {
               </Text>
             </View>
           </View>
-          <MySubmissionCardContent status={status}/>
+          <MySubmissionCardContent status={status} onClick={onClick} onSubmit={onSubmit}/>
         </View>
       </View>
     </View>

@@ -1,5 +1,6 @@
-import firebase from 'firebase/app';
+import firebase from 'firebase';
 import 'firebase/firestore';
+import 'firebase/storage';
 
 var firebaseConfig = {
   apiKey: "AIzaSyBoy46A_88qGbu8AQJ2Q3LKGUoUijhaUrc",
@@ -12,6 +13,7 @@ var firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
+const storage = firebase.storage().ref();
 
 // export const createAssignment = async (assignmentData, classId) => {
 //   const { title, instructions, dueDate } = assignmentData;
@@ -56,6 +58,24 @@ export const createAssignmentPost = async (assignmentData) => {
     subject,
     classID
   });
+}
+
+export const createSubmissionPost = async (submissionData) => {
+  const { studentID, assignmentID, filePath } = submissionData;
+  const response = await db.collection('submissions').add({
+    studentID,
+    assignmentID,
+    filePath
+  });
+  const submissionId = response.id;
+  return submissionId;
+}
+
+export const uploadImage = async (uri, imageFulPath) => {
+  const response = await fetch(uri);
+  const blob = await response.blob();
+  var ref = storage.child(imageFulPath);
+  return ref.put(blob);
 }
 
 // export const createSubmission = async (submissionData) => {

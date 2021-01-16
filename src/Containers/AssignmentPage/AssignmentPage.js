@@ -22,25 +22,62 @@ import { Colors } from '../../Constants/Colors';
 import IconBack from '../../Assets/icons/IconBack';
 import { useNavigation } from '@react-navigation/native';
 import DetailedSubjects from '../../Constants/Subjects';
+import * as ImagePicker from 'expo-image-picker';
+import { useContext } from 'react';
+import { AuthContext } from "../../Helper/AuthProvider";
+import { createSubmissionPost, uploadImage } from '../../../firebase';
 
 const AssignmentPage = (props) => {
+  const { user: { user_id } } = useContext(AuthContext);
   const { route: {params} } = props;
   const { subject, data: assignments } = params;
-  console.log(assignments);
   const navigation = useNavigation();
-  const [selectedTab, setSelectedTab] = useState('assigned');
+  const [selectedTab, setSelectedTab] = useState('berjalan');
+  const [selectedAssignment, setSelectedAssignment] = useState({});
+  const [image, setImage] = useState('');
+  const [fileName, setFileName] = useState('');
   let [fontsLoaded] = useFonts(Fonts);
 
   let sheetRef = useRef(null);
   let fall = useMemoOne(() => new Animated.Value(1), []);
-  
+
+  const openImagePickerAsync = async () => {
+    let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    if (permissionResult.granted === false) {
+      alert("Permission to access camera roll is required!");
+      return;
+    }
+
+    let pickerResult = await ImagePicker.launchImageLibraryAsync();
+    if (!pickerResult.cancelled){
+      const filename = pickerResult.uri.split('/').pop();
+      console.log(filename);
+      console.log(pickerResult.uri);
+      setFileName(filename);
+      setImage(pickerResult.uri);
+    }
+  }
+
+  const handleSubmit = async () => {
+    const submission = {
+      studentID: user_id,
+      assignmentID: selectedAssignment.assignment_id,
+      filePath: fileName
+    }
+    console.log(submission);
+    const submissionID = await createSubmissionPost(submission);
+    await uploadImage(image, submissionID + '/' + fileName);
+    sheetRef.current.snapTo(2);
+  }
+
   const AssignedTab = () => {
     return assignments.map(assignment => {
       return (
         <TouchableOpacity onPress={() => {
-          sheetRef.current.snapTo(0)
-        }}
-        >
+          setSelectedAssignment(assignment);
+          sheetRef.current.snapTo(1)
+        }}>
           <AssignmentCard
             title={assignment.title}
             chapter={assignment.chapter}
@@ -59,7 +96,7 @@ const AssignmentPage = (props) => {
   const GradedTab = () => {
     return (
       <TouchableOpacity onPress={() => {
-        sheetRef.current.snapTo(0)
+        sheetRef.current.snapTo(1)
       }}
       >
         <AssignmentCard
@@ -75,8 +112,8 @@ const AssignmentPage = (props) => {
 
   const renderSelectedTab = () => {
     const tabsOption = {
-      assigned: <AssignedTab/>,
-      submitted: <SubmittedTab/>,
+      berjalan: <AssignedTab/>,
+      selesai: <SubmittedTab/>,
       graded: <GradedTab/>
     }
     return tabsOption[selectedTab]
@@ -86,20 +123,23 @@ const AssignmentPage = (props) => {
     <View
       style={{
         backgroundColor: 'white',
-        padding: 16,
+        paddingTop: 40,
+        paddingHorizontal: 16,
         height: 900
       }}
     >
-      <Text style={{fontFamily: 'Bold', fontSize: 21}}>Assignments</Text>
+      <Text style={{fontFamily: 'Bold', fontSize: 21}}>Tugas</Text>
       <AssignmentCard
-        className={'Mathematics - Class 1A'}
-        teacherName={'Naomi'}
-        avatar={0}
-        color={Colors.yellow}
-        title={'Exercise page 12-13 no. 1-10'}
-        detail
+        title={selectedAssignment.title}
+        chapter={selectedAssignment.chapter}
+        deadline={selectedAssignment.deadline}
+        note={selectedAssignment.note}
       />
-      <MySubmissionCard status={selectedTab}/>
+      <MySubmissionCard
+        status={selectedTab}
+        onClick={openImagePickerAsync}
+        onSubmit={handleSubmit}
+      />
     </View>
   );
 
@@ -195,8 +235,8 @@ const AssignmentPage = (props) => {
             flexDirection: 'row',
             justifyContent: 'space-between'
           }}>
-            { renderAssignmentTabButton('Assigned') }
-            { renderAssignmentTabButton('Submitted') }
+            { renderAssignmentTabButton('Berjalan') }
+            { renderAssignmentTabButton('Selesai') }
           </View>
           <View style={{marginTop: 20}}>
             <Text style={{

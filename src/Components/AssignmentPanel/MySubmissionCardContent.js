@@ -8,37 +8,39 @@ import { TouchableOpacity } from 'react-native';
 import IconImageAttachment from '../../Assets/icons/IconImageAttachment';
 
 const MySubmissionCardContent = (props) => {
-  const { status } = props
+  const { status, onClick, onSubmit } = props
   let [fontsLoaded] = useFonts(Fonts);
 
   const renderAssignedContent = () => (
     <View>
       <Text style={{fontFamily: 'Regular', fontSize: 10, color: '#EF5B54', marginTop: 6}}>
-        Don’t forget to submit your assignment before due date!
+        Jangan lupa unggah tugas sebelum batas pengumpulan!
       </Text>
-      <TouchableOpacity onPress={() => console.log('pressed')}>
+      <TouchableOpacity onPress={() => {onClick()}}>
         <View style={styles.center, {
           marginTop: 16,
           alignItems: 'center',
-          paddingTop: 10,
-          paddingBottom: 4,
-          borderColor: '#63C7FD',
+          paddingVertical: 10,
+          borderColor: '#598BFF',
           borderWidth: 1,
           borderRadius: 8
         }}>
-          <Text style={{fontFamily: 'Medium', fontSize: 12, color: '#63C7FD'}}>+ Add Submission</Text>
+          <Text style={{fontFamily: 'Medium', fontSize: 12, color: '#598BFF'}}>
+            + Unggah tugas
+          </Text>
         </View>
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => console.log('pressed')}>
+      <TouchableOpacity onPress={() => {onSubmit()}}>
         <View style={styles.center, {
           marginTop: 12,
           alignItems: 'center',
-          paddingTop: 10,
-          paddingBottom: 4,
-          backgroundColor: '#63C7FD',
+          paddingVertical: 10,
+          backgroundColor: '#598BFF',
           borderRadius: 8
         }}>
-          <Text style={{fontFamily: 'Medium', fontSize: 12, color: '#FFFFFF'}}>Finalize</Text>
+          <Text style={{fontFamily: 'Medium', fontSize: 12, color: '#FFFFFF'}}>
+            Kumpulkan
+          </Text>
         </View>
       </TouchableOpacity>
     </View>
@@ -107,8 +109,8 @@ const MySubmissionCardContent = (props) => {
 
   const renderSubmissionContent = () => {
     const submissionContents = {
-      assigned: renderAssignedContent(),
-      submitted: renderSubmittedContent(),
+      berjalan: renderAssignedContent(),
+      selesai: renderSubmittedContent(),
       graded: renderGradedContent()
     }
     return submissionContents[status]

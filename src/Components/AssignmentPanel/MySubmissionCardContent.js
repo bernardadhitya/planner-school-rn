@@ -62,12 +62,9 @@ const MySubmissionCardContent = (props) => {
 
   const renderSubmittedContent = () => (
     <View>
-      <Text style={{fontFamily: 'Regular', fontSize: 10, color: '#63C7FD', marginTop: 6}}>
-        Your assignment has been submitted. Please wait for your teacher to check your work
-      </Text>
-      <TouchableOpacity onPress={() => console.log('pressed')}>
+      <TouchableOpacity onPress={() => {}}>
         <View style={{
-          marginTop: 6,
+          marginTop: 12,
         }}>
           <Card>
             <Layout style={styles.row}>

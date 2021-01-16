@@ -80,6 +80,7 @@ const AssignmentPage = (props) => {
 
   const AssignedTab = () => {
     return assignments.map(assignment => {
+      if (assignment.submitted) return;
       return (
         <TouchableOpacity onPress={() => {
           setSelectedAssignment(assignment);
@@ -97,7 +98,22 @@ const AssignmentPage = (props) => {
   }
 
   const SubmittedTab = () => {
-    return null
+    return assignments.map(assignment => {
+      if (!assignment.submitted) return;
+      return (
+        <TouchableOpacity onPress={() => {
+          setSelectedAssignment(assignment);
+          sheetRef.current.snapTo(1)
+        }}>
+          <AssignmentCard
+            title={assignment.title}
+            chapter={assignment.chapter}
+            deadline={assignment.deadline}
+            note={assignment.note}
+          />
+        </TouchableOpacity>
+      )
+    })
   }
   
   const GradedTab = () => {
@@ -141,6 +157,7 @@ const AssignmentPage = (props) => {
         chapter={selectedAssignment.chapter}
         deadline={selectedAssignment.deadline}
         note={selectedAssignment.note}
+        showNote
       />
       <MySubmissionCard
         status={selectedTab}

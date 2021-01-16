@@ -7,7 +7,7 @@ import IconBook from '../../Assets/icons/IconBook';
 import IconClock from '../../Assets/icons/IconClock';
 
 const AssignmentCard = (props) => {
-  const {title, chapter, deadline, note} = props;
+  const {title, chapter, deadline, note, showNote} = props;
   let [fontsLoaded] = useFonts(Fonts);
 
   const formattedDeadline = new Date(deadline * 1000);
@@ -39,6 +39,16 @@ const AssignmentCard = (props) => {
           {`Batas: ${formattedDeadline.toLocaleDateString('id')} (${dueInDays} hari)`}
         </Text>
       </View>
+      {showNote ?
+        <View>
+          <Text style={{fontFamily: 'SemiBold', fontSize: 12, marginTop: 12}}>
+            Catatan:
+          </Text>
+          <Text style={{fontFamily: 'Regular', fontSize: 12, marginTop: 12}}>
+            {note}
+          </Text>
+        </View>
+      : null}
     </View>
   ) : <AppLoading/>;
 }

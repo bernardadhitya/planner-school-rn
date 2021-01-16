@@ -30,9 +30,7 @@ const Feed = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const fetchedAssignments = await getAssignmentsByClassId(classID);
-      const submissionStatus = await getAllSubmissionStatusByUserId(user_id, classID);
-      console.log(submissionStatus);
+      const fetchedAssignments = await getAllSubmissionStatusByUserId(user_id, classID);
       const fetchedSchedules = await getSchedulesByClassId(classID);
 
       const scheduleToday = fetchedSchedules.filter(schedule => {

@@ -216,8 +216,8 @@ export const getSubmissionStatus = async (assignment, studentID) => {
     .get();
 
   console.log(response.docs.length);
-  const status = response.docs.length > 0;
-  return { ...assignment, status };
+  const submitted = response.docs.length > 0;
+  return { ...assignment, submitted };
 }
 
 export const getAllSubmissionStatusByUserId = async (studentID, classID) => {

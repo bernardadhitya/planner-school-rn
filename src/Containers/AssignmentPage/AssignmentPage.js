@@ -33,7 +33,7 @@ const AssignmentPage = (props) => {
   const navigation = useNavigation();
   const [assignments, setAssignments] = useState([]);
   const [selectedTab, setSelectedTab] = useState('berjalan');
-  const [selectedAssignment, setSelectedAssignment] = useState({});
+  const [selectedAssignment, setSelectedAssignment] = useState(null);
   const [image, setImage] = useState('');
   const [fileName, setFileName] = useState('');
   const [loading, setLoading] = useState(false);
@@ -144,39 +144,42 @@ const AssignmentPage = (props) => {
     return tabsOption[selectedTab]
   }
 
-  const renderContent = () => (
-    <View
-      style={{
-        backgroundColor: 'white',
-        paddingTop: 40,
-        paddingHorizontal: 16,
-        height: 900
-      }}
-    >
-      <Text style={{fontFamily: 'Bold', fontSize: 21}}>Tugas</Text>
-      <AssignmentCard
-        title={selectedAssignment.title}
-        chapter={selectedAssignment.chapter}
-        deadline={selectedAssignment.deadline.seconds}
-        note={selectedAssignment.note}
-        showNote
-      />
-      <MySubmissionCard
-        status={selectedTab}
-        onClick={handleClick}
-        onSubmit={handleSubmit}
-        loading={loading}
-        image={
-          !selectedAssignment.hasOwnProperty('submitted') || !selectedAssignment.submitted ? 
-          image : selectedAssignment.submittedData.image
-        }
-        fileName={
-          !selectedAssignment.hasOwnProperty('submitted') || !selectedAssignment.submitted ?
-          fileName : selectedAssignment.submittedData.filePath
-        }
-      />
-    </View>
-  );
+  const renderContent = () => {
+    if (selectedAssignment === null) return; 
+    return (
+      <View
+        style={{
+          backgroundColor: 'white',
+          paddingTop: 40,
+          paddingHorizontal: 16,
+          height: 900
+        }}
+      >
+        <Text style={{fontFamily: 'Bold', fontSize: 21}}>Tugas</Text>
+        <AssignmentCard
+          title={selectedAssignment.title}
+          chapter={selectedAssignment.chapter}
+          deadline={selectedAssignment.deadline.seconds}
+          note={selectedAssignment.note}
+          showNote
+        />
+        <MySubmissionCard
+          status={selectedTab}
+          onClick={handleClick}
+          onSubmit={handleSubmit}
+          loading={loading}
+          image={
+            !selectedAssignment.hasOwnProperty('submitted') || !selectedAssignment.submitted ? 
+            image : selectedAssignment.submittedData.image
+          }
+          fileName={
+            !selectedAssignment.hasOwnProperty('submitted') || !selectedAssignment.submitted ?
+            fileName : selectedAssignment.submittedData.filePath
+          }
+        />
+      </View>
+    )
+  };
 
   const renderAssignmentTabButton = (title) => {
     const isActive = selectedTab === title.toLowerCase();

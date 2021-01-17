@@ -8,6 +8,9 @@ import IconBack from '../../Assets/icons/IconBack';
 import { useNavigation } from '@react-navigation/native';
 import IconEmotion1 from '../../Assets/icons/IconEmotion1';
 import { getAllStudentsMood } from '../../../firebase';
+import IconEmotion2 from '../../Assets/icons/IconEmotion2';
+import IconEmotion3 from '../../Assets/icons/IconEmotion3';
+import IconEmotion4 from '../../Assets/icons/IconEmotion4';
 
 const TeacherMoodTrackerPage = () => {
   const navigation = useNavigation();
@@ -23,6 +26,19 @@ const TeacherMoodTrackerPage = () => {
   }, []);
 
   const renderStudentMoodCard = (userID, name, moods) => {
+    console.log('moods ===>', moods);
+    const recentMood = moods.sort((firstMood, secondMood) => secondMood.datePosted.seconds - firstMood.datePosted.seconds)[0];
+    const { responses } = recentMood;
+    const averageMood = 
+    Math.round((responses['1'] + responses['2'] + responses['3'] + responses['4']) / 4);
+
+    const IconEmotions = {
+      0: <IconEmotion1 focused/>,
+      1: <IconEmotion2 focused/>,
+      2: <IconEmotion3 focused/>,
+      3: <IconEmotion4 focused/>,
+      4: <IconEmotion4 focused/>,
+    }
     return (
       <TouchableOpacity
         style={{
@@ -72,7 +88,7 @@ const TeacherMoodTrackerPage = () => {
           marginTop: 10,
         }}>
           <View style={{ justifyContent: 'center' }}>
-            <IconEmotion1 focused/>
+            { IconEmotions[averageMood]}
           </View>
         </View>
       </TouchableOpacity>

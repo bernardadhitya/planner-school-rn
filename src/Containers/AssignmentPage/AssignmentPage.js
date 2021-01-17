@@ -64,8 +64,6 @@ const AssignmentPage = (props) => {
     let pickerResult = await ImagePicker.launchImageLibraryAsync();
     if (!pickerResult.cancelled){
       const filename = pickerResult.uri.split('/').pop();
-      console.log(filename);
-      console.log(pickerResult.uri);
       setFileName(filename);
       setImage(pickerResult.uri);
     }
@@ -79,7 +77,7 @@ const AssignmentPage = (props) => {
       assignmentID: selectedAssignment.assignment_id,
       filePath: fileName
     }
-    console.log(submission);
+
     const submissionID = await createSubmissionPost(submission);
     await uploadImage(image, submissionID + '/' + fileName);
     sheetRef.current.snapTo(2);
@@ -102,7 +100,7 @@ const AssignmentPage = (props) => {
           <AssignmentCard
             title={assignment.title}
             chapter={assignment.chapter}
-            deadline={assignment.deadline}
+            deadline={assignment.deadline.seconds}
             note={assignment.note}
           />
         </TouchableOpacity>
@@ -126,7 +124,7 @@ const AssignmentPage = (props) => {
           <AssignmentCard
             title={assignment.title}
             chapter={assignment.chapter}
-            deadline={assignment.deadline}
+            deadline={assignment.deadline.seconds}
             note={assignment.note}
           />
         </TouchableOpacity>
@@ -159,7 +157,7 @@ const AssignmentPage = (props) => {
       <AssignmentCard
         title={selectedAssignment.title}
         chapter={selectedAssignment.chapter}
-        deadline={selectedAssignment.deadline}
+        deadline={selectedAssignment.deadline.seconds}
         note={selectedAssignment.note}
         showNote
       />

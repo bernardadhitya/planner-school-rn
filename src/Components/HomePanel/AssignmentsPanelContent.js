@@ -6,6 +6,7 @@ import AppLoading from 'expo-app-loading';
 import { ScrollView } from 'react-native';
 import DetailedSubjects from '../../Constants/Subjects';
 import { useNavigation } from '@react-navigation/native';
+import { assign } from 'lodash';
 
 const AssignmentsPanelContent = (props) => {
   const navigation = useNavigation();
@@ -99,7 +100,17 @@ const AssignmentsPanelContent = (props) => {
   }
 
   const renderPanel = () => {
-    return assignments.length > 0 ?
+    const currentDate = new Date().getTime();
+    const filteredAssignments = assignments.length > 0 ?
+      assignments.filter(assignment => {
+        const { deadline } = assignment;
+        return deadline.seconds * 1000 > currentDate;
+      }).sort((firstAssignment, secondAssignment) => {
+        return firstAssignment.deadline.seconds - secondAssignment.deadline.seconds
+      })
+    : [];
+
+    return filteredAssignments.length > 0 ?
       <View style={styles.row}>
         <ScrollView horizontal>
           { assignments.map(assignment => renderAssignmentsPanelCard(assignment)) }

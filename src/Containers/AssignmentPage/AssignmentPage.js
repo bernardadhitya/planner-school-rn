@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { createStackNavigator } from "@react-navigation/stack";
 import {
   Text,
@@ -18,26 +18,37 @@ import BottomSheet from 'reanimated-bottom-sheet';
 import Animated from 'react-native-reanimated';
 import MySubmissionCard from '../../Components/AssignmentPanel/MySubmissionCard';
 import { useMemoOne } from 'use-memo-one';
-import { Colors } from '../../Constants/Colors';
 import IconBack from '../../Assets/icons/IconBack';
 import { useNavigation } from '@react-navigation/native';
 import DetailedSubjects from '../../Constants/Subjects';
 import * as ImagePicker from 'expo-image-picker';
 import { useContext } from 'react';
 import { AuthContext } from "../../Helper/AuthProvider";
-import { createSubmissionPost, uploadImage } from '../../../firebase';
+import { createSubmissionPost, getAllSubmissionStatusByUserId, uploadImage } from '../../../firebase';
 
 const AssignmentPage = (props) => {
-  const { user: { user_id } } = useContext(AuthContext);
+  const { user: { user_id, class: { classID } } } = useContext(AuthContext);
   const { route: {params} } = props;
-  const { subject, data: assignments } = params;
+  const { subject } = params;
   const navigation = useNavigation();
+  const [assignments, setAssignments] = useState([]);
   const [selectedTab, setSelectedTab] = useState('berjalan');
   const [selectedAssignment, setSelectedAssignment] = useState({});
   const [image, setImage] = useState('');
   const [fileName, setFileName] = useState('');
   const [loading, setLoading] = useState(false);
+  const [refresh, setRefresh] = useState(0);
   let [fontsLoaded] = useFonts(Fonts);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const fetchedAssignments = await getAllSubmissionStatusByUserId(user_id, classID);
+      const assignmentsMatchSubject =
+        fetchedAssignments.filter(assignment => assignment.subject === subject);
+      setAssignments(assignmentsMatchSubject);
+    }
+    fetchData();
+  }, [refresh]);
 
   let sheetRef = useRef(null);
   let fall = useMemoOne(() => new Animated.Value(1), []);
@@ -76,6 +87,7 @@ const AssignmentPage = (props) => {
     setImage('');
     setFileName('');
     setLoading(false);
+    setRefresh(refresh + 1);
   }
 
   const AssignedTab = () => {

@@ -80,7 +80,6 @@ const AssignmentPage = (props) => {
 
   const AssignedTab = () => {
     const assignedAssignments = assignments.filter(assignment => !assignment.submitted);
-    console.log('assigned assignments:', assignedAssignments);
 
     return assignedAssignments.length > 0 ? assignedAssignments.map(assignment => {
       return (
@@ -105,7 +104,6 @@ const AssignmentPage = (props) => {
 
   const SubmittedTab = () => {
     const submittedAssignments = assignments.filter(assignment => assignment.submitted);
-    console.log('submitted assignments:', submittedAssignments);
 
     return submittedAssignments.length > 0 ? submittedAssignments.map(assignment => {
       return (

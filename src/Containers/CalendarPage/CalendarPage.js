@@ -88,7 +88,7 @@ const CalendarPage = () => {
       schedule.day === date.getDay()
     ).sort((a,b) => {return a.date.getHours() - b.date.getHours()});
 
-    return schedulesOnSelectedDay.map(schedule => {
+    return schedulesOnSelectedDay.length > 0 ? schedulesOnSelectedDay.map(schedule => {
       const { startTime, endTime } = schedule;
 
       return (
@@ -109,6 +109,10 @@ const CalendarPage = () => {
         </View>
       )
     })
+    :
+    <Text style={{fontFamily: 'SemiBold', textAlign: 'center', marginTop: 21}}>
+      Tidak ada jadwal hari ini
+    </Text>
   }
 
   if (!fontsLoaded) {

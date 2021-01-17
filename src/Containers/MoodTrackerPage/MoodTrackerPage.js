@@ -83,7 +83,10 @@ const MoodTrackerPage = (props) => {
   const renderMoodPanel = () => {
     return (
       <View style={{width: '100%', marginTop: 20}}>
-        { moods.map(mood => renderMoodCard(mood.datePosted, mood.responses)) }
+        { moods
+          .sort((firstMood, secondMood) =>
+            secondMood.datePosted.seconds - firstMood.datePosted.seconds)
+          .map(mood => renderMoodCard(mood.datePosted, mood.responses)) }
       </View>
     )
   }

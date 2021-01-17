@@ -1,19 +1,15 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { useFonts } from '@use-expo/font';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { Fonts } from '../../Constants/Fonts';
 import AppLoading from 'expo-app-loading';
 import { ScrollView } from 'react-native';
-import { AuthContext } from '../../Helper/AuthProvider';
 import DetailedSubjects from '../../Constants/Subjects';
-
-const ASSIGNMENTS = [
-  {
-    title: 'Play “Marry Has a Little Lamb”'
-  }
-]
+import { useNavigation } from '@react-navigation/native';
+import { assign } from 'lodash';
 
 const AssignmentsPanelContent = (props) => {
+  const navigation = useNavigation();
   const { assignments } = props;
   let [fontsLoaded] = useFonts(Fonts);
 
@@ -40,7 +36,10 @@ const AssignmentsPanelContent = (props) => {
     const dueInDays = Math.floor((formattedDeadline - currentDate) / (1000*60*60*24));
 
     return (
-      <View style={styles.column, {marginRight: 4, padding: 10}}>
+      <TouchableOpacity
+        style={styles.column, {marginRight: 4, padding: 10}}
+        onPress={() => {navigation.navigate('Assignment', { subject })}}
+      >
         <View style={{
           backgroundColor: '#FFFFFF',
           borderRadius: 10,
@@ -52,6 +51,8 @@ const AssignmentsPanelContent = (props) => {
           shadowOpacity: 0.22,
           shadowRadius: 2.22,
           elevation: 3,
+          width: 150,
+          height: '100%'
         }}>
           <View style={{
             margin: 8,
@@ -94,12 +95,22 @@ const AssignmentsPanelContent = (props) => {
             </Text>
           </View>
         </View>
-      </View>
+      </TouchableOpacity>
     )
   }
 
   const renderPanel = () => {
-    return assignments.length > 0 ?
+    const currentDate = new Date().getTime();
+    const filteredAssignments = assignments.length > 0 ?
+      assignments.filter(assignment => {
+        const { deadline } = assignment;
+        return deadline.seconds * 1000 > currentDate;
+      }).sort((firstAssignment, secondAssignment) => {
+        return firstAssignment.deadline.seconds - secondAssignment.deadline.seconds
+      })
+    : [];
+
+    return filteredAssignments.length > 0 ?
       <View style={styles.row}>
         <ScrollView horizontal>
           { assignments.map(assignment => renderAssignmentsPanelCard(assignment)) }

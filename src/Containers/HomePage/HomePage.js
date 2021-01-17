@@ -5,7 +5,8 @@ import {
   TouchableOpacity,
   SafeAreaView,
   ScrollView,
-  StyleSheet
+  StyleSheet,
+  Image
 } from "react-native";
 import { Fonts } from "../../Constants/Fonts";
 import AppLoading from 'expo-app-loading';
@@ -76,15 +77,13 @@ const Feed = () => {
             }}
           >
             <View style={styles.container}>
-              <TouchableOpacity style={{
-                marginRight: 10,
-                height: 50,
-                width: 50,
-                backgroundColor: '#598BFF',
-                borderRadius: 25,
-                marginTop: 10
-              }}>
-              </TouchableOpacity>
+              <Image
+                source={require('../../Assets/logo/Student.png')}
+                style={{
+                  width: 70,
+                  height: 70,
+                }}
+              />
               <View style={{
                 paddingTop: 14,
                 paddingBottom: 6,

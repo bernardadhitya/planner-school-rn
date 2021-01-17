@@ -204,24 +204,8 @@ const ProfilePage = () => {
         <ScrollView style={{paddingHorizontal: 20}}>
         <View
           style={{
-            flex: 1,
-            flexDirection: 'row',
-            paddingVertical: 20,
-          }}
-        >
-          <View style={{
-            flex: 1,
-            flexDirection: "row",
-            justifyContent: "flex-end",
-            marginTop: 30,
-            marginHorizontal: 30
-          }}>
-            <IconSetting/>
-          </View>
-        </View>
-        <View
-          style={{
-            alignItems: 'center'
+            alignItems: 'center',
+            marginTop: 80
           }}
         >
           <Image

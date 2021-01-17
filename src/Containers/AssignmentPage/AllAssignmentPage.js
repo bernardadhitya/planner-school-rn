@@ -64,7 +64,6 @@ const AllAssignmentPage = (props) => {
                 subtitle={`Total: ${totalAssignment} tugas`}
                 image={subject.image}
                 redirectTo={'Assignment'}
-                data={assignments[subject.name] || []}
               />
             )
           })}

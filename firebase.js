@@ -256,3 +256,19 @@ export const getAllSubmissionStatusByUserId = async (studentID, classID) => {
 
   return allSubmissionStatusData;
 }
+
+export const getAllAssignmentsByClassesId = async (classesID) => {
+  const getAllAssignmentsData = async () => {
+    return Promise.all(classesID.map(classID => {
+      const assignmentsData = getAssignmentsByClassId(classID);
+      return assignmentsData;
+    }));
+  };
+  
+  const allAssignmentsData = await getAllAssignmentsData();
+
+  const flattenedAssignmentsData = allAssignmentsData.reduce(
+    (assignments, assignment) => [...assignments, ...assignment], []);
+
+  return flattenedAssignmentsData;
+}

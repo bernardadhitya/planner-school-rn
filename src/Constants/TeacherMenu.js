@@ -18,7 +18,12 @@ const TeacherMenu = [
     name: 'Kalender',
     image: require('../Assets/logo/Calendar.png'),
     redirectTo: 'Calendar'
-  }
+  },
+  {
+    name: 'Daftar Tugas',
+    image: require('../Assets/logo/TaskList.png'),
+    redirectTo: 'AllAssignments'
+  },
 ]
 
 

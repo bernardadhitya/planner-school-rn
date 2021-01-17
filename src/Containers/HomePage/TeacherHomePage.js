@@ -26,6 +26,9 @@ const TeacherHomePage = () => {
     TeacherMenu.forEach((subject, idx) => {
       if (idx % 2 === 0){
         temp = [subject];
+        if (idx === TeacherMenu.length - 1) {
+          formattedSubjects.push(temp);
+        }
       } else {
         temp.push(subject);
         formattedSubjects.push(temp);
@@ -38,7 +41,8 @@ const TeacherHomePage = () => {
           flex: 1,
           flexDirection: 'row',
           flexWrap: 'wrap',
-          alignItems: 'flex-start'
+          alignItems: 'flex-start',
+          justifyContent: 'center'
         }}>
           { subjects.map(subject => {
             return (

@@ -113,6 +113,17 @@ export const getAllTeachers = async () => {
   return data;
 }
 
+export const getSubmissionsByAssignmentId = async (assignmentID) => {
+  const response = await db.collection('submissions')
+  .where("assignmentID", "==", assignmentID).get();
+  const data = response.docs.map(doc => {
+    const responseId = doc.id;
+    const responseData = doc.data();
+    return { submission_id: responseId, ...responseData }
+  });
+  return data;
+}
+
 export const getAllMoodsByUserId = async (userID) => {
   const response = await db.collection('moods').where("userID", "==", userID).get();
   const data = response.docs.map(doc => {
@@ -242,6 +253,24 @@ export const getSubmissionStatus = async (assignment, studentID) => {
   return { ...assignment, submitted, submittedData };
 }
 
+export const getSubmissionDetail = async (submission) => {
+  const getMedia = async (result) => {
+    return await getImageUrlByImageRef(result[0])
+  };
+
+  const { submission_id } = submission;
+
+  const folderPath = `/${submission_id}`;
+  const fileNames = await storage.child(folderPath).listAll();
+  const image = await getMedia(fileNames.items);
+
+  const submittedData =  {
+    ...submission,
+    image
+  };
+  return submittedData;
+}
+
 export const getAllSubmissionStatusByUserId = async (studentID, classID) => {
   const assignmentsData = await getAssignmentsByClassId(classID);
 
@@ -255,6 +284,28 @@ export const getAllSubmissionStatusByUserId = async (studentID, classID) => {
   const allSubmissionStatusData = await getAllSubmissionStatusData();
 
   return allSubmissionStatusData;
+}
+
+export const getSubmissionsDetailByAssignmentId = async (assignmentID) => {
+  const submissions = await getSubmissionsByAssignmentId(assignmentID);
+
+  const getSubmissionsDetailData = async () => {
+    return Promise.all(submissions.map(async (submission) => {
+      const { studentID } = submission;
+      const userData = await getUserById(studentID);
+      const submissionData = await getSubmissionDetail(submission);
+
+      const submissionDetailData = {
+        ...userData,
+        ...submissionData
+      }
+      return submissionDetailData;
+    }));
+  };
+  
+  const submissionsDetailData = await getSubmissionsDetailData();
+
+  return submissionsDetailData;
 }
 
 export const getAllAssignmentsByClassesId = async (classesID) => {

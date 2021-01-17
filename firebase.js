@@ -41,7 +41,8 @@ export const createSubmissionPost = async (submissionData) => {
   const response = await db.collection('submissions').add({
     studentID,
     assignmentID,
-    filePath
+    filePath,
+    submissionDate: new Date()
   });
   const submissionId = response.id;
   return submissionId;

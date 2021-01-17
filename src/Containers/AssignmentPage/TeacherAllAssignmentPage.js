@@ -8,8 +8,10 @@ import IconBack from '../../Assets/icons/IconBack';
 import AssignmentCard from '../../Components/AssignmentPanel/AssignmentCard';
 import { AuthContext } from '../../Helper/AuthProvider';
 import { getAllAssignmentsByClassesId } from '../../../firebase';
+import { useNavigation } from '@react-navigation/native';
 
 const TeacherAllAssignmentPage = () => {
+  const navigation = useNavigation();
   const { user: {classes} } = useContext(AuthContext);
   const [assignments, setAssignments] = useState([]);
   let [fontsLoaded] = useFonts(Fonts);
@@ -27,7 +29,9 @@ const TeacherAllAssignmentPage = () => {
   const renderAllAssignments = () => {
     return assignments.map(assignment => {
       return (
-        <TouchableOpacity onPress={() => {}}>
+        <TouchableOpacity onPress={() => {
+          navigation.navigate('Submissions', {assignment})
+        }}>
           <AssignmentCard
             title={assignment.title}
             chapter={assignment.chapter}

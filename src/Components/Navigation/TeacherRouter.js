@@ -11,6 +11,7 @@ import MoodTrackerPage from "../../Containers/MoodTrackerPage/MoodTrackerPage";
 import MoodTrackerSinglePage from "../../Containers/MoodTrackerPage/MoodTrackerSinglePage";
 import CalendarPage from "../../Containers/CalendarPage/CalendarPage";
 import TeacherAllAssignmentPage from "../../Containers/AssignmentPage/TeacherAllAssignmentPage";
+import TeacherStudentSubmissionsPage from "../../Containers/AssignmentPage/TeacherStudentSubmissionsPage";
 
 const Stack = createStackNavigator();
 
@@ -96,6 +97,13 @@ const TeacherRouter = () => {
         }}
         name="AllAssignments"
         component={TeacherAllAssignmentPage}
+      />
+      <Stack.Screen
+        options={{
+          headerTitle: "Submissions"
+        }}
+        name="Submissions"
+        component={TeacherStudentSubmissionsPage}
       />
     </Stack.Navigator>
   )

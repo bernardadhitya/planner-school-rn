@@ -1,11 +1,8 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import TeacherHomePage from "../../Containers/HomePage/TeacherHomePage";
-import TeacherClassPage from "../../Containers/LiveClassPage/TeacherClassPage";
 import TeacherAssignmentPage from "../../Containers/AssignmentPage/TeacherAssignmentPage";
 import TeacherStudentPage from "../../Containers/StudentPage/TeacherStudentPage";
-import LiveClassVideoCallPage from "../../Containers/LiveClassPage/LiveClassVideoCallPage";
-import TeacherGamePage from "../../Containers/GamesPage/TeacherGamePage";
 import TeacherMoodTrackerPage from "../../Containers/MoodTrackerPage/TeacherMoodTrackerPage";
 import MoodTrackerPage from "../../Containers/MoodTrackerPage/MoodTrackerPage";
 import MoodTrackerSinglePage from "../../Containers/MoodTrackerPage/MoodTrackerSinglePage";

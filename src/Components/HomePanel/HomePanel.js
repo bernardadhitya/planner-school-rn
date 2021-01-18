@@ -2,12 +2,8 @@ import { useFonts } from '@use-expo/font';
 import React from 'react';
 import { View, Text, StyleSheet, Touchable } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import IconAssignments from '../../Assets/icons/IconCalendar';
-import IconGames from '../../Assets/icons/IconGames';
-import IconLiveClass from '../../Assets/icons/IconLiveClass';
 import { Fonts } from '../../Constants/Fonts';
 import AssignmentsPanelContent from './AssignmentsPanelContent';
-import GamesPanelContent from './GamesClassPanelContent';
 import LiveClassPanelContent from './LiveClassPanelContent';
 import { useNavigation } from '@react-navigation/native';
 

@@ -1,12 +1,12 @@
 {
   "expo": {
-    "name": "Homerooom",
-    "slug": "Homerooom",
+    "name": "SchoolPlanny",
+    "slug": "SchoolPlanny",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./src/Assets/icon.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./src/Assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -22,12 +22,12 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./src/Assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       }
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./src/Assets/favicon.png"
     }
   }
 }

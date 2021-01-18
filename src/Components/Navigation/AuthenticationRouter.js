@@ -3,11 +3,6 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { AuthContext } from "../../Helper/AuthProvider";
 import Center from "../Center/Center";
 import { Text, Image, View, StyleSheet, TouchableWithoutFeedback } from "react-native";
-import PageOne from "../../Containers/OnboardingPage/PageOne";
-import PageTwo from "../../Containers/OnboardingPage/PageTwo";
-import PageThree from "../../Containers/OnboardingPage/PageThree";
-import PageFour from "../../Containers/OnboardingPage/PageFour";
-import PageFive from "../../Containers/OnboardingPage/PageFive";
 import { useFonts } from '@use-expo/font';
 import { Fonts } from '../../Constants/Fonts';
 import AppLoading from 'expo-app-loading';
@@ -186,41 +181,6 @@ const AuthenticationRouter = () => {
         }}
         name="Register"
         component={Register}
-      />
-      <Stack.Screen
-        options={{
-          headerTitle: "PageOne"
-        }}
-        name="PageOne"
-        component={PageOne}
-      />
-      <Stack.Screen
-        options={{
-          headerTitle: "PageTwo"
-        }}
-        name="PageTwo"
-        component={PageTwo}
-      />
-      <Stack.Screen
-        options={{
-          headerTitle: "PageThree"
-        }}
-        name="PageThree"
-        component={PageThree}
-      />
-      <Stack.Screen
-        options={{
-          headerTitle: "PageFour"
-        }}
-        name="PageFour"
-        component={PageFour}
-      />
-      <Stack.Screen
-        options={{
-          headerTitle: "PageFive"
-        }}
-        name="PageFive"
-        component={PageFive}
       />
     </Stack.Navigator>
   );

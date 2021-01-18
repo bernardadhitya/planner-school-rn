@@ -7,7 +7,8 @@ import {
   SafeAreaView,
   StyleSheet,
   ScrollView,
-  Image
+  Image,
+  Alert
 } from 'react-native';
 import { Fonts } from "../../Constants/Fonts";
 import AppLoading from 'expo-app-loading';
@@ -25,6 +26,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { useContext } from 'react';
 import { AuthContext } from "../../Helper/AuthProvider";
 import { createSubmissionPost, getAllSubmissionStatusByUserId, uploadImage } from '../../../firebase';
+import ImageView from "react-native-image-viewing";
 
 const AssignmentPage = (props) => {
   const { user: { user_id, class: { classID } } } = useContext(AuthContext);
@@ -34,6 +36,8 @@ const AssignmentPage = (props) => {
   const [assignments, setAssignments] = useState([]);
   const [selectedTab, setSelectedTab] = useState('berjalan');
   const [selectedAssignment, setSelectedAssignment] = useState(null);
+  const [selectedImage, setSelectedImage] = useState([]);
+  const [visible, setIsVisible] = useState(false);
   const [image, setImage] = useState('');
   const [fileName, setFileName] = useState('');
   const [loading, setLoading] = useState(false);
@@ -69,6 +73,26 @@ const AssignmentPage = (props) => {
     }
   }
 
+  const handleViewImage = () => {
+    setSelectedImage([{uri: selectedAssignment.submittedData.image}])
+    setIsVisible(true)
+  }
+
+  const renderAlert = () =>
+    Alert.alert(
+      "Berhasil",
+      "Tugas berhasil ditambahkan!",
+      [
+        {
+          text: "Ok",
+          onPress: () => console.log("Ok pressed")
+        }
+      ],
+      { cancelable: false }
+    );
+
+
+
   const handleSubmit = async () => {
     setLoading(true);
 
@@ -85,6 +109,7 @@ const AssignmentPage = (props) => {
     setImage('');
     setFileName('');
     setLoading(false);
+    renderAlert();
     setRefresh(refresh + 1);
   }
 
@@ -165,7 +190,7 @@ const AssignmentPage = (props) => {
         />
         <MySubmissionCard
           status={selectedTab}
-          onClick={handleClick}
+          onClick={selectedTab === 'berjalan' ? handleClick : handleViewImage}
           onSubmit={handleSubmit}
           loading={loading}
           image={
@@ -224,6 +249,12 @@ const AssignmentPage = (props) => {
           backgroundColor: '#FFFFFF'
         }}
       >
+        <ImageView
+          images={selectedImage}
+          imageIndex={0}
+          visible={visible}
+          onRequestClose={() => setIsVisible(false)}
+        />
         <BottomSheet
           ref={sheetRef}
           initialSnap={2}

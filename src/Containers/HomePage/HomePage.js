@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useRef } from 'react';
 import { createStackNavigator } from "@react-navigation/stack";
 import {
   Text,
@@ -6,7 +6,9 @@ import {
   SafeAreaView,
   ScrollView,
   StyleSheet,
-  Image
+  Image,
+  Platform,
+  Button
 } from "react-native";
 import { Fonts } from "../../Constants/Fonts";
 import AppLoading from 'expo-app-loading';
@@ -16,18 +18,47 @@ import HomePanel from '../../Components/HomePanel/HomePanel';
 import { View } from 'react-native';
 import IconLogout from '../../Assets/icons/IconLogout';
 import { getAllSubmissionStatusByUserId, getSchedulesByClassId } from '../../../firebase';
+import * as Notifications from 'expo-notifications';
+import Constants from 'expo-constants';
 
-const Stack = createStackNavigator();
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
 
-const Feed = () => {
+const HomePage = () => {
   const {
     user: { user_id, name, class: { classID } },
     logout
   } = useContext(AuthContext);
   const [assignments, setAssignments] = useState([]);
   const [schedules, setSchedules] = useState([]);
+  const [expoPushToken, setExpoPushToken] = useState('');
+  const [notification, setNotification] = useState(false);
+  const notificationListener = useRef();
+  const responseListener = useRef();
 
   let [fontsLoaded] = useFonts(Fonts);
+
+  useEffect(() => {
+    registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+    notificationListener.current =
+      Notifications.addNotificationReceivedListener(notification => {
+        setNotification(notification);
+      });
+    responseListener.current =
+      Notifications.addNotificationResponseReceivedListener(response => {
+        console.log(response);
+    } );
+
+    return () => {
+      Notifications.removeNotificationSubscription(notificationListener);
+      Notifications.removeNotificationSubscription(responseListener);
+    };
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,13 +75,72 @@ const Feed = () => {
         const firstDate = new Date(a.dayAndTime.seconds * 1000);
         const secondDate = new Date(b.dayAndTime.seconds * 1000);
         return firstDate.getHours() - secondDate.getHours();
-      });;
+      });
 
       setAssignments(fetchedAssignments);
       setSchedules(scheduleToday);
     }
     fetchData();
   }, []);
+
+  const generateNotificationBody = () => {
+    const unsubmittedAssignments = assignments.filter(assignment => !assignment.submitted)
+    return schedules.length > 0 ?
+      `Jangan lupa kamu ada ${schedules.length} kelas hari ini!`
+      : `Jangan lupa kerjain ${unsubmittedAssignments.length} PR kamu yahh`
+
+  }
+
+  async function sendPushNotification(expoPushToken) {
+    const message = {
+      to: expoPushToken,
+      sound: 'default',
+      title: `Halo, ${name} 😁`,
+      body: generateNotificationBody(),
+      data: { data: 'goes here' },
+    };
+  
+    await fetch('https://exp.host/--/api/v2/push/send', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Accept-encoding': 'gzip, deflate',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(message),
+    });
+  }
+  
+  async function registerForPushNotificationsAsync() {
+    let token;
+    if (Constants.isDevice) {
+      const { status: existingStatus } = await Notifications.getPermissionsAsync();
+      let finalStatus = existingStatus;
+      if (existingStatus !== 'granted') {
+        const { status } = await Notifications.requestPermissionsAsync();
+        finalStatus = status;
+      }
+      if (finalStatus !== 'granted') {
+        alert('Failed to get push token for push notification!');
+        return;
+      }
+      token = (await Notifications.getExpoPushTokenAsync()).data;
+      console.log(token);
+    } else {
+      alert('Must use physical device for Push Notifications');
+    }
+  
+    if (Platform.OS === 'android') {
+      Notifications.setNotificationChannelAsync('default', {
+        name: 'default',
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250, 250, 250],
+        lightColor: '#FF231F7C',
+      });
+    }
+  
+    return token;
+  }
   
   if(!fontsLoaded){
     return <AppLoading/>
@@ -84,18 +174,21 @@ const Feed = () => {
                   height: 70,
                 }}
               />
-              <View style={{
-                paddingTop: 14,
-                paddingBottom: 6,
-                paddingHorizontal: 10
-              }}>
+              <TouchableOpacity
+                style={{
+                  paddingTop: 14,
+                  paddingBottom: 6,
+                  paddingHorizontal: 10
+                }}
+                onPress={async () => {await sendPushNotification(expoPushToken)}}
+              >
                 <Text style={{ fontFamily: 'Bold', fontSize: 20 }}>
                   Hi, {name}!
                 </Text>
                 <Text style={{ fontFamily: 'SemiBold', fontSize: 12, marginVertical: 10 }}>
                   {new Date().toString()}
                 </Text>
-              </View>
+              </TouchableOpacity>
               <TouchableOpacity
                 style={{
                   flex: 1,
@@ -122,37 +215,6 @@ const Feed = () => {
       </SafeAreaView>
     )
   }
-}
-
-const HomePage = () => {
-  const { logout } = useContext(AuthContext);
-
-  return (
-    <Stack.Navigator
-      initialRouteName="Home"
-      screenOptions={{
-        headerShown: false
-      }}
-    >
-      <Stack.Screen
-        name="Home"
-        options={{
-          headerRight: () => {
-            return (
-              <TouchableOpacity
-                onPress={() => {
-                  logout();
-                }}
-              >
-                <Text>LOGOUT</Text>
-              </TouchableOpacity>
-            );
-          }
-        }}
-        component={Feed}
-      />
-    </Stack.Navigator>
-  )
 }
 
 const styles = StyleSheet.create({

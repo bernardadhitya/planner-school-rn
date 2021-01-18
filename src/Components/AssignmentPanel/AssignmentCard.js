@@ -7,7 +7,7 @@ import IconBook from '../../Assets/icons/IconBook';
 import IconClock from '../../Assets/icons/IconClock';
 
 const AssignmentCard = (props) => {
-  const {title, chapter, deadline, note, showNote} = props;
+  const {title, chapter, deadline, note, showNote, onClick} = props;
   let [fontsLoaded] = useFonts(Fonts);
 
   const formattedDeadline = new Date(deadline * 1000);

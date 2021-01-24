@@ -1,5 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { createStackNavigator } from "@react-navigation/stack";
+import React, { useState, useRef, useEffect, useContext } from 'react';
 import {
   Text,
   TouchableOpacity,
@@ -23,7 +22,6 @@ import IconBack from '../../Assets/icons/IconBack';
 import { useNavigation } from '@react-navigation/native';
 import DetailedSubjects from '../../Constants/Subjects';
 import * as ImagePicker from 'expo-image-picker';
-import { useContext } from 'react';
 import { AuthContext } from "../../Helper/AuthProvider";
 import { createSubmissionPost, getAllSubmissionStatusByUserId, uploadImage } from '../../../firebase';
 import ImageView from "react-native-image-viewing";

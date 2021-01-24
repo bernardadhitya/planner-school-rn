@@ -15,8 +15,8 @@ const MySubmissionCard = (props) => {
     return (
       <>
         <Text style={{fontFamily: 'Bold', fontSize: 12, marginTop: 12}}>
-            {`Nilai: ${grade}/100`}
-          </Text>
+          {`Nilai: ${grade}/100`}
+        </Text>
         <Text style={{fontFamily: 'Bold', fontSize: 12, marginTop: 12}}>
           Catatan:
         </Text>
@@ -49,7 +49,7 @@ const MySubmissionCard = (props) => {
           <View style={styles.row}>
             <View style={styles.col}>
               <Text style={{fontFamily: 'Medium', fontSize: 12}}>
-                Tugas saya
+                Status Tugas
               </Text>
             </View>
             <View style={{flex: 1}}>

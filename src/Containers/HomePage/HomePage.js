@@ -78,7 +78,16 @@ const HomePage = () => {
         return firstDate.getHours() - secondDate.getHours();
       });
 
-      setAssignments(fetchedAssignments);
+      const currentDate = new Date().getTime();
+      const filteredAssignments =
+        fetchedAssignments.filter(assignment => {
+          const { deadline } = assignment;
+          return deadline.seconds * 1000 > currentDate;
+        }).sort((firstAssignment, secondAssignment) => {
+          return firstAssignment.deadline.seconds - secondAssignment.deadline.seconds
+        });
+
+      setAssignments(filteredAssignments);
       setSchedules(scheduleToday);
     }
     fetchData();

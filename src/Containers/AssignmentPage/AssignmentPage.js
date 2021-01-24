@@ -47,8 +47,16 @@ const AssignmentPage = (props) => {
   useEffect(() => {
     const fetchData = async () => {
       const fetchedAssignments = await getAllSubmissionStatusByUserId(user_id, classID);
+      const currentDate = new Date().getTime();
       const assignmentsMatchSubject =
-        fetchedAssignments.filter(assignment => assignment.subject === subject);
+        fetchedAssignments
+          .filter(assignment => assignment.subject === subject)
+          .filter(assignment => {
+            const { deadline } = assignment;
+            return deadline.seconds * 1000 > currentDate;
+          }).sort((firstAssignment, secondAssignment) => {
+            return firstAssignment.deadline.seconds - secondAssignment.deadline.seconds
+          });
       setAssignments(assignmentsMatchSubject);
     }
     fetchData();

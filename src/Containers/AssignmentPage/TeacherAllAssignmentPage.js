@@ -18,10 +18,18 @@ const TeacherAllAssignmentPage = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      const currentDate = new Date().getTime();
       const classesID = classes.map(classData => classData.classID);
       const fetchedAllAssignmentsByClassesId = await getAllAssignmentsByClassesId(classesID);
-      console.log(fetchedAllAssignmentsByClassesId);
-      setAssignments(fetchedAllAssignmentsByClassesId);
+      const filteredAssignments =
+        fetchedAllAssignmentsByClassesId
+          .filter(assignment => {
+            const { deadline } = assignment;
+            return deadline.seconds * 1000 > currentDate;
+          }).sort((firstAssignment, secondAssignment) => {
+            return firstAssignment.deadline.seconds - secondAssignment.deadline.seconds
+          });
+      setAssignments(filteredAssignments);
     }
     fetchData();
   }, []);
@@ -71,6 +79,7 @@ const TeacherAllAssignmentPage = () => {
             <Text style={{ fontFamily: 'Bold', fontSize: 21 }}>Daftar Tugas</Text>
           </View>
           { renderAllAssignments() }
+          <View style={{height: 50}}></View>
         </ScrollView>
       </SafeAreaView>
     )

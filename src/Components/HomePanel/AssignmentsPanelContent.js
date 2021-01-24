@@ -113,7 +113,7 @@ const AssignmentsPanelContent = (props) => {
     return filteredAssignments.length > 0 ?
       <View style={styles.row}>
         <ScrollView horizontal>
-          { assignments.map(assignment => renderAssignmentsPanelCard(assignment)) }
+          { filteredAssignments.map(assignment => renderAssignmentsPanelCard(assignment)) }
         </ScrollView>
       </View>
       : <View>

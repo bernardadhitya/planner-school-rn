@@ -12,6 +12,7 @@ import { getAllMoodsByUserId } from '../../../firebase';
 import IconEmotion2 from '../../Assets/icons/IconEmotion2';
 import IconEmotion3 from '../../Assets/icons/IconEmotion3';
 import IconEmotion4 from '../../Assets/icons/IconEmotion4';
+import MoodLegend from '../../Components/MoodTrackerPanel/MoodLegend';
 
 const MoodTrackerPage = (props) => {
   const { user: { user_id, role, name } } = useContext(AuthContext);
@@ -125,8 +126,8 @@ const MoodTrackerPage = (props) => {
             <Image
               source={require('../../Assets/logo/Student.png')}
               style={{
-                width: 150,
-                height: 150,
+                width: 110,
+                height: 110,
               }}
             />
             <Text style={{
@@ -178,6 +179,7 @@ const MoodTrackerPage = (props) => {
                 Mulai Refleksi Hari Ini
               </Text>
             </TouchableOpacity> : null}
+            <MoodLegend/>
             { renderMoodPanel() }
           </View>
         </ScrollView>

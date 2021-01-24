@@ -11,6 +11,7 @@ import { getAllStudentsMood } from '../../../firebase';
 import IconEmotion2 from '../../Assets/icons/IconEmotion2';
 import IconEmotion3 from '../../Assets/icons/IconEmotion3';
 import IconEmotion4 from '../../Assets/icons/IconEmotion4';
+import MoodLegend from '../../Components/MoodTrackerPanel/MoodLegend';
 
 const TeacherMoodTrackerPage = () => {
   const navigation = useNavigation();
@@ -129,6 +130,7 @@ const TeacherMoodTrackerPage = () => {
             </TouchableOpacity>
             <Text style={{ fontFamily: 'Bold', fontSize: 21 }}>Mood Tracker</Text>
           </View>
+          <MoodLegend/>
           {renderStudentMoodPanel()}
         </ScrollView>
       </SafeAreaView>

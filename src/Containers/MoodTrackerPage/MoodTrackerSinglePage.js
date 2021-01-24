@@ -10,6 +10,7 @@ import IconEmotion1 from '../../Assets/icons/IconEmotion1';
 import IconEmotion2 from '../../Assets/icons/IconEmotion2';
 import IconEmotion3 from '../../Assets/icons/IconEmotion3';
 import IconEmotion4 from '../../Assets/icons/IconEmotion4';
+import MoodLegend from '../../Components/MoodTrackerPanel/MoodLegend';
 
 const MoodTrackerSinglePage = (props) => {
   const { route: { params } } = props;
@@ -76,38 +77,43 @@ const MoodTrackerSinglePage = (props) => {
     }
 
     return (
-      <View
-        style={{
-          flex: 1,
-          flexDirection: 'row',
-          paddingVertical: 20,
-          borderBottomWidth: 1,
-          borderColor: '#C7C7C7'
-        }}
-      >
-        <View style={{justifyContent: 'center'}}>
-          <Text
-            style={{
-              fontSize: 24,
-              fontFamily: 'Regular'
-            }}
-          >
-            { datePosted }
-          </Text>
-        </View>
-        <View style={{
-          flex: 1,
-          flexDirection: "row",
-          justifyContent: "flex-end",
-          marginTop: 10,
-        }}>
+      <View style={{
+        borderBottomWidth: 1,
+        borderColor: '#C7C7C7',
+        paddingBottom: 14
+      }}>
+        <View
+          style={{
+            flex: 1,
+            flexDirection: 'row',
+            paddingTop: 20
+          }}
+        >
           <View style={{justifyContent: 'center'}}>
-            <Text>Mood hari ini: </Text>
+            <Text
+              style={{
+                fontSize: 24,
+                fontFamily: 'Regular'
+              }}
+            >
+              { datePosted }
+            </Text>
           </View>
-          <View style={{justifyContent: 'center'}}>
-            { IconEmotions[averageMood] }
+          <View style={{
+            flex: 1,
+            flexDirection: "row",
+            justifyContent: "flex-end",
+            marginTop: 10,
+          }}>
+            <View style={{justifyContent: 'center'}}>
+              <Text>Mood hari ini: </Text>
+            </View>
+            <View style={{justifyContent: 'center'}}>
+              { IconEmotions[averageMood] }
+            </View>
           </View>
         </View>
+        <MoodLegend/>
       </View>
     )
   }

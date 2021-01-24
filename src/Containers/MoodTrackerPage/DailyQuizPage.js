@@ -10,6 +10,7 @@ import { Input } from '@ui-kitten/components';
 import QuizCard from '../../Components/MoodTrackerPanel/QuizCard';
 import { AuthContext } from '../../Helper/AuthProvider';
 import { createMoodPost } from '../../../firebase';
+import MoodLegend from '../../Components/MoodTrackerPanel/MoodLegend';
 
 const DailyQuizPage = (props) => {
   const { route: { params }} = props;
@@ -92,6 +93,7 @@ const DailyQuizPage = (props) => {
             <Text style={{ fontFamily: 'Bold', fontSize: 21 }}>Mood Tracker</Text>
             <Text style={{color: '#FFFFFF'}}>{counter}</Text>
           </View>
+          <MoodLegend/>
           {renderQuizPanel()}
           <Input
             multiline={true}

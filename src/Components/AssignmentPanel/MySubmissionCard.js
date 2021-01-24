@@ -7,10 +7,25 @@ import MySubmissionCardContent from './MySubmissionCardContent';
 import { Spinner } from '@ui-kitten/components';
 
 const MySubmissionCard = (props) => {
-  const {status, onClick, onSubmit, loading, image, fileName} = props;
+  const {status, onClick, onSubmit, loading, image, fileName, grade, teacherNote} = props;
   let [fontsLoaded] = useFonts(Fonts);
 
-  console.log(props);
+  const renderGradedResult = () => {
+    if (grade === -1) return;
+    return (
+      <>
+        <Text style={{fontFamily: 'Bold', fontSize: 12, marginTop: 12}}>
+            {`Nilai: ${grade}/100`}
+          </Text>
+        <Text style={{fontFamily: 'Bold', fontSize: 12, marginTop: 12}}>
+          Catatan:
+        </Text>
+        <Text style={{fontFamily: 'Regular', fontSize: 12, marginTop: 8}}>
+          {teacherNote}
+        </Text>
+      </>
+    )
+  }
 
   return fontsLoaded ? (
     <View style={styles.row, {marginVertical: 10}} level='3'>
@@ -49,6 +64,7 @@ const MySubmissionCard = (props) => {
               </Text>
             </View>
           </View>
+          {renderGradedResult()}
           <MySubmissionCardContent
             status={status}
             image={image}

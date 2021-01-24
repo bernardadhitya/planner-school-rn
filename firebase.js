@@ -42,7 +42,9 @@ export const createSubmissionPost = async (submissionData) => {
     studentID,
     assignmentID,
     filePath,
-    submissionDate: new Date()
+    submissionDate: new Date(),
+    grade: -1,
+    teacherNote: '-'
   });
   const submissionId = response.id;
   return submissionId;

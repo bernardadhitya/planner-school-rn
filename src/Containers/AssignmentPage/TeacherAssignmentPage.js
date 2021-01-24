@@ -1,5 +1,5 @@
 import React, { useEffect, useState} from 'react';
-import { Text, SafeAreaView, View, TouchableOpacity } from 'react-native';
+import { Text, SafeAreaView, View, TouchableOpacity, Alert } from 'react-native';
 import { Fonts } from '../../Constants/Fonts';
 import AppLoading from 'expo-app-loading';
 import { useFonts } from '@use-expo/font';
@@ -51,6 +51,25 @@ const TeacherAssignmentPage = () => {
     navigation.goBack();
   }
 
+  const renderAlert = () => {
+    return Alert.alert(
+      "Peringatan",
+      "Apakah anda yakin ingin kembali? Seluruh data tidak akan tersimpan",
+      [
+        {
+          text: "Batal",
+          onPress: () => console.log("batal"),
+          style: "cancel"
+        },
+        {
+          text: "Kembali",
+          onPress: () => navigation.goBack(),
+        },
+      ],
+      { cancelable: false }
+    );
+  }
+
   if (!fontsLoaded) {
     return <AppLoading />;
   } else {
@@ -72,7 +91,7 @@ const TeacherAssignmentPage = () => {
           >
             <TouchableOpacity
               style={{marginRight: 16}}
-              onPress={() => { navigation.goBack() }}
+              onPress={() => { renderAlert() }}
             >
               <IconBack/>
             </TouchableOpacity>

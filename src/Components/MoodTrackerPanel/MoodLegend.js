@@ -14,15 +14,15 @@ const MoodLegend = () => {
     },
     {
       icon: <IconEmotion2 focused/>,
-      text: 'Biasa Saja'
-    },
-    {
-      icon: <IconEmotion3 focused/>,
       text: 'Baik'
     },
     {
+      icon: <IconEmotion3 focused/>,
+      text: 'Sangat Baik'
+    },
+    {
       icon: <IconEmotion4 focused/>,
-      text:'Sangat Baik'
+      text:'Luar Biasa'
     }
   ]
   return (

@@ -60,8 +60,6 @@ const AssignmentPage = (props) => {
     fetchData();
   }, [refresh]);
 
-  console.log(assignments);
-
   let sheetRef = useRef(null);
   let fall = useMemoOne(() => new Animated.Value(1), []);
 
@@ -178,6 +176,7 @@ const AssignmentPage = (props) => {
   }
 
   const renderContent = () => {
+    console.log('selected assignment --->', selectedAssignment);
     if (selectedAssignment === null) return;
     return (
       <View
@@ -197,8 +196,14 @@ const AssignmentPage = (props) => {
           showNote
         />
         <MySubmissionCard
-          grade={selectedAssignment.submittedData.grade}
-          teacherNote={selectedAssignment.submittedData.teacherNote}
+          grade={
+            !selectedAssignment.hasOwnProperty('submitted') || !selectedAssignment.submitted ? 
+            -1 : selectedAssignment.submittedData.grade
+          }
+          teacherNote={
+            !selectedAssignment.hasOwnProperty('submitted') || !selectedAssignment.submitted ?
+            null : selectedAssignment.submittedData.teacherNote
+          }
           status={selectedTab}
           onClick={selectedTab === 'berjalan' ? handleClick : handleViewImage}
           onSubmit={handleSubmit}

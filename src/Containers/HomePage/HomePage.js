@@ -21,6 +21,7 @@ import { getAllSubmissionStatusByUserId, getSchedulesByClassId } from '../../../
 import * as Notifications from 'expo-notifications';
 import Constants from 'expo-constants';
 import moment from 'moment';
+import getDateStringInIndonesian from '../../Constants/Date';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -150,36 +151,6 @@ const HomePage = () => {
     }
   
     return token;
-  }
-  
-  const getDateStringInIndonesian = (date) => {
-    const daysInIndonesia = [
-      'Senin',
-      'Selasa',
-      'Rabu',
-      'Kamis',
-      'Jumat',
-      'Sabtu',
-      'Minggu'
-    ];
-    const monthsIndIndonesia = [
-      'Januari',
-      'Februari',
-      'Maret',
-      'April',
-      'Mei',
-      'Juni',
-      'Juli',
-      'Agustus',
-      'September',
-      'Oktober',
-      'November',
-      'Desember'
-    ];
-
-    const time = moment(date).format('HH:mm')
-
-    return `${daysInIndonesia[date.getDay()]}, ${date.getDate()} ${monthsIndIndonesia[date.getMonth()]} ${date.getFullYear()} \t${time} WIB`;
   }
 
   if(!fontsLoaded){

@@ -15,41 +15,11 @@ import IconLogout from '../../Assets/icons/IconLogout';
 import { AuthContext } from "../../Helper/AuthProvider";
 import ThumbnailCard from '../../Components/ThumbnailCard/ThumbnailCard';
 import TeacherMenu from '../../Constants/TeacherMenu';
-import moment from 'moment';
+import getDateStringInIndonesian from '../../Constants/Date';
 
 const TeacherHomePage = () => {
   const { user: { name }, logout } = useContext(AuthContext);
   let [fontsLoaded] = useFonts(Fonts);
-
-  const getDateStringInIndonesian = (date) => {
-    const daysInIndonesia = [
-      'Senin',
-      'Selasa',
-      'Rabu',
-      'Kamis',
-      'Jumat',
-      'Sabtu',
-      'Minggu'
-    ];
-    const monthsIndIndonesia = [
-      'Januari',
-      'Februari',
-      'Maret',
-      'April',
-      'Mei',
-      'Juni',
-      'Juli',
-      'Agustus',
-      'September',
-      'Oktober',
-      'November',
-      'Desember'
-    ];
-
-    const time = moment(date).format('HH:mm')
-
-    return `${daysInIndonesia[date.getDay()]}, ${date.getDate()} ${monthsIndIndonesia[date.getMonth()]} ${date.getFullYear()} \t${time} WIB`;
-  }
 
   const renderThumbnails = () => {
     const formattedSubjects = [];

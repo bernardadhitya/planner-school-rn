@@ -176,7 +176,6 @@ const AssignmentPage = (props) => {
   }
 
   const renderContent = () => {
-    console.log('selected assignment --->', selectedAssignment);
     if (selectedAssignment === null) return;
     return (
       <View

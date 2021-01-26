@@ -7,6 +7,7 @@ import { ScrollView } from 'react-native';
 import DetailedSubjects from '../../Constants/Subjects';
 import { useNavigation } from '@react-navigation/native';
 import { assign } from 'lodash';
+import getDateStringInIndonesian from '../../Constants/Date';
 
 const AssignmentsPanelContent = (props) => {
   const navigation = useNavigation();
@@ -91,7 +92,7 @@ const AssignmentsPanelContent = (props) => {
               textAlign: 'center',
               marginTop: 8
             }}>
-              {formattedDeadline.toLocaleDateString("id")}
+              {getDateStringInIndonesian(formattedDeadline, true)}
             </Text>
           </View>
         </View>

@@ -5,6 +5,7 @@ import { Fonts } from '../../Constants/Fonts';
 import AppLoading from 'expo-app-loading';
 import IconBook from '../../Assets/icons/IconBook';
 import IconClock from '../../Assets/icons/IconClock';
+import getDateStringInIndonesian from '../../Constants/Date';
 
 const AssignmentCard = (props) => {
   const {title, chapter, deadline, note, showNote, onClick} = props;
@@ -36,7 +37,7 @@ const AssignmentCard = (props) => {
       <View style={{flexDirection: 'row', marginTop: 8}}>
         <IconClock/>
         <Text style={{fontFamily: 'Regular', fontSize: 12, marginLeft: 10}}>
-          {`Batas: ${formattedDeadline.toLocaleDateString('id')} (${dueInDays} hari)`}
+          {`Batas: ${getDateStringInIndonesian(formattedDeadline, true)} (${dueInDays} hari)`}
         </Text>
       </View>
       {showNote ?

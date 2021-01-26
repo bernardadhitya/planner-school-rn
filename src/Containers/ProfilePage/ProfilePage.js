@@ -8,6 +8,7 @@ import IconSetting from '../../Assets/icons/IconSetting';
 import { useNavigation } from '@react-navigation/native';
 import { AuthContext } from '../../Helper/AuthProvider';
 import { getAllTeachers, getClassById } from '../../../firebase';
+import getDateStringInIndonesian from '../../Constants/Date';
 
 const ProfilePage = () => {
   const {
@@ -26,7 +27,7 @@ const ProfilePage = () => {
   const navigation = useNavigation();
   let [fontsLoaded] = useFonts(Fonts);
 
-  const dateOfBirth = new Date(dob.seconds * 1000).toLocaleDateString("id");
+  const dateOfBirth = new Date(dob.seconds * 1000);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -77,9 +78,9 @@ const ProfilePage = () => {
 
         <View style={{flexDirection: 'row'}}>
           <View style={{width: '50%'}}>
-            <Text style={{fontFamily: 'Regular', fontSize: 12}}>Tempat/Tanggal Lahir</Text>
+            <Text style={{fontFamily: 'Regular', fontSize: 12}}>Tanggal Lahir</Text>
             <Text style={{fontFamily: 'SemiBold', marginTop: 10}}>
-              {`${pob}, ${dateOfBirth}`}
+              {`${getDateStringInIndonesian(dateOfBirth, true)}`}
             </Text>
           </View>
           <View style={{width: '50%'}}>

@@ -92,7 +92,7 @@ const MoodTrackerSinglePage = (props) => {
           <View style={{justifyContent: 'center'}}>
             <Text
               style={{
-                fontSize: 24,
+                fontSize: 16,
                 fontFamily: 'Regular'
               }}
             >
@@ -106,7 +106,7 @@ const MoodTrackerSinglePage = (props) => {
             marginTop: 10,
           }}>
             <View style={{justifyContent: 'center'}}>
-              <Text>Mood hari ini: </Text>
+              <Text style={{fontFamily: 'Regular'}}>Mood hari ini: </Text>
             </View>
             <View style={{justifyContent: 'center'}}>
               { IconEmotions[averageMood] }

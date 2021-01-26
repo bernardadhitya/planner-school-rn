@@ -13,6 +13,7 @@ import IconEmotion2 from '../../Assets/icons/IconEmotion2';
 import IconEmotion3 from '../../Assets/icons/IconEmotion3';
 import IconEmotion4 from '../../Assets/icons/IconEmotion4';
 import MoodLegend from '../../Components/MoodTrackerPanel/MoodLegend';
+import getDateStringInIndonesian from '../../Constants/Date';
 
 const MoodTrackerPage = (props) => {
   const { user: { user_id, role, name } } = useContext(AuthContext);
@@ -27,14 +28,15 @@ const MoodTrackerPage = (props) => {
       const fetchedMoodsByUserID = await getAllMoodsByUserId(
         role === 'student' ? user_id : params.userID
       );
-      setMoods(fetchedMoodsByUserID);
+      const sortedFetchedMoods = fetchedMoodsByUserID.sort((firstMood, secondMood) =>
+        secondMood.datePosted.seconds - firstMood.datePosted.seconds)
+      setMoods(sortedFetchedMoods);
     }
     fetchData();
   }, [refresh]);
 
   const renderMoodCard = (datePosted, responses) => {
-    const formattedDatePosted = new Date(datePosted.seconds * 1000)
-      .toLocaleDateString("id");
+    const formattedDatePosted = new Date(datePosted.seconds * 1000);
     const averageMood = Math.round((responses[1] + responses[2] + responses[3] + responses[4]) / 4) ;
     const IconEmotions = {
       0: <IconEmotion1 focused/>,
@@ -54,7 +56,7 @@ const MoodTrackerPage = (props) => {
           borderColor: '#C7C7C7'
         }}
         onPress={() => { navigation.navigate('MoodTrackerSingle', 
-          {datePosted: formattedDatePosted, responses}
+          {datePosted: getDateStringInIndonesian(formattedDatePosted, true), responses}
         )}}
       >
         <View style={{ justifyContent: 'center'}}>
@@ -64,7 +66,7 @@ const MoodTrackerPage = (props) => {
               fontFamily: 'Regular'
             }}
           >
-            { formattedDatePosted }
+            { getDateStringInIndonesian(formattedDatePosted, true) }
           </Text>
         </View>
         <View style={{
@@ -95,6 +97,10 @@ const MoodTrackerPage = (props) => {
   if (!fontsLoaded) {
     return <AppLoading />;
   } else {
+    const hasFilledReflection = 
+      moods.length === 0 || 
+      getDateStringInIndonesian(new Date(), true) === getDateStringInIndonesian(new Date(moods[0].datePosted.seconds * 1000), true);
+    const buttonColor = hasFilledReflection ? '#AAAAAA' : '#598BFF';
     return ( 
       <SafeAreaView
         style={{
@@ -155,13 +161,14 @@ const MoodTrackerPage = (props) => {
                 },
                 shadowOpacity: 0.22,
                 shadowRadius: 2.22,
-                backgroundColor: '#598BFF',
+                backgroundColor: buttonColor,
                 borderRadius: 10,
                 paddingHorizontal: 10,
                 paddingTop: 16,
                 paddingBottom: 16,
                 alignItems: 'center',
               }}
+              disabled={hasFilledReflection}
               onPress={() => {
                 navigation.navigate(
                   'DailyQuiz',

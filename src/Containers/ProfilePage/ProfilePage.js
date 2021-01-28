@@ -65,17 +65,6 @@ const ProfilePage = () => {
           </View>
         </View>
 
-        <View style={{flexDirection: 'row', marginBottom: 20}}>
-          <View style={{width: '50%'}}>
-            <Text style={{fontFamily: 'Regular', fontSize: 12}}>Kelas</Text>
-            <Text style={{fontFamily: 'SemiBold', marginTop: 10}}>{grade}</Text>
-          </View>
-          <View style={{width: '50%'}}>
-            <Text style={{fontFamily: 'Regular', fontSize: 12}}>No. Telepon</Text>
-            <Text style={{fontFamily: 'SemiBold', marginTop: 10}}>{phone}</Text>
-          </View>
-        </View>
-
         <View style={{flexDirection: 'row'}}>
           <View style={{width: '50%'}}>
             <Text style={{fontFamily: 'Regular', fontSize: 12}}>Tanggal Lahir</Text>

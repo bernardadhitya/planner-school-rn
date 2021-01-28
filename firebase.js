@@ -1,7 +1,6 @@
 import firebase from 'firebase';
 import 'firebase/firestore';
 import 'firebase/storage';
-import { sub } from 'react-native-reanimated';
 
 var firebaseConfig = {
   apiKey: "AIzaSyBoy46A_88qGbu8AQJ2Q3LKGUoUijhaUrc",
@@ -49,15 +48,6 @@ export const createSubmissionPost = async (submissionData) => {
   });
   const submissionId = response.id;
   return submissionId;
-}
-
-export const gradeSubmissionPost = async (gradingData) => {
-  const {submissionID, grade, teacherNote} = gradingData;
-  const response = await db.collection('submissions').doc(submissionID).update({
-    grade,
-    teacherNote
-  })
-  return;
 }
 
 export const uploadImage = async (uri, imageFulPath) => {

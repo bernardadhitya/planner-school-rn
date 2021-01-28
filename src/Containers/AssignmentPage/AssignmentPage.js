@@ -195,14 +195,6 @@ const AssignmentPage = (props) => {
           showNote
         />
         <MySubmissionCard
-          grade={
-            !selectedAssignment.hasOwnProperty('submitted') || !selectedAssignment.submitted ? 
-            -1 : selectedAssignment.submittedData.grade
-          }
-          teacherNote={
-            !selectedAssignment.hasOwnProperty('submitted') || !selectedAssignment.submitted ?
-            null : selectedAssignment.submittedData.teacherNote
-          }
           status={selectedTab}
           onClick={selectedTab === 'berjalan' ? handleClick : handleViewImage}
           onSubmit={handleSubmit}
